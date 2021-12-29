@@ -1,5 +1,6 @@
 import { Header } from './Header';
 import { MainContent } from './MainContent';
+import { Section } from './Section';
 import Image from 'next/image';
 
 type Props = {
@@ -20,3 +21,4 @@ export const AppLayout = ({ children, background }: Props) => {
 
 AppLayout.Header = Header;
 AppLayout.MainContent = MainContent;
+AppLayout.Section = Section;

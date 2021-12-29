@@ -35,7 +35,7 @@ export function Header({ title, children, className }: Props) {
 
   return (
     <div className={classNames('sticky top-0 z-40', className)}>
-      <header className='py-2 font-bold'>
+      <header className='py-2 font-bold font-disketMono'>
         <Container>
           <div className='flex items-center justify-between'>
             <NextLink href='/' className='font-bold text-white text-md'>

@@ -8,13 +8,14 @@ export type Control = {
 };
 
 export type Props = {
+  defaultVisible?: boolean;
   onHide?: () => void;
   onShow?: () => void;
 };
 
 export const useVisibilityControl = (props?: Props) => {
   const { onHide, onShow } = props || {};
-  const [isActive, setIsActive] = React.useState(false);
+  const [isActive, setIsActive] = React.useState(!!props?.defaultVisible);
 
   const show = React.useCallback(() => {
     setIsActive(true);

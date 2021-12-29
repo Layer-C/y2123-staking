@@ -6,5 +6,9 @@ type Props = {
 };
 
 export const MainContent = ({ children }: Props) => {
-  return <div className={classNames('flex-1 w-full h-full overflow-x-auto relative')}>{children}</div>;
+  return (
+    <div className={classNames('flex-1 w-full h-full overflow-x-auto relative py-10')}>
+      <div className='max-w-[740px] mx-auto'>{children}</div>
+    </div>
+  );
 };

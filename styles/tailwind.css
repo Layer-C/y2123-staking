@@ -17,6 +17,11 @@
     src: url('/fonts/Disket-Mono-Bold.ttf') format('truetype');
   }
 
+  @font-face {
+    font-family: 'Avenir Next';
+    src: url('/fonts/Avenir-Next.ttf') format('truetype');
+  }
+
   *,
   ::before,
   ::after {
@@ -24,13 +29,18 @@
     box-sizing: inherit;
     line-height: inherit;
     font-family: inherit;
+    font-size: inherit;
   }
 
   html,
   body {
     padding: 0;
     margin: 0;
-    font-family: Disket Mono;
+    font-family: Avenir Next, Disket Mono;
+  }
+
+  body {
+    font-size: 14px;
   }
 
   a {
