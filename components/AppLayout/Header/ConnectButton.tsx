@@ -1,7 +1,8 @@
 import { useWeb3React } from '@web3-react/core';
 import { FaWallet } from 'react-icons/fa';
 import { useContractContext } from 'contexts';
-import { injected } from '../utils/wallet/connectors';
+import { injected } from 'utils/wallet/connectors';
+import { Button } from 'components';
 
 export default function ConnectButton() {
   const { activate, setError, chainId, error } = useWeb3React();
@@ -33,10 +34,7 @@ export default function ConnectButton() {
   return (
     <div className='flex justify-center'>
       {isConnecting ? (
-        <button
-          type='button'
-          className='flex items-center justify-center w-40 px-4 py-2 bg-gray-800 border-2 border-gray-500 rounded-full cursor-not-allowed'
-          disabled>
+        <Button disabled>
           <svg
             className='w-5 h-5 mr-3 -ml-1 text-white animate-spin'
             xmlns='http://www.w3.org/2000/svg'
@@ -49,15 +47,12 @@ export default function ConnectButton() {
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
           </svg>
           Connecting
-        </button>
+        </Button>
       ) : (
-        <button
-          type='button'
-          className='flex items-center justify-center w-40 px-4 py-2 space-x-2 bg-gray-800 border-2 border-gray-500 rounded-full hover:border-gray-400'
-          onClick={connectMetaMask}>
-          <FaWallet />
+        <Button onClick={connectMetaMask}>
+          <FaWallet className='mr-2' />
           <span>Connect</span>
-        </button>
+        </Button>
       )}
     </div>
   );

@@ -7,9 +7,6 @@ import Minting from 'components/Minting';
 const Home: NextPage = () => {
   return (
     <Layout>
-      <Head>
-        <title>{process.env.NEXT_PUBLIC_NFT_NAME}</title>
-      </Head>
       <Prose>
         <Minting />
       </Prose>

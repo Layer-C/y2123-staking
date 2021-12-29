@@ -23,6 +23,7 @@
       "utils/*": ["./utils/*"],
       "apis/*": ["./apis/*"],
       "hooks/*": ["./hooks/*"],
+      "public/*": ["./public/*"],
       "types/*": ["./types/*"]
     }
   },

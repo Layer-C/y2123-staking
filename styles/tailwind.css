@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Disket Mono';
+    font-weight: normal;
+    font-style: normal;
+    src: url('/fonts/Disket-Mono-Bold.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'Disket Mono';
+    font-weight: bold;
+    font-style: normal;
+    src: url('/fonts/Disket-Mono-Bold.ttf') format('truetype');
+  }
+
+  *,
+  ::before,
+  ::after {
+    background-repeat: no-repeat; /* Set `background-repeat: no-repeat` to all elements and pseudo elements */
+    box-sizing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+  }
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: Disket Mono;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .minimized {
+    @apply tw-h-0 tw-w-0 tw-border-none tw-outline-none tw-m-0 tw-p-0 tw-absolute !important;
+  }
+}

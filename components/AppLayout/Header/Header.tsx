@@ -5,13 +5,17 @@ import { FaTwitter, FaDiscord, FaShip } from 'react-icons/fa';
 import ConnectButton from './ConnectButton';
 import Container from './Container';
 import NextLink from './NextLink';
-import { useContractContext } from 'contexts';
-import { injected } from '../utils/wallet/connectors';
+import { injected } from 'utils/wallet/connectors';
+import { Children, ClassName } from 'types/common';
+import classNames from 'classnames';
 
-export default function Header() {
-  const { activate, setError, chainId, account, active } = useWeb3React();
+type Props = Children &
+  ClassName & {
+    title?: string;
+  };
 
-  const { errMsg, setErrMsg } = useContractContext();
+export function Header({ title, children, className }: Props) {
+  const { activate, setError, account, active } = useWeb3React();
 
   useEffect(() => {
     async function loadInjectedWallet() {
@@ -29,28 +33,18 @@ export default function Header() {
     }
   }, [activate, setError]);
 
-  useEffect(() => {
-    if (active) {
-      if (chainId && chainId.toString() !== process.env.NEXT_PUBLIC_NETWORK_ID) {
-        setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
-      } else {
-        setErrMsg('');
-      }
-    } else {
-      setErrMsg('');
-    }
-  }, [active, chainId, setErrMsg]);
-
   return (
-    <div className='sticky top-0 z-40'>
+    <div className={classNames('sticky top-0 z-40', className)}>
       <header className='py-2'>
         <Container>
           <div className='flex items-center justify-between'>
-            <NextLink href='/' className='text-2xl font-bold text-white'>
+            <NextLink href='/' className='font-bold text-white text-md'>
               <span className='flex items-center'>
                 <span className='hidden ml-2 sm:block'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
               </span>
             </NextLink>
+
+            <div className='font-bold text-white uppercase text-md'>{title}</div>
 
             <div className='flex items-center ml-2 space-x-2 sm:ml-0'>
               <a
@@ -92,8 +86,7 @@ export default function Header() {
           </div>
         </Container>
       </header>
-
-      {errMsg && <div className='p-4 text-center text-pink-900 bg-red-400'>{errMsg}</div>}
+      {children}
     </div>
   );
 }
