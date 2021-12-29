@@ -8,6 +8,11 @@ import NextLink from './NextLink';
 import { injected } from 'utils/wallet/connectors';
 import { Children, ClassName } from 'types';
 import classNames from 'classnames';
+import { useVisibilityControl } from 'hooks/useVisibilityControl';
+import { Button, Modal } from 'components';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { MetaMaskConnectModal } from './MetaMaskConnectModal';
 
 type Props = Children &
   ClassName & {
@@ -38,50 +43,54 @@ export function Header({ title, children, className }: Props) {
       <header className='py-2 font-bold font-disketMono'>
         <Container>
           <div className='flex items-center justify-between'>
-            <NextLink href='/' className='font-bold text-white text-md'>
-              <span className='flex items-center'>
-                <span className='hidden ml-2 sm:block'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
-              </span>
-            </NextLink>
+            <div className='w-0'>
+              <NextLink href='/' className='font-bold text-white text-md'>
+                <span className='flex items-center'>
+                  <span className='hidden ml-2 sm:block'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
+                </span>
+              </NextLink>
+            </div>
 
             <div className='font-bold text-white uppercase text-md'>{title}</div>
 
-            <div className='flex items-center ml-2 space-x-2 sm:ml-0'>
-              <a
-                href={process.env.NEXT_PUBLIC_TWITTER_URL}
-                aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on Twitter`}
-                rel='noopener noreferrer'
-                target='_blank'
-                className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
-                <FaTwitter />
-              </a>
-              <a
-                href={process.env.NEXT_PUBLIC_DISCORD_URL}
-                aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on Discord`}
-                rel='noopener noreferrer'
-                target='_blank'
-                className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
-                <FaDiscord />
-              </a>
-              <a
-                href={process.env.NEXT_PUBLIC_OPENSEA_URL}
-                aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on OpenSea`}
-                rel='noopener noreferrer'
-                target='_blank'
-                className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
-                <FaShip />
-              </a>
+            <div className='flex justify-end w-0'>
+              <div className='flex items-center ml-2 space-x-2 sm:ml-0'>
+                <a
+                  href={process.env.NEXT_PUBLIC_TWITTER_URL}
+                  aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on Twitter`}
+                  rel='noopener noreferrer'
+                  target='_blank'
+                  className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
+                  <FaTwitter />
+                </a>
+                <a
+                  href={process.env.NEXT_PUBLIC_DISCORD_URL}
+                  aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on Discord`}
+                  rel='noopener noreferrer'
+                  target='_blank'
+                  className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
+                  <FaDiscord />
+                </a>
+                <a
+                  href={process.env.NEXT_PUBLIC_OPENSEA_URL}
+                  aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on OpenSea`}
+                  rel='noopener noreferrer'
+                  target='_blank'
+                  className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
+                  <FaShip />
+                </a>
 
-              {active && account ? (
-                <span className='flex items-center px-5 py-1 space-x-2 rounded bg-purplish-black-1'>
-                  <span>
-                    <Blockies size={5} seed={account.toLowerCase()} className='rounded-full' />
+                {active && account ? (
+                  <span className='flex items-center px-5 py-1 space-x-2 rounded bg-purplish-black-1'>
+                    <span>
+                      <Blockies size={5} seed={account.toLowerCase()} className='rounded-full' />
+                    </span>
+                    <span>{`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}</span>
                   </span>
-                  <span>{`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}</span>
-                </span>
-              ) : (
-                <ConnectButton />
-              )}
+                ) : (
+                  <ConnectButton />
+                )}
+              </div>
             </div>
           </div>
         </Container>

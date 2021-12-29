@@ -1,16 +1,27 @@
-import { Children } from 'types/common';
+import { Children, ClassName } from 'types/common';
 import { HTMLButtonProps } from 'types/htmlElements';
 import { ClassNameUtils } from 'utils/className';
+import { ConditionalWrapper } from '../ConditionalWrapper';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = Children &
-  HTMLButtonProps & {
+  ClassName &
+  Pick<HTMLButtonProps, 'disabled' | 'type' | 'onClick'> & {
     variant?: 'link' | 'outline' | 'solid' | 'link';
     size?: 'xs' | 'sm' | 'md' | 'lg';
     colorScheme?: 'primary' | 'secondary';
-  };
+    as?: 'button' | 'a' | React.ComponentType;
+  } & { [key in string]?: any };
 
-export const Button = ({ variant = 'solid', size = 'md', colorScheme = 'primary', className, ...restProps }: Props) => {
+export const Button = ({
+  variant = 'solid',
+  size = 'md',
+  colorScheme = 'primary',
+  className,
+  children,
+  type = 'button',
+  ...restProps
+}: Props) => {
   const textColor = (() => {
     switch (variant) {
       case 'link':
@@ -68,10 +79,13 @@ export const Button = ({ variant = 'solid', size = 'md', colorScheme = 'primary'
   })();
 
   return (
-    <button
-      type='button'
+    <ConditionalWrapper
+      active={true}
+      component={restProps.as || 'button'}
+      {...restProps}
+      type={type}
       className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
-        'inline-flex items-center border border-transparent rounded',
+        'inline-flex justify-center items-center border border-transparent rounded',
         textColor,
         backgroundColor,
         outline,
@@ -79,7 +93,8 @@ export const Button = ({ variant = 'solid', size = 'md', colorScheme = 'primary'
         padding,
         fontFamily,
         className
-      )}
-      {...restProps}></button>
+      )}>
+      {children}
+    </ConditionalWrapper>
   );
 };

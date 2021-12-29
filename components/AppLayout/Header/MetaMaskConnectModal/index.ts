@@ -1,0 +1,1 @@
+export { MetaMaskConnectModal } from './MetaMaskConnectModal';

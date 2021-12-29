@@ -3,11 +3,17 @@ import { FaWallet } from 'react-icons/fa';
 import { useContractContext } from 'contexts';
 import { injected } from 'utils/wallet/connectors';
 import { Button } from 'components';
+import { MetaMaskConnectModal } from './MetaMaskConnectModal';
+import { useVisibilityControl } from 'hooks';
 
 export default function ConnectButton() {
   const { activate, setError, chainId, error } = useWeb3React();
 
   const { isConnecting, setErrMsg, setIsConnecting } = useContractContext();
+
+  const control = useVisibilityControl();
+
+  console.log(control.visible);
 
   async function connectMetaMask() {
     if (typeof window.ethereum !== 'undefined') {
@@ -27,12 +33,13 @@ export default function ConnectButton() {
         setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
       }
     } else {
-      setErrMsg('Please install MetaMask.');
+      control.show();
     }
   }
 
   return (
     <div className='flex justify-center'>
+      <MetaMaskConnectModal control={control} />
       {isConnecting ? (
         <Button disabled>
           <svg

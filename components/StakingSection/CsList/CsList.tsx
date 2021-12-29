@@ -12,10 +12,6 @@ type Props = {
 export const CsList = ({ items }: Props) => {
   const [page, setPage] = React.useState(1);
 
-  React.useEffect(() => {
-    console.log('mount');
-  }, []);
-
   return (
     <div className='mt-3'>
       <div className='grid grid-cols-6'>
