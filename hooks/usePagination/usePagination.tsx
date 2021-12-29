@@ -9,9 +9,9 @@ export interface PaginationItem {
   disabled?: boolean;
 }
 
-type Props = {
+export type Props = {
   page?: number;
-  totalRecord: number;
+  totalRecordCount?: number;
   perPage?: number;
   onChange?: (page: number) => void;
   pageRange?: number;
@@ -24,7 +24,7 @@ type UsePaginationReturn = {
 
 export const usePagination = ({
   page: pageProp,
-  totalRecord = 0,
+  totalRecordCount = 0,
   perPage = 15,
   onChange,
   pageRange = 3,
@@ -34,7 +34,7 @@ export const usePagination = ({
 
   const pageEndpointRange = Math.max(pageEndpointRangeProp, pageRange);
 
-  const totalPage = Math.ceil(totalRecord / perPage);
+  const totalPage = Math.ceil(totalRecordCount / perPage);
 
   const resolveShowingRange = () => {
     const numberToRange = (num: number, offset = 0) => {
@@ -136,7 +136,11 @@ export const usePagination = ({
         showingRange[showingRange.length - 1] < totalPage && lastPageItem,
         nextItem,
       ].filter((item): item is PaginationItem => !!item),
-      showingRange: { from: (page - 1) * perPage + 1, to: Math.min(totalRecord, page * perPage), total: totalRecord },
+      showingRange: {
+        from: (page - 1) * perPage + 1,
+        to: Math.min(totalRecordCount, page * perPage),
+        total: totalRecordCount,
+      },
     }),
     [
       ellipsisItem,
@@ -149,7 +153,7 @@ export const usePagination = ({
       showingRange,
       showingRangeItems,
       totalPage,
-      totalRecord,
+      totalRecordCount,
     ]
   );
 

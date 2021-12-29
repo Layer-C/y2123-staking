@@ -55,6 +55,10 @@
 
 @layer utilities {
   .minimized {
-    @apply tw-h-0 tw-w-0 tw-border-none tw-outline-none tw-m-0 tw-p-0 tw-absolute !important;
+    @apply h-0 w-0 border-none outline-none m-0 p-0 absolute !important;
+  }
+
+  .disabled {
+    @apply opacity-50 pointer-events-none select-none cursor-default !important;
   }
 }

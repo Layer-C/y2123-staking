@@ -65,9 +65,11 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
           </div>
         )}
       </div>
-      {(!collapsible || control.visible) && (
-        <div className={classNames('h-full py-5')}>{tabs.find(tab => tab.value === value)?.content}</div>
-      )}
+      <div
+        className={classNames('h-full py-5 overflow-hidden', { 'h-0': collapsible && !control.visible })}
+        key={value}>
+        {tabs.find(tab => tab.value === value)?.content}
+      </div>
     </BaseTabs>
   );
 };
@@ -76,7 +78,7 @@ type ItemProps = Omit<BaseItemProps, 'children'> & ClassName & Children;
 
 const Item = ({ children, value }: ItemProps) => {
   return (
-    <BaseItem value={value}>
+    <BaseItem value={value} key={value}>
       {({ isActive, onClick }) => (
         <div
           onClick={onClick}
