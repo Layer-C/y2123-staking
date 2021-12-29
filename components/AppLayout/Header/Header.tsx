@@ -35,7 +35,7 @@ export function Header({ title, children, className }: Props) {
 
   return (
     <div className={classNames('sticky top-0 z-40', className)}>
-      <header className='py-2'>
+      <header className='py-2 font-bold'>
         <Container>
           <div className='flex items-center justify-between'>
             <NextLink href='/' className='font-bold text-white text-md'>
@@ -73,9 +73,9 @@ export function Header({ title, children, className }: Props) {
               </a>
 
               {active && account ? (
-                <span className='flex items-center p-2 space-x-2 bg-gray-700 rounded-full'>
+                <span className='flex items-center px-5 py-1 space-x-2 rounded bg-purplish-black-1'>
                   <span>
-                    <Blockies seed={account.toLowerCase()} className='rounded-full' />
+                    <Blockies size={5} seed={account.toLowerCase()} className='rounded-full' />
                   </span>
                   <span>{`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}</span>
                 </span>
