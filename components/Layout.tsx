@@ -1,7 +1,6 @@
-import { Header } from './AppLayout/Header';
+import { AppLayout } from 'components';
 import Meta from './Meta';
 import Image from 'next/image';
-import bgImage from '../public/assets/bg.jpg';
 import { useContractContext } from 'contexts/Contract';
 import React from 'react';
 import { useWeb3React } from '@web3-react/core';
@@ -31,9 +30,17 @@ export default function Layout({ children, pageTitle }: Props) {
     <>
       <Meta pageTitle={pageTitle} />
       <div className='z-0'>
-        <Image alt={process.env.NEXT_PUBLIC_NFT_NAME} src={bgImage} layout='fill' objectFit='cover' quality={100} />
+        <Image
+          alt={process.env.NEXT_PUBLIC_NFT_NAME}
+          src='/assets/bg.jpg'
+          layout='fill'
+          objectFit='cover'
+          quality={100}
+        />
       </div>
-      <Header>{errMsg && <div className='p-4 text-center text-pink-900 bg-red-400'>{errMsg}</div>}</Header>
+      <AppLayout.Header>
+        {errMsg && <div className='p-4 text-center text-pink-900 bg-red-400'>{errMsg}</div>}
+      </AppLayout.Header>
       <div className='sticky z-50'>
         <main>{children}</main>
       </div>

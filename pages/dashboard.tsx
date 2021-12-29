@@ -1,10 +1,9 @@
-import { AppLayout } from 'components/AppLayout';
+import { AppLayout } from 'components';
 import type { NextPage } from 'next';
-import dashboardBackground from 'public/dashboard-background.png';
 
 const Home: NextPage = () => {
   return (
-    <AppLayout background={dashboardBackground}>
+    <AppLayout background='/dashboard-background.png'>
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2'></AppLayout.Header>
       <AppLayout.MainContent />
     </AppLayout>

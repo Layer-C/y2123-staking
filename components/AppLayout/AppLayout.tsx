@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 type Props = {
   children?: React.ReactNode;
-  background?: StaticImageData;
+  background?: string;
 };
 
 export const AppLayout = ({ children, background }: Props) => {

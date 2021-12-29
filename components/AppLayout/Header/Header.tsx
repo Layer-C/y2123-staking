@@ -6,7 +6,7 @@ import ConnectButton from './ConnectButton';
 import Container from './Container';
 import NextLink from './NextLink';
 import { injected } from 'utils/wallet/connectors';
-import { Children, ClassName } from 'types/common';
+import { Children, ClassName } from 'types';
 import classNames from 'classnames';
 
 type Props = Children &

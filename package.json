@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "tailwind:dev": "TAILWIND_MODE=watch tailwind -i ./styles/tailwind.css -o ./styles/globals.css --watch",
-    "dev": "yarn tailwind:dev & next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
