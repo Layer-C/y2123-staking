@@ -1,10 +1,13 @@
 import { AppLayout, Button, CsSelectSection, Form } from 'components';
-import { useNotification, useStake } from 'hooks';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { FaCheckSquare, FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import { FaChevronLeft } from 'react-icons/fa';
+import { useStake, useNotification, useVisibilityControl } from 'hooks';
 import { CitizenScientist } from 'types/citizenScientist';
+import Link from 'next/link';
+import TimesSquare from 'public/icons/times-square.svg';
+import { UnstakeErrorModal } from 'components/UnstakeErrorModal';
+import { UnstakeSuccessModal } from 'components/UnstakeSuccessModal';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
@@ -20,30 +23,25 @@ const Stake = ({}: Props) => {
   const selectedCs = watch('selectedCs');
 
   const {
-    data: { unstakedCs },
+    data: { stakedCs },
   } = useStake();
 
   const notification = useNotification();
 
   const handleSubmit = (value: any) => {
-    router.push('/dashboard');
-
     if (Math.random() > 0.5) {
-      notification.show({
-        type: 'success',
-        content: 'STAKING SUCCESSFUL',
-      });
+      unstakeSuccessModalControl.show();
       return;
     }
-
-    notification.show({
-      type: 'error',
-      content: 'STAKING FAILED',
-    });
+    notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
+    router.push('/dashboard');
   };
+
+  const unstakeSuccessModalControl = useVisibilityControl();
 
   return (
     <AppLayout background='/dashboard-background.png'>
+      <UnstakeSuccessModal control={unstakeSuccessModalControl} />
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
@@ -69,21 +67,21 @@ const Stake = ({}: Props) => {
                 onClick={() =>
                   setValue(
                     'selectedCs',
-                    unstakedCs.map(({ id }: CitizenScientist) => id)
+                    stakedCs.map(({ id }: CitizenScientist) => id)
                   )
                 }>
                 Select All
               </Button>
             </div>
           </div>
-          <CsSelectSection label='PLEASE SELECT Citizen scientist to stake' cs={unstakedCs} />
+          <CsSelectSection label='PLEASE SELECT Citizen scientist to UNSTAKE' cs={stakedCs} />
           <div className='fixed bottom-0 left-0 w-full h-20 bg-blue-1'>
             <div className='w-[740px] h-full mx-auto flex items-center justify-between'>
               <div className='text-base font-bold text-white font-disketMono'>
                 {selectedCs?.length} scientists selected
               </div>
               <Button variant='outline' colorScheme='default' disabled={!selectedCs?.length} type='submit'>
-                Stake Now
+                Unstake Now
               </Button>
             </div>
           </div>

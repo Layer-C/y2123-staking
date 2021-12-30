@@ -3,6 +3,8 @@ import { CitizenScientist } from 'types/citizenScientist';
 import CheckboxIcon from 'public/icons/checkbox.svg';
 import classNames from 'classnames';
 import { Checkbox } from 'components';
+import { cs } from 'date-fns/locale';
+import HollowCircle from 'public/icons/hollow-circle.svg';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -10,7 +12,7 @@ type Props = {
 };
 
 // eslint-disable-next-line no-empty-pattern
-export const CsOption = ({ data: { id, name } }: Props) => {
+export const CsOption = ({ data: { id, name, staked } }: Props) => {
   return (
     <div>
       <Checkbox value={id}>
@@ -32,6 +34,15 @@ export const CsOption = ({ data: { id, name } }: Props) => {
         )}
       </Checkbox>
       <div className='mt-2 text-xs'>{name}</div>
+      {!!staked && (
+        <div className='text-xs'>
+          <div className='mt-2 text-gray-1'>$OXGN Earned</div>
+          <div className='flex items-center mt-1'>
+            <HollowCircle width={20} height={20} />
+            <div>1234</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

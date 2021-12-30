@@ -7,7 +7,7 @@ import { Clan, VisibilityControlProps } from 'types';
 type Props = VisibilityControlProps & { clan: Clan };
 
 // eslint-disable-next-line no-empty-pattern
-export const StakeConfirmModal = ({ control, clan }: Props) => {
+export const UnstakeConfirmModal = ({ control, clan }: Props) => {
   const { name, defaultAvatar, id } = clan;
 
   return (

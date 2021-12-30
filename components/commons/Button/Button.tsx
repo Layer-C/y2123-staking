@@ -55,7 +55,7 @@ const secondaryTextColor: { [key in Variant]: string } = {
 const defaultTextColor: { [key in Variant]: string } = {
   link: 'text-white',
   outline: 'text-white',
-  solid: 'text-white',
+  solid: 'text-blue-1',
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types

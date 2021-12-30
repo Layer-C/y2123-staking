@@ -1794,6 +1794,11 @@ a {
   color: rgba(97, 255, 42, var(--tw-text-opacity));
 }
 
+.text-red-1 {
+  --tw-text-opacity: 1;
+  color: rgba(255, 69, 69, var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration: underline;
 }
