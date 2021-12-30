@@ -66,7 +66,7 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
         )}
       </div>
       <div
-        className={classNames('h-full py-5 overflow-hidden', { 'h-0': collapsible && !control.visible })}
+        className={classNames('h-full py-5 overflow-hidden', { 'h-0 py-0': collapsible && !control.visible })}
         key={value}>
         {tabs.find(tab => tab.value === value)?.content}
       </div>
