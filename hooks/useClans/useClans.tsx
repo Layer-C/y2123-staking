@@ -11,7 +11,7 @@ export const useClans = () => {
   const { props } = useServerSideProps('clans');
   const { active, account } = useWeb3React();
 
-  const swrReturn = useSWR<Clan[]>(active && account && '/clans', () => ClanApis.getList(), {
+  const swrReturn = useSWR<Clan[]>('/clans', () => ClanApis.getList(), {
     fallbackData: active && account && props,
   });
 
