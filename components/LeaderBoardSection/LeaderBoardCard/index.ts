@@ -1,0 +1,1 @@
+export { LeaderBoardCard } from './LeaderBoardCard';

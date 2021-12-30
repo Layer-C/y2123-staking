@@ -4,6 +4,8 @@ import { AppLayout, Button, Tabs } from 'components';
 import { useStake } from 'hooks';
 import { NumberUtils } from 'utils/number';
 import { CsList } from './CsList';
+import Image from 'next/image';
+import Link from 'next/link';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
@@ -34,11 +36,21 @@ export const StakingSection = ({}: Props) => {
           </div>
         </div>
         <div className='w-[120px] h-[120px] flex flex-col items-center justify-center border border-solid border-gray-1'>
-          <div className='box-content w-1 h-1 border-[10px] border-solid rounded-full border-gray-2 mb-2'></div>
-          <div className='text-gray-1'>No Clan</div>
-          <Button variant='link' size='sm' as='a' href='#clans'>
-            Stake Now
-          </Button>
+          {clan ? (
+            <Link href='#clans' passHref>
+              <div className='flex items-center justify-center w-full h-full cursor-pointer'>
+                <Image src={clan.defaultAvatar} alt='' width={52} height={55} />
+              </div>
+            </Link>
+          ) : (
+            <>
+              <div className='box-content w-1 h-1 border-[10px] border-solid rounded-full border-gray-2 mb-2'></div>
+              <div className='text-gray-1'>No Clan</div>
+              <Button variant='link' size='sm' as='a' href='#clans'>
+                Stake Now
+              </Button>
+            </>
+          )}
         </div>
       </div>
 

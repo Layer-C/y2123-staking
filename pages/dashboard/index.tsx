@@ -1,5 +1,5 @@
 import { StakeApis } from 'apis/stake';
-import { AppLayout, StakingSection, ClanSection } from 'components';
+import { AppLayout, StakingSection, ClanSection, LeaderBoardSection } from 'components';
 import { useServerSideProps } from 'hooks/useServerSideProps';
 import type { InferGetServerSidePropsType } from 'next';
 import { FaCog } from 'react-icons/fa';
@@ -43,6 +43,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
         </div>
         <StakingSection />
         <ClanSection className='mt-[57px]' />
+        <LeaderBoardSection className='mt-[57px]' />
       </AppLayout.MainContent>
     </AppLayout>
   );
