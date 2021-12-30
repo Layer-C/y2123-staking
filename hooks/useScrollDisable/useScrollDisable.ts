@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const useScrollDisable = (disable: boolean) => {
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (disable) {
       const currentWidth = document.documentElement.offsetWidth;
 

@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import { useServerSideProps } from 'hooks';
 import { StakeApis } from 'apis';
 import React from 'react';
@@ -5,9 +6,9 @@ import useSWR from 'swr';
 
 const defaultData = {
   clan: null,
-  totalTokensEarned: 50,
-  lastTokensEarned: 50,
-  claimableTokens: 10,
+  totalTokensEarned: 0,
+  lastTokensEarned: 0,
+  claimableTokens: 0,
   unstakedCs: [],
   stakedCs: [],
   allCs: [],
@@ -15,8 +16,11 @@ const defaultData = {
 
 export const useStake = () => {
   const { props } = useServerSideProps('stakeData');
+  const { active, account } = useWeb3React();
 
-  const swrReturn = useSWR('/stake', () => StakeApis.get(), { fallbackData: props });
+  const swrReturn = useSWR(active && account && '/stake', () => StakeApis.get(), {
+    fallbackData: active && account && props,
+  });
 
   return React.useMemo(() => ({ ...swrReturn, data: swrReturn.data || defaultData }), [swrReturn]);
 };

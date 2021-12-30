@@ -13,8 +13,6 @@ export default function ConnectButton() {
 
   const control = useVisibilityControl();
 
-  console.log(control.visible);
-
   async function connectMetaMask() {
     if (typeof window.ethereum !== 'undefined') {
       if (!error) {

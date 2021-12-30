@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export const useScrollToTop = () => {
   const { pathname } = useRouter();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 };

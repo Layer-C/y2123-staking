@@ -43,7 +43,7 @@ export type Props = Partial<Children> &
   };
 
 export const Modal = ({ className, children, size = 'auto', control, onHideByBackdropClick, ...restProps }: Props) => {
-  useScrollDisable(!control.visible);
+  useScrollDisable(control.visible);
 
   const handleBackdropClick = () => {
     control.hide();
@@ -62,7 +62,7 @@ export const Modal = ({ className, children, size = 'auto', control, onHideByBac
             background: 'linear-gradient(98.86deg, rgba(27, 29, 44, 0.5) 55.16%, rgba(63, 82, 208, 0.5) 99.64%)',
           }}
           className={ClassNameUtils.withTwReplaceable('top-', 'left-', 'transform', 'p-', 'rounded', 'w-')(
-            'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl p-12 opacity-1 shadow-2xl max-w-9/10 backdrop-blur-[50px] min-w-[552px]',
+            'absolute top-[140px] left-1/2 transform -translate-x-1/2 rounded-xl p-12 opacity-1 shadow-2xl max-w-9/10 backdrop-blur-[50px] min-w-[552px]',
             { 'w-108': size === 'sm' },
             { 'w-175': size === 'md' },
             { 'w-225': size === 'lg' },

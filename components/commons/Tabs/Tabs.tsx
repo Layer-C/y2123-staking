@@ -82,8 +82,9 @@ const Item = ({ children, value }: ItemProps) => {
       {({ isActive, onClick }) => (
         <div
           onClick={onClick}
-          className={classNames('flex items-center justify-center h-full px-5 py-2 cursor-pointer select-none', {
-            'bg-purplish-gray-1': isActive,
+          className={classNames('flex items-center justify-center h-full w-[120px] py-2 cursor-pointer select-none', {
+            'bg-purplish-gray-1 text-white': isActive,
+            'text-gray-1': !isActive,
           })}>
           {children}
         </div>

@@ -17,15 +17,33 @@ const fontFamily = {
   disketMono: 'Disket Mono',
 };
 
+const extendedSize = {
+  fit: 'fit-content',
+  full: '100%',
+  '2/3': `${(2 / 3) * 100}%`,
+  '3/4': `${(3 / 4) * 100}%`,
+  '9/10': `${(9 / 10) * 100}%`,
+  '9/16': `${(9 / 16) * 100}%`,
+  '15/16': `${(15 / 16) * 100}%`,
+};
+
 module.exports = {
   mode: 'jit',
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}', './hooks/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      colors: { ...palette },
+      colors: palette,
+      padding: extendedSize,
+      paddingTop: extendedSize,
+      paddingBottom: extendedSize,
+      paddingLeft: extendedSize,
+      paddingRight: extendedSize,
     },
     fontFamily,
+    backgroundImage: {
+      dashboard: "url('/dashboard-background.svg')",
+    },
   },
   variants: {
     extend: {},

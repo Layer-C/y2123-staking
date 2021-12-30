@@ -1,0 +1,1 @@
+export { ClanCard } from './ClanCard';

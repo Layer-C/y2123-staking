@@ -1,18 +1,13 @@
-import { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import classNames from 'classnames';
+import { useEffect } from 'react';
 import Blockies from 'react-blockies';
-import { FaTwitter, FaDiscord, FaShip } from 'react-icons/fa';
+import { FaDiscord, FaShip, FaTwitter } from 'react-icons/fa';
+import { Children, ClassName } from 'types';
+import { injected } from 'utils/wallet/connectors';
 import ConnectButton from './ConnectButton';
 import Container from './Container';
 import NextLink from './NextLink';
-import { injected } from 'utils/wallet/connectors';
-import { Children, ClassName } from 'types';
-import classNames from 'classnames';
-import { useVisibilityControl } from 'hooks/useVisibilityControl';
-import { Button, Modal } from 'components';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { MetaMaskConnectModal } from './MetaMaskConnectModal';
 
 type Props = Children &
   ClassName & {

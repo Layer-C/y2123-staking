@@ -20,6 +20,7 @@ export const Button = ({
   className,
   children,
   type = 'button',
+  disabled,
   ...restProps
 }: Props) => {
   const textColor = (() => {
@@ -85,13 +86,14 @@ export const Button = ({
       {...restProps}
       type={type}
       className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
-        'inline-flex justify-center items-center border border-transparent rounded',
+        'inline-flex justify-center items-center border border-transparent rounded select-none',
         textColor,
         backgroundColor,
         outline,
         fontWeight,
         padding,
         fontFamily,
+        { 'bg-gray-1 text-black cursor-default pointer-events-none': disabled },
         className
       )}>
       {children}
