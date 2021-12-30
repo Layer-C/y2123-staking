@@ -1,0 +1,1 @@
+export { useClans } from './useClans';

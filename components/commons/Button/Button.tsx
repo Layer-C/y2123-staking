@@ -1,16 +1,70 @@
 import { Children, ClassName } from 'types/common';
 import { HTMLButtonProps } from 'types/htmlElements';
 import { ClassNameUtils } from 'utils/className';
-import { ConditionalWrapper } from '../ConditionalWrapper';
+
+type Variant = 'link' | 'outline' | 'solid';
+
+const primaryBackgroundColor: { [key in Variant]: string } = {
+  link: 'bg-none',
+  outline: 'bg-none',
+  solid: 'bg-blue-1',
+};
+
+const secondaryBackgroundColor: { [key in Variant]: string } = {
+  link: 'bg-none',
+  outline: 'bg-none',
+  solid: 'bg-purplish-black-1',
+};
+
+const defaultBackgroundColor: { [key in Variant]: string } = {
+  link: 'bg-none',
+  outline: 'bg-none',
+  solid: 'bg-white',
+};
+
+const primaryBorderColor: { [key in Variant]: string } = {
+  link: 'border-none',
+  outline: 'border-blue-1',
+  solid: 'border-none',
+};
+
+const secondaryBorderColor: { [key in Variant]: string } = {
+  link: 'border-none',
+  outline: 'border-purplish-black-1',
+  solid: 'border-none',
+};
+
+const defaultBorderColor: { [key in Variant]: string } = {
+  link: 'border-none',
+  outline: 'border-white',
+  solid: 'border-none',
+};
+
+const primaryTextColor: { [key in Variant]: string } = {
+  link: 'text-blue-1',
+  outline: 'text-blue-1',
+  solid: 'text-white',
+};
+
+const secondaryTextColor: { [key in Variant]: string } = {
+  link: 'text-purplish-black-1',
+  outline: 'text-purplish-black-1',
+  solid: 'text-white',
+};
+
+const defaultTextColor: { [key in Variant]: string } = {
+  link: 'text-white',
+  outline: 'text-white',
+  solid: 'text-white',
+};
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = Children &
   ClassName &
   Pick<HTMLButtonProps, 'disabled' | 'type' | 'onClick'> & {
-    variant?: 'link' | 'outline' | 'solid' | 'link';
+    variant?: Variant;
     size?: 'xs' | 'sm' | 'md' | 'lg';
-    colorScheme?: 'primary' | 'secondary';
-    as?: 'button' | 'a' | React.ComponentType;
+    colorScheme?: 'primary' | 'secondary' | 'default';
   } & { [key in string]?: any };
 
 export const Button = ({
@@ -23,23 +77,36 @@ export const Button = ({
   disabled,
   ...restProps
 }: Props) => {
-  const textColor = (() => {
-    switch (variant) {
-      case 'link':
-        return 'text-blue-1';
+  const backgroundColor = (() => {
+    switch (colorScheme) {
+      case 'primary':
+        return primaryBackgroundColor[variant];
+      case 'secondary':
+        return secondaryBackgroundColor[variant];
       default:
-        return 'text-white';
+        return defaultBackgroundColor[variant];
     }
   })();
 
-  const backgroundColor = (() => {
-    switch (variant) {
-      case 'solid':
-        return 'bg-blue-1';
-      case 'link':
-        return 'bg-none';
+  const borderColor = (() => {
+    switch (colorScheme) {
+      case 'primary':
+        return primaryBorderColor[variant];
+      case 'secondary':
+        return secondaryBorderColor[variant];
       default:
-        return 'bg-blue-1';
+        return defaultBorderColor[variant];
+    }
+  })();
+
+  const textColor = (() => {
+    switch (colorScheme) {
+      case 'primary':
+        return primaryTextColor[variant];
+      case 'secondary':
+        return secondaryTextColor[variant];
+      default:
+        return defaultTextColor[variant];
     }
   })();
 
@@ -80,15 +147,14 @@ export const Button = ({
   })();
 
   return (
-    <ConditionalWrapper
-      active={true}
-      component={restProps.as || 'button'}
+    <button
       {...restProps}
       type={type}
       className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
-        'inline-flex justify-center items-center border border-transparent rounded select-none',
+        'inline-flex justify-center items-center border border-transparent rounded select-none text-base',
         textColor,
         backgroundColor,
+        borderColor,
         outline,
         fontWeight,
         padding,
@@ -97,6 +163,6 @@ export const Button = ({
         className
       )}>
       {children}
-    </ConditionalWrapper>
+    </button>
   );
 };

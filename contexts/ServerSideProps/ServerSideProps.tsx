@@ -2,7 +2,7 @@ import noop from 'lodash/noop';
 import React from 'react';
 import { Children } from 'types';
 
-export type ServerSidePropNames = 'stakeData';
+export type ServerSidePropNames = 'stakeData' | 'clans';
 
 export type ServerSidePropsState = Partial<Record<ServerSidePropNames, any>>;
 

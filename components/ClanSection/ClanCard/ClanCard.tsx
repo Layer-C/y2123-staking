@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Wallet from 'public/icons/account_balance_wallet.svg';
 import HollowCircle from 'public/icons/hollow-circle.svg';
 import { useWeb3React } from '@web3-react/core';
+import { StakeConfirmModal } from './StakeConfirmModal';
+import { useVisibilityControl } from 'hooks/useVisibilityControl';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -11,11 +13,15 @@ type Props = {
 };
 
 // eslint-disable-next-line no-empty-pattern
-export const ClanCard = ({ clan: { description, id, name, tokens, members, defaultAvatar } }: Props) => {
+export const ClanCard = ({ clan }: Props) => {
+  const { description, id, name, tokens, members, defaultAvatar } = clan;
   const { active, account } = useWeb3React();
+
+  const modalControl = useVisibilityControl();
 
   return (
     <div className='border border-solid border-gray-1'>
+      <StakeConfirmModal control={modalControl} clan={clan} />
       <AspectRatio ratio='1-1'>
         <div className='flex items-center justify-center w-full h-full'>
           <Image src={defaultAvatar} alt='' width='100%' height='100%' />
@@ -33,7 +39,7 @@ export const ClanCard = ({ clan: { description, id, name, tokens, members, defau
         </div>
         <div className='mt-4 text-xs text-gray-1'>{description}</div>
         <div className='my-4 border-t border-solid border-gray-1'></div>
-        <Button className='w-full' disabled={!active || !account}>
+        <Button className='w-full' disabled={!active || !account} onClick={modalControl.show}>
           Stake
         </Button>
       </div>

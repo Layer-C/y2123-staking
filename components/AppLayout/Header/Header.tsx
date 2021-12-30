@@ -35,7 +35,7 @@ export function Header({ title, children, className }: Props) {
 
   return (
     <div className={classNames('sticky top-0 z-40', className)}>
-      <header className='py-2 font-bold font-disketMono'>
+      <header className='h-[80px] flex items-center py-2 font-bold font-disketMono'>
         <Container>
           <div className='flex items-center justify-between'>
             <div className='w-0'>
@@ -76,7 +76,7 @@ export function Header({ title, children, className }: Props) {
                 </a>
 
                 {active && account ? (
-                  <span className='flex items-center px-5 py-1 space-x-2 rounded bg-purplish-black-1'>
+                  <span className='flex items-center h-[34px] px-5 py-1 space-x-2 rounded bg-purplish-black-1'>
                     <span>
                       <Blockies size={5} seed={account.toLowerCase()} className='rounded-full' />
                     </span>

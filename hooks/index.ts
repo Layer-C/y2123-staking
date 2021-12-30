@@ -7,3 +7,4 @@ export * from './usePagination';
 export * from './useStake';
 export * from './useServerSideProps';
 export * from './useScrollDisable';
+export * from './useNotification';

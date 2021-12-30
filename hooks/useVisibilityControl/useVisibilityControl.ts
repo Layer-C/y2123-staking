@@ -1,11 +1,5 @@
 import React from 'react';
-
-export type Control = {
-  show: () => void;
-  hide: () => void;
-  toggle: () => void;
-  visible: boolean;
-};
+import { VisibilityControl } from 'types';
 
 export type Props = {
   defaultVisible?: boolean;
@@ -39,5 +33,8 @@ export const useVisibilityControl = (props?: Props) => {
     });
   }, [onHide, onShow]);
 
-  return React.useMemo<Control>(() => ({ show, hide, visible: isActive, toggle }), [show, hide, isActive, toggle]);
+  return React.useMemo<VisibilityControl>(
+    () => ({ show, hide, visible: isActive, toggle }),
+    [show, hide, isActive, toggle]
+  );
 };

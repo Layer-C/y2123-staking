@@ -3,3 +3,4 @@ export * from './common';
 export * from './htmlElements';
 export * from './citizenScientist';
 export * from './clan';
+export * from './visibilityControl';

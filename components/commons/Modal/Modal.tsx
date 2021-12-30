@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { Portal } from 'components';
-import { useScrollDisable, VisibilityControl } from 'hooks';
+import { useScrollDisable } from 'hooks';
 import React from 'react';
-import { Children, ClassName } from 'types';
+import { Children, ClassName, VisibilityControl } from 'types';
 import { ClassNameUtils } from 'utils';
 
 const Title = ({
@@ -22,13 +22,19 @@ const Title = ({
   );
 };
 
+const Content = ({ children, className }: Children & ClassName) => {
+  return (
+    <div className={classNames('flex flex-col justify-center items-center text-center', className)}>{children}</div>
+  );
+};
+
 const Actions = ({
   children,
   className,
   ...restProps
 }: Children & ClassName & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
   return (
-    <div className={classNames('flex flex-col justify-center mt-8 w-[182px] mx-auto', className)} {...restProps}>
+    <div className={classNames('flex flex-col justify-center mt-8 w-[182px] mx-auto gap-4', className)} {...restProps}>
       {children}
     </div>
   );
@@ -42,7 +48,7 @@ export type Props = Partial<Children> &
     onHideByBackdropClick?: () => void;
   };
 
-export const Modal = ({ className, children, size = 'auto', control, onHideByBackdropClick, ...restProps }: Props) => {
+export const Modal = ({ className, children, size = 'md', control, onHideByBackdropClick, ...restProps }: Props) => {
   useScrollDisable(control.visible);
 
   const handleBackdropClick = () => {
@@ -62,9 +68,9 @@ export const Modal = ({ className, children, size = 'auto', control, onHideByBac
             background: 'linear-gradient(98.86deg, rgba(27, 29, 44, 0.5) 55.16%, rgba(63, 82, 208, 0.5) 99.64%)',
           }}
           className={ClassNameUtils.withTwReplaceable('top-', 'left-', 'transform', 'p-', 'rounded', 'w-')(
-            'absolute top-[140px] left-1/2 transform -translate-x-1/2 rounded-xl p-12 opacity-1 shadow-2xl max-w-9/10 backdrop-blur-[50px] min-w-[552px]',
+            'absolute top-[140px] left-1/2 transform -translate-x-1/2 rounded-xl py-12 px-[94px] opacity-1 shadow-2xl max-w-9/10 backdrop-blur-[50px] min-w-[552px]',
             { 'w-108': size === 'sm' },
-            { 'w-175': size === 'md' },
+            { 'w-[552px]': size === 'md' },
             { 'w-225': size === 'lg' },
             { 'w-320': size === 'xl' },
             className
@@ -77,5 +83,6 @@ export const Modal = ({ className, children, size = 'auto', control, onHideByBac
   );
 };
 
+Modal.Content = Content;
 Modal.Actions = Actions;
 Modal.Title = Title;

@@ -1,5 +1,5 @@
 import { Button, Modal } from 'components';
-import { VisibilityControl } from 'hooks';
+import { VisibilityControl } from 'types';
 import Image from 'next/image';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -19,9 +19,9 @@ export const MetaMaskConnectModal = ({ control }: Props) => {
         </div>
       </div>
       <Modal.Actions>
-        <Button target='_blank' as='a' href='https://metamask.io/' onClick={control.hide}>
-          Download
-        </Button>
+        <a href='https://metamask.io/' target='_blank' rel='noreferrer'>
+          <Button onClick={control.hide}>Download</Button>
+        </a>
       </Modal.Actions>
     </Modal>
   );
