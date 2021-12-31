@@ -1,21 +1,11 @@
 import { StakeApis } from 'apis/stake';
-import {
-  AppLayout,
-  StakingSection,
-  ClanSection,
-  LeaderBoardSection,
-  Button,
-  Input,
-  ClaimDetailsModal,
-} from 'components';
-import { useServerSideProps } from 'hooks/useServerSideProps';
-import type { InferGetServerSidePropsType } from 'next';
-import { FaCog } from 'react-icons/fa';
-import Xmas from 'public/icons/xmas.svg';
 import classNames from 'classnames';
-import { ClassNameUtils, NumberUtils } from 'utils';
-import React from 'react';
+import { AppLayout, Button, ClaimDetailsModal, Input } from 'components';
+import { useServerSideProps } from 'hooks/useServerSideProps';
 import { useVisibilityControl } from 'hooks/useVisibilityControl';
+import type { InferGetServerSidePropsType } from 'next';
+import React from 'react';
+import { ClassNameUtils, NumberUtils } from 'utils';
 
 export async function getServerSideProps() {
   const data = await StakeApis.get();
@@ -42,7 +32,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent>
         <AppLayout.Section label='CLAIMING OF TOKENS' className='flex flex-col items-center'>
-          <div className='w-[336px] mx-auto'>
+          <div className='max-w-[336px] w-full mx-auto'>
             <div
               style={{
                 background:

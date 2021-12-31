@@ -78,9 +78,9 @@ const Stake = ({}: Props) => {
           </div>
           <CsSelectSection label='PLEASE SELECT Citizen scientist to stake' cs={unstakedCs} />
           <div className='fixed bottom-0 left-0 w-full h-20 bg-blue-1'>
-            <div className='w-[740px] h-full mx-auto flex items-center justify-between'>
+            <div className='max-w-[740px] h-full mx-auto flex items-center justify-between px-6'>
               <div className='text-base font-bold text-white font-disketMono'>
-                {selectedCs?.length} scientists selected
+                {selectedCs?.length || 0} scientists selected
               </div>
               <Button variant='outline' colorScheme='default' disabled={!selectedCs?.length} type='submit'>
                 Stake Now

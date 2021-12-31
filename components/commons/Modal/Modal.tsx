@@ -34,7 +34,9 @@ const Actions = ({
   ...restProps
 }: Children & ClassName & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
   return (
-    <div className={classNames('flex flex-col justify-center mt-8 w-[182px] mx-auto gap-4', className)} {...restProps}>
+    <div
+      className={classNames('flex flex-col justify-center mt-8 w-[182px] max-w-full mx-auto gap-4', className)}
+      {...restProps}>
       {children}
     </div>
   );
@@ -68,7 +70,8 @@ export const Modal = ({ className, children, size = 'md', control, onHideByBackd
             background: 'linear-gradient(98.86deg, rgba(27, 29, 44, 0.5) 55.16%, rgba(63, 82, 208, 0.5) 99.64%)',
           }}
           className={ClassNameUtils.withTwReplaceable('top-', 'left-', 'transform', 'p-', 'rounded', 'w-')(
-            'absolute top-[140px] left-1/2 transform -translate-x-1/2 rounded-xl py-12 px-[94px] opacity-1 shadow-2xl max-w-9/10 backdrop-blur-[50px] min-w-[552px]',
+            'absolute top-[140px] left-1/2 transform -translate-x-1/2 rounded-xl py-12 px-[94px] opacity-1 shadow-2xl max-w-[90vw] backdrop-blur-[50px]',
+            'sm:px-5',
             { 'w-108': size === 'sm' },
             { 'w-[552px]': size === 'md' },
             { 'w-225': size === 'lg' },

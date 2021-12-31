@@ -46,7 +46,7 @@ export function Header({ title, children, className }: Props) {
               </NextLink>
             </div>
 
-            <div className='font-bold text-white uppercase text-md'>{title}</div>
+            <div className='font-bold text-white uppercase text-md sm:hidden'>{title}</div>
 
             <div className='flex justify-end w-0'>
               <div className='flex items-center ml-2 space-x-2 sm:ml-0'>

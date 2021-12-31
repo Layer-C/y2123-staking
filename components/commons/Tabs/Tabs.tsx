@@ -52,13 +52,20 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
         control.show();
       }}>
       <div className={classNames('border-b border-solid flex justify-between items-center border-gray-1', className)}>
-        <div className={ClassNameUtils.withTwReplaceable('px-')('flex items-center flex-shrink-0')}>
+        <div className={ClassNameUtils.withTwReplaceable('px-')('flex items-center flex-shrink-0 sm:hidden')}>
           {tabs.map(({ label, value }) => (
             <Item key={value} value={value}>
               {label}
             </Item>
           ))}
         </div>
+        <select className='hidden h-full px-5 py-2 text-white sm:block bg-purplish-gray-1' onChange={setValue}>
+          {tabs.map(({ label, value }) => (
+            <option value={value} key={value}>
+              {label}
+            </option>
+          ))}
+        </select>
         {!!collapsible && (
           <div className='p-2 cursor-pointer select-none'>
             {control.visible ? <FaChevronUp onClick={control.hide} /> : <FaChevronDown onClick={control.show} />}

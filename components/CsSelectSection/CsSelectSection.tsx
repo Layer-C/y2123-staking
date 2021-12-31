@@ -14,7 +14,7 @@ export const CsSelectSection = ({ label, cs }: Props) => {
   return (
     <AppLayout.Section className='mt-11' label={label}>
       <Form.CheckboxGroup name='selectedCs'>
-        <div className='grid grid-cols-6 gap-3'>
+        <div className='grid grid-cols-6 gap-3 sm:grid-cols-3'>
           {cs.slice((page - 1) * 18, page * 18).map((cs: CitizenScientist) => (
             <CsOption data={cs} key={cs.id} />
           ))}

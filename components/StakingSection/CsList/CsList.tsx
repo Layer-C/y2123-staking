@@ -14,7 +14,7 @@ export const CsList = ({ items }: Props) => {
 
   return (
     <div className='mt-3'>
-      <div className='grid grid-cols-6'>
+      <div className='grid grid-cols-6 gap-x-3 gap-y-6 sm:grid-cols-3'>
         {items.slice((page - 1) * 6, page * 6).map(({ id, name, staked }) => (
           <div key={id}>
             <Image src='/citizen-scientist.png' alt={process.env.NEXT_PUBLIC_NFT_NAME} width={100} height={120} />
@@ -26,9 +26,6 @@ export const CsList = ({ items }: Props) => {
         className='mx-auto w-[fit-content] mt-11'
         page={page}
         onChange={setPage}
-        pageEndpointRange={5}
-        pageRange={5}
-        perPage={6}
         totalRecordCount={items.length}
       />
     </div>

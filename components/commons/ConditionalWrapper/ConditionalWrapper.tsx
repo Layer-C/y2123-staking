@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 type Props = {
   active: boolean;
-  component: 'div' | 'button' | 'a' | React.ComponentType;
+  component: any;
   children: ReactNode;
   [key: string]: any;
 };

@@ -12,9 +12,9 @@ export const ClaimDetailsModal = ({ control }: Props) => {
 
   return (
     <Modal control={control}>
-      <Modal.Title>UNSTAKING FAILED</Modal.Title>
+      <Modal.Title>CLAIM DETAILS</Modal.Title>
       <Modal.Content>
-        <div className='w-[364px]'>
+        <div className='max-w-[364px] w-full'>
           <div className='flex justify-between'>
             <div>Claimable</div>
             <div className='font-bold'>21.23 $OXGN</div>

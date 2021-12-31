@@ -5,7 +5,7 @@ import { ClassName } from 'types/common';
 
 type Props = UsePaginationProps & ClassName;
 
-export const Pagination = ({ className, pageEndpointRange = 5, pageRange = 5, perPage = 6, ...restProps }: Props) => {
+export const Pagination = ({ className, pageEndpointRange = 4, pageRange = 3, perPage = 6, ...restProps }: Props) => {
   const { items } = usePagination({ ...restProps, pageEndpointRange, pageRange, perPage });
 
   const renderPaginationItem = ({ type, disabled, onClick, page, selected }: PaginationItem, index: number) => {

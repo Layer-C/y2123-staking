@@ -8,3 +8,5 @@ export * from './Form';
 export * from './fields';
 export * from './Notification';
 export * from './Divider';
+export * from './Carousel';
+export * from './ConditionalWrapper';

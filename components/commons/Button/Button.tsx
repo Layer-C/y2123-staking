@@ -1,3 +1,4 @@
+import React from 'react';
 import { Children, ClassName } from 'types/common';
 import { HTMLButtonProps } from 'types/htmlElements';
 import { ClassNameUtils } from 'utils/className';
@@ -67,102 +68,109 @@ type Props = Children &
     colorScheme?: 'primary' | 'secondary' | 'default';
   } & { [key in string]?: any };
 
-export const Button = ({
-  variant = 'solid',
-  size = 'md',
-  colorScheme = 'primary',
-  className,
-  children,
-  type = 'button',
-  disabled,
-  ...restProps
-}: Props) => {
-  const backgroundColor = (() => {
-    switch (colorScheme) {
-      case 'primary':
-        return primaryBackgroundColor[variant];
-      case 'secondary':
-        return secondaryBackgroundColor[variant];
-      default:
-        return defaultBackgroundColor[variant];
-    }
-  })();
+export const Button = React.forwardRef(
+  (
+    {
+      variant = 'solid',
+      size = 'md',
+      colorScheme = 'primary',
+      className,
+      children,
+      type = 'button',
+      disabled,
+      ...restProps
+    }: Props,
+    ref: React.ForwardedRef<HTMLElement>
+  ) => {
+    const backgroundColor = (() => {
+      switch (colorScheme) {
+        case 'primary':
+          return primaryBackgroundColor[variant];
+        case 'secondary':
+          return secondaryBackgroundColor[variant];
+        default:
+          return defaultBackgroundColor[variant];
+      }
+    })();
 
-  const borderColor = (() => {
-    switch (colorScheme) {
-      case 'primary':
-        return primaryBorderColor[variant];
-      case 'secondary':
-        return secondaryBorderColor[variant];
-      default:
-        return defaultBorderColor[variant];
-    }
-  })();
+    const borderColor = (() => {
+      switch (colorScheme) {
+        case 'primary':
+          return primaryBorderColor[variant];
+        case 'secondary':
+          return secondaryBorderColor[variant];
+        default:
+          return defaultBorderColor[variant];
+      }
+    })();
 
-  const textColor = (() => {
-    switch (colorScheme) {
-      case 'primary':
-        return primaryTextColor[variant];
-      case 'secondary':
-        return secondaryTextColor[variant];
-      default:
-        return defaultTextColor[variant];
-    }
-  })();
+    const textColor = (() => {
+      switch (colorScheme) {
+        case 'primary':
+          return primaryTextColor[variant];
+        case 'secondary':
+          return secondaryTextColor[variant];
+        default:
+          return defaultTextColor[variant];
+      }
+    })();
 
-  const outline = (() => {
-    switch (variant) {
-      case 'link':
-        return 'bg-none';
-      default:
-        return 'shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2';
-    }
-  })();
+    const outline = (() => {
+      switch (variant) {
+        case 'link':
+          return 'bg-none';
+        default:
+          return 'shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2';
+      }
+    })();
 
-  const fontWeight = (() => {
-    switch (size) {
-      case 'sm':
-        return 'text-sm';
-      default:
-        return 'text-md';
-    }
-  })();
+    const fontWeight = (() => {
+      switch (size) {
+        case 'sm':
+          return 'text-sm';
+        default:
+          return 'text-md';
+      }
+    })();
 
-  const padding = (() => {
-    switch (variant) {
-      case 'link':
-        return 'p-0';
-      default:
-        return 'px-5 py-2';
-    }
-  })();
+    const padding = (() => {
+      switch (variant) {
+        case 'link':
+          return 'p-0';
+        default:
+          return 'px-5 py-2';
+      }
+    })();
 
-  const fontFamily = (() => {
-    switch (variant) {
-      case 'link':
-        return '';
-      default:
-        return 'font-disketMono font-bold';
-    }
-  })();
+    const fontFamily = (() => {
+      switch (variant) {
+        case 'link':
+          return '';
+        default:
+          return 'font-disketMono font-bold';
+      }
+    })();
 
-  return (
-    <button
-      {...restProps}
-      type={type}
-      className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
-        'inline-flex justify-center items-center border rounded select-none text-base',
-        textColor,
-        backgroundColor,
-        borderColor,
-        outline,
-        fontWeight,
-        padding,
-        fontFamily,
-        { 'bg-gray-1 text-black cursor-default pointer-events-none': disabled },
-        className
-      )}>
-      {children}
-    </button>
-  );
-};
+    return (
+      <button
+        {...restProps}
+        type={type}
+        className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
+          'inline-flex justify-center items-center border rounded select-none text-base',
+          textColor,
+          backgroundColor,
+          borderColor,
+          outline,
+          fontWeight,
+          padding,
+          fontFamily,
+          { 'bg-gray-1 text-black cursor-default pointer-events-none': disabled },
+          className
+        )}>
+        {children}
+      </button>
+    );
+  }
+);
+
+Button.displayName = 'Button';

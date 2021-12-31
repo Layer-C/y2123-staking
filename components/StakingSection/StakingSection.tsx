@@ -20,22 +20,8 @@ export const StakingSection = ({}: Props) => {
 
   return (
     <AppLayout.Section label='staking'>
-      <div className='flex justify-between'>
-        <div>
-          <div className='text-gray-1'>Total Citizen Scientist Owned</div>
-          <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(allCs.length)}</div>
-          <div className='flex items-center gap-10'>
-            <div>
-              <div className='text-gray-1'>Total $OXGN Earned Ever</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(totalTokensEarned)}</div>
-            </div>
-            <div>
-              <div className='text-gray-1'>$OXGN Earned Since Last Claim</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(lastTokensEarned)}</div>
-            </div>
-          </div>
-        </div>
-        <div className='w-[120px] h-[120px] flex flex-col items-center justify-center border border-solid border-gray-1'>
+      <div className='flex flex-row-reverse justify-between gap-5 sm:flex-col'>
+        <div className='w-[120px] h-[120px] flex flex-col items-center justify-center border border-solid border-gray-1 sm:mx-auto'>
           {clan ? (
             <Link href='#clans' passHref>
               <div className='flex items-center justify-center w-full h-full cursor-pointer'>
@@ -52,6 +38,20 @@ export const StakingSection = ({}: Props) => {
             </>
           )}
         </div>
+        <div>
+          <div className='text-gray-1'>Total Citizen Scientist Owned</div>
+          <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(allCs.length)}</div>
+          <div className='flex items-center gap-10 sm:flex-col sm:items-start sm:gap-3'>
+            <div>
+              <div className='text-gray-1'>Total $OXGN Earned Ever</div>
+              <div className='text-xl font-disketMono'>{NumberUtils.pad(totalTokensEarned)}</div>
+            </div>
+            <div>
+              <div className='text-gray-1'>$OXGN Earned Since Last Claim</div>
+              <div className='text-xl font-disketMono'>{NumberUtils.pad(lastTokensEarned)}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div
@@ -67,11 +67,20 @@ export const StakingSection = ({}: Props) => {
           <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
         </div>
         {active && account && (
+          <div className='sm:hidden'>
+            <Link href='/dashboard/claim' passHref>
+              <Button disabled={claimableTokens === 0}>CLAIM TOKEN</Button>
+            </Link>
+          </div>
+        )}
+      </div>
+      {active && account && (
+        <div className='justify-center hidden mt-5 sm:flex'>
           <Link href='/dashboard/claim' passHref>
             <Button disabled={claimableTokens === 0}>CLAIM TOKEN</Button>
           </Link>
-        )}
-      </div>
+        </div>
+      )}
 
       <Tabs
         className='mt-10'
@@ -112,7 +121,7 @@ export const StakingSection = ({}: Props) => {
 
       {!allCs.length && (
         <div className='flex flex-col items-center mt-5'>
-          <div>No Citizen Scientist Owned. Purchase now to start the game.</div>
+          <div className='text-center'>No Citizen Scientist Owned. Purchase now to start the game.</div>
           <Button className='mt-4 uppercase'>BUY NOW</Button>
         </div>
       )}
