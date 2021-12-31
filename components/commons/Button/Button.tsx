@@ -66,9 +66,9 @@ type Props = Children &
     variant?: Variant;
     size?: 'xs' | 'sm' | 'md' | 'lg';
     colorScheme?: 'primary' | 'secondary' | 'default';
-  } & { [key in string]?: any };
+  };
 
-export const Button = React.forwardRef(
+export const Button = React.forwardRef<HTMLElement, Props>(
   (
     {
       variant = 'solid',
@@ -79,8 +79,8 @@ export const Button = React.forwardRef(
       type = 'button',
       disabled,
       ...restProps
-    }: Props,
-    ref: React.ForwardedRef<HTMLElement>
+    },
+    ref
   ) => {
     const backgroundColor = (() => {
       switch (colorScheme) {

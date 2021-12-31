@@ -32,9 +32,11 @@ export const StakingSection = ({}: Props) => {
             <>
               <div className='box-content w-1 h-1 border-[10px] border-solid rounded-full border-gray-2 mb-2'></div>
               <div className='text-gray-1'>No Clan</div>
-              <Button variant='link' size='sm' as='a' href='#clans'>
-                Stake Now
-              </Button>
+              <Link href='#clans' passHref>
+                <Button variant='link' size='sm'>
+                  Stake Now
+                </Button>
+              </Link>
             </>
           )}
         </div>
