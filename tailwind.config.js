@@ -33,7 +33,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      colors: palette,
+      colors: { ...palette, error: palette['red-1'] },
       padding: extendedSize,
       paddingTop: extendedSize,
       paddingBottom: extendedSize,

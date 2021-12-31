@@ -151,7 +151,7 @@ export const Button = ({
       {...restProps}
       type={type}
       className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
-        'inline-flex justify-center items-center border border-transparent rounded select-none text-base',
+        'inline-flex justify-center items-center border rounded select-none text-base',
         textColor,
         backgroundColor,
         borderColor,

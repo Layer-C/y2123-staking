@@ -18,7 +18,7 @@ const get = () => {
           },
     totalTokensEarned: 50,
     lastTokensEarned: 50,
-    claimableTokens: 10,
+    claimableTokens: 11,
     unstakedCs: mockCs.filter(({ staked }) => !staked),
     stakedCs: mockCs.filter(({ staked }) => staked),
     allCs: mockCs,

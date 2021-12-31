@@ -7,3 +7,4 @@ export * from './AspectRatio';
 export * from './Form';
 export * from './fields';
 export * from './Notification';
+export * from './Divider';

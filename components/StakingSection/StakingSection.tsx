@@ -66,7 +66,11 @@ export const StakingSection = ({}: Props) => {
           <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimableTokens)}</div>
           <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
         </div>
-        {active && account && <Button disabled={claimableTokens === 0}>CLAIM TOKEN</Button>}
+        {active && account && (
+          <Link href='/dashboard/claim' passHref>
+            <Button disabled={claimableTokens === 0}>CLAIM TOKEN</Button>
+          </Link>
+        )}
       </div>
 
       <Tabs

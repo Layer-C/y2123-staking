@@ -5,5 +5,6 @@ export * from './CsSelectSection';
 export * from './UnstakeErrorModal';
 export * from './UnstakeSuccessModal';
 export * from './LeaderBoardSection';
+export * from './ClaimDetailsModal';
 
 export * from './commons';
