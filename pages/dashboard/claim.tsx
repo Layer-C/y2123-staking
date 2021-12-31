@@ -79,12 +79,14 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                 ))}
               </div>
             )}
-            {!!error && <div className='mt-2 text-error'>Please enter amount not exceeding 21 $OXGN</div>}
+            {!!error && (
+              <div className='mt-2 text-error'>Please enter amount not exceeding {claimableTokens} $OXGN</div>
+            )}
           </div>
           <Button
             className='w-[182px] mt-10'
             onClick={() => {
-              if (!amount) setError(true);
+              if (+amount > claimableTokens) setError(true);
               else {
                 modalControl.show();
               }
