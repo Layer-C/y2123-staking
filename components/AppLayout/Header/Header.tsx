@@ -41,7 +41,7 @@ export function Header({ title, children, className }: Props) {
             <div className='w-0'>
               <NextLink href='/' className='font-bold text-white text-md'>
                 <span className='flex items-center'>
-                  <span className='hidden ml-2 sm:block'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
+                  <span className='ml-2'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
                 </span>
               </NextLink>
             </div>
