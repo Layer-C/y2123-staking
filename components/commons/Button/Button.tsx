@@ -155,7 +155,7 @@ export const Button = React.forwardRef(
       <button
         {...restProps}
         type={type}
-        className={ClassNameUtils.withTwReplaceable('px-', 'py-')(
+        className={ClassNameUtils.withTwReplaceable('px-', 'py-', 'bg-')(
           'inline-flex justify-center items-center border rounded select-none text-base',
           textColor,
           backgroundColor,
