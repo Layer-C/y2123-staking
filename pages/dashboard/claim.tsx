@@ -62,7 +62,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
               onChange={e => {
                 setError(false);
                 setAmount(e.target.value);
-                setHasEnterAmount(true);
+                setHasEnterAmount(!!e.target.value);
               }}
             />
             {!hasEnteredAmount && (
