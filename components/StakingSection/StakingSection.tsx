@@ -42,8 +42,13 @@ export const StakingSection = ({}: Props) => {
         </div>
         <div>
           <div className='text-gray-1'>Total Citizen Scientist Owned</div>
-          <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(allCs.length)}</div>
-          <div className='flex items-center gap-10 sm:flex-col sm:items-start sm:gap-3'>
+          <div className='grid items-center w-full grid-cols-2 gap-10 sm:gap-3'>
+            <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(allCs.length)}</div>
+            <div>
+              <Button>Buy More</Button>
+            </div>
+          </div>
+          <div className='grid items-center grid-cols-2 gap-10 sm:grid-cols-1 sm:items-start sm:gap-3'>
             <div>
               <div className='text-gray-1'>Total $OXGN Earned Ever</div>
               <div className='text-xl font-disketMono'>{NumberUtils.pad(totalTokensEarned)}</div>

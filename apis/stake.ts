@@ -21,7 +21,7 @@ const get = () => {
     claimableTokens: 11,
     unstakedCs: mockCs.filter(({ staked }) => !staked),
     stakedCs: mockCs.filter(({ staked }) => staked),
-    allCs: [],
+    allCs: mockCs,
   };
 };
 

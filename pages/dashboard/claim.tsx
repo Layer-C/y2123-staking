@@ -4,7 +4,9 @@ import { AppLayout, Button, ClaimDetailsModal, Input } from 'components';
 import { useServerSideProps } from 'hooks/useServerSideProps';
 import { useVisibilityControl } from 'hooks/useVisibilityControl';
 import type { InferGetServerSidePropsType } from 'next';
+import Link from 'next/link';
 import React from 'react';
+import { FaLessThan } from 'react-icons/fa';
 import { ClassNameUtils, NumberUtils } from 'utils';
 
 export async function getServerSideProps() {
@@ -31,6 +33,11 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
       <ClaimDetailsModal control={modalControl} />
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent>
+        <Link href='/dashboard' passHref>
+          <Button colorScheme='secondary' className='!font-normal mb-[37px]'>
+            <FaLessThan className='mr-2 !font-normal' /> Back
+          </Button>
+        </Link>
         <AppLayout.Section label='CLAIMING OF TOKENS' className='flex flex-col items-center'>
           <div className='max-w-[336px] w-full mx-auto'>
             <div
@@ -70,9 +77,12 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                     }}>
                     <div
                       className={ClassNameUtils.withTwReplaceable('bg')('h-2 bg-gray-1', {
-                        'bg-blue-1': shortcut === index,
+                        'bg-blue-1': Number(shortcut) >= index,
                       })}></div>
-                    <div className={classNames('mt-1 text-center text-gray-1', { 'text-white': shortcut === index })}>
+                    <div
+                      className={classNames('mt-1 text-center text-gray-1', {
+                        'text-white': Number(shortcut) >= index,
+                      })}>
                       {25 * (index + 1)}%
                     </div>
                   </div>
