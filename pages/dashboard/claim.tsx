@@ -63,6 +63,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                 setError(false);
                 setAmount(e.target.value);
                 setHasEnterAmount(!!e.target.value);
+                setShortcut(undefined);
               }}
             />
             {!hasEnteredAmount && (
