@@ -16,8 +16,8 @@ export default function Layout({ children, pageTitle }: Props) {
 
   React.useEffect(() => {
     if (active) {
-      if (chainId && chainId.toString() !== process.env.NEXT_PUBLIC_NETWORK_ID) {
-        setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
+      if (chainId && chainId.toString() !== process.env.CHAIN_ID) {
+        setErrMsg(`Change the network to ${process.env.NETWORK_NAME}.`);
       } else {
         setErrMsg('');
       }

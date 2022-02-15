@@ -60,14 +60,14 @@ export default function Minting() {
   async function claimNFTs() {
     if (active && account) {
       setErrMsg(''); // reset error message
-      const cost = process.env.NEXT_PUBLIC_DISPLAY_COST;
+      const cost = process.env.DISPLAY_COST;
       const totalCost = (Number(cost) * mintAmount).toString();
       setMessage('');
       setIsPending(true);
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, ABI.abi, signer);
+        const contract = new ethers.Contract(process.env.Y2123_CONTRACT!, ABI.abi, signer);
 
         let proof: string[] = [];
 
@@ -111,7 +111,7 @@ export default function Minting() {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, ABI.abi, signer);
+        const contract = new ethers.Contract(process.env.Y2123_CONTRACT!, ABI.abi, signer);
 
         let proof: string[] = [];
         const list = [
@@ -166,7 +166,7 @@ export default function Minting() {
 
   async function fetchTotalSupply() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, ABI.abi, provider);
+    const contract = new ethers.Contract(process.env.Y2123_CONTRACT!, ABI.abi, provider);
     const totalSupply = await contract.totalSupply();
     setTotalSupply(totalSupply.toString());
 
@@ -187,7 +187,7 @@ export default function Minting() {
   }
 
   useEffect(() => {
-    if (active && chainId && chainId.toString() === process.env.NEXT_PUBLIC_NETWORK_ID) {
+    if (active && chainId && chainId.toString() === process.env.CHAIN_ID) {
       fetchTotalSupply();
     } else {
       setTotalSupply('?');
@@ -202,7 +202,7 @@ export default function Minting() {
           {totalSupply} / {process.env.NEXT_PUBLIC_MAX_SUPPLY}
         </div>
         <div className='text-center'>
-          <p className='text-xl'>{`${process.env.NEXT_PUBLIC_DISPLAY_COST} ${process.env.NEXT_PUBLIC_CHAIN} per 1 NFT`}</p>
+          <p className='text-xl'>{`${process.env.DISPLAY_COST} ${process.env.CHAIN} per 1 NFT`}</p>
           <p>(excluding gas fees)</p>
         </div>
         <div className='flex items-center justify-center space-x-4'>

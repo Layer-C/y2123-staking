@@ -67,7 +67,7 @@ export function Header({ title, children, className }: Props) {
                   <FaDiscord />
                 </a>
                 <a
-                  href={process.env.NEXT_PUBLIC_OPENSEA_URL}
+                  href={process.env.OPENSEA_URL}
                   aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on OpenSea`}
                   rel='noopener noreferrer'
                   target='_blank'
