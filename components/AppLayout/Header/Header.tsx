@@ -41,7 +41,7 @@ export function Header({ title, children, className }: Props) {
             <div className='w-0'>
               <NextLink href='/' className='font-bold text-white text-md'>
                 <span className='flex items-center'>
-                  <span className='ml-2'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
+                  <span className='ml-2'>{process.env.NFT_NAME}</span>
                 </span>
               </NextLink>
             </div>
@@ -51,16 +51,16 @@ export function Header({ title, children, className }: Props) {
             <div className='flex justify-end w-0'>
               <div className='flex items-center ml-2 space-x-2 sm:ml-0'>
                 <a
-                  href={process.env.NEXT_PUBLIC_TWITTER_URL}
-                  aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on Twitter`}
+                  href={process.env.TWITTER_URL}
+                  aria-label={`${process.env.NFT_NAME} on Twitter`}
                   rel='noopener noreferrer'
                   target='_blank'
                   className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
                   <FaTwitter />
                 </a>
                 <a
-                  href={process.env.NEXT_PUBLIC_DISCORD_URL}
-                  aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on Discord`}
+                  href={process.env.DISCORD_URL}
+                  aria-label={`${process.env.NFT_NAME} on Discord`}
                   rel='noopener noreferrer'
                   target='_blank'
                   className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
@@ -68,7 +68,7 @@ export function Header({ title, children, className }: Props) {
                 </a>
                 <a
                   href={process.env.OPENSEA_URL}
-                  aria-label={`${process.env.NEXT_PUBLIC_NFT_NAME} on OpenSea`}
+                  aria-label={`${process.env.NFT_NAME} on OpenSea`}
                   rel='noopener noreferrer'
                   target='_blank'
                   className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>

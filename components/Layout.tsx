@@ -30,13 +30,7 @@ export default function Layout({ children, pageTitle }: Props) {
     <>
       <Meta pageTitle={pageTitle} />
       <div className='z-0'>
-        <Image
-          alt={process.env.NEXT_PUBLIC_NFT_NAME}
-          src='/assets/bg.jpg'
-          layout='fill'
-          objectFit='cover'
-          quality={100}
-        />
+        <Image alt={process.env.NFT_NAME} src='/assets/bg.jpg' layout='fill' objectFit='cover' quality={100} />
       </div>
       <AppLayout.Header>
         {errMsg && <div className='p-4 text-center text-pink-900 bg-red-400'>{errMsg}</div>}

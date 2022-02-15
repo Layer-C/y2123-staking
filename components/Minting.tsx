@@ -85,7 +85,7 @@ export default function Minting() {
         await transaction.wait();
         setIsMinting(false);
         setMessage(
-          `Yay! ${mintAmount} ${process.env.NEXT_PUBLIC_NFT_SYMBOL} successfully sent to ${account.substring(
+          `Yay! ${mintAmount} ${process.env.NFT_SYMBOL} successfully sent to ${account.substring(
             0,
             6
           )}...${account.substring(account.length - 4)}`
@@ -134,7 +134,7 @@ export default function Minting() {
         await transaction.wait();
         setIsMinting(false);
         setMessage(
-          `Yay! ${mintAmount} ${process.env.NEXT_PUBLIC_NFT_SYMBOL} successfully sent to ${account.substring(
+          `Yay! ${mintAmount} ${process.env.NFT_SYMBOL} successfully sent to ${account.substring(
             0,
             6
           )}...${account.substring(account.length - 4)}`
@@ -199,7 +199,7 @@ export default function Minting() {
       <div className='mt-4 space-y-4 bg-white opacity-20 backdrop-blur-sm'></div>
       <div className='p-8 space-y-4 rounded'>
         <div className='text-3xl font-bold text-center'>
-          {totalSupply} / {process.env.NEXT_PUBLIC_MAX_SUPPLY}
+          {totalSupply} / {process.env.MAX_SUPPLY}
         </div>
         <div className='text-center'>
           <p className='text-xl'>{`${process.env.DISPLAY_COST} ${process.env.CHAIN} per 1 NFT`}</p>
