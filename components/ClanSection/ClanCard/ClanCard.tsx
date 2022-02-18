@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
+import { ClanApis } from 'apis/clan';
 import { AspectRatio, Button, UnstakeErrorModal } from 'components';
 import { useStake } from 'hooks';
 import { useVisibilityControl } from 'hooks/useVisibilityControl';
@@ -7,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Wallet from 'public/icons/account_balance_wallet.svg';
 import HollowCircle from 'public/icons/hollow-circle.svg';
+import { useEffect } from 'react';
 import { Clan } from 'types';
 import { StakeConfirmModal } from './StakeConfirmModal';
 
@@ -36,6 +38,12 @@ export const ClanCard = ({ clan }: Props) => {
 
     unstakeErrorModalControl.show();
   };
+
+  useEffect(() => {
+    ClanApis.getById(clan.id).then(res => {
+      console.log(res);
+    });
+  }, [clan]);
 
   return (
     <div className='border border-solid border-gray-1'>

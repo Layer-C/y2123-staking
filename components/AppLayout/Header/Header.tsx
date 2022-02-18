@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
+import { AccountApis } from 'apis/account';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import Blockies from 'react-blockies';
@@ -32,6 +33,10 @@ export function Header({ title, children, className }: Props) {
       }
     }
   }, [activate, setError]);
+
+  useEffect(() => {
+    AccountApis.get(account).then(res => console.log(res));
+  }, [account, active]);
 
   return (
     <div className={classNames('sticky top-0 z-40', className)}>
