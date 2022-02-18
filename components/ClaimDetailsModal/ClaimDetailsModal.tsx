@@ -2,12 +2,15 @@ import { Button, Divider, Modal } from 'components';
 import { VisibilityControlProps } from 'types';
 import Link from 'next/link';
 import { useNotification } from 'hooks';
+import { useWeb3React } from '@web3-react/core';
+import { ClaimApis } from 'apis/claim';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Props = VisibilityControlProps & {};
+type Props = VisibilityControlProps & { donateAmount: string };
 
 // eslint-disable-next-line no-empty-pattern
-export const ClaimDetailsModal = ({ control }: Props) => {
+export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
+  const { account } = useWeb3React();
   const notification = useNotification();
 
   return (
@@ -42,7 +45,12 @@ export const ClaimDetailsModal = ({ control }: Props) => {
       <Modal.Actions>
         <Link href='/dashboard' passHref>
           <Button
-            onClick={() => {
+            onClick={async () => {
+              if (account != null) {
+                const res = await ClaimApis.claim(account, donateAmount);
+                console.log(res);
+              }
+
               notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
               control.hide();
             }}>
