@@ -6,6 +6,8 @@ import { NumberUtils } from 'utils/number';
 import { CsList } from './CsList';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AccountApis } from 'apis/account';
+import { useEffect, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
@@ -17,6 +19,12 @@ export const StakingSection = ({}: Props) => {
   } = useStake();
 
   const { active, account } = useWeb3React();
+
+  const [accountData, setAccountData] = useState<any>({});
+
+  useEffect(() => {
+    AccountApis.get(account).then(res => res && setAccountData(res));
+  }, [account, active]);
 
   return (
     <AppLayout.Section label='staking'>
@@ -43,7 +51,9 @@ export const StakingSection = ({}: Props) => {
         <div>
           <div className='text-gray-1'>Total Citizen Scientist Owned</div>
           <div className='grid items-center w-full grid-cols-2 gap-10 sm:gap-3'>
-            <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(allCs.length)}</div>
+            <div className='text-blue-1 text-[44px] font-disketMono font-bold'>
+              {NumberUtils.pad(accountData.totalCS)}
+            </div>
             {active && (
               <div>
                 <Button>Buy More</Button>
@@ -53,11 +63,11 @@ export const StakingSection = ({}: Props) => {
           <div className='grid items-center grid-cols-2 gap-10 sm:grid-cols-1 sm:items-start sm:gap-3'>
             <div>
               <div className='text-gray-1'>Total $OXGN Earned Ever</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(totalTokensEarned)}</div>
+              <div className='text-xl font-disketMono'>{NumberUtils.pad(accountData.totalClaim)}</div>
             </div>
             <div>
               <div className='text-gray-1'>$OXGN Earned Since Last Claim</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(lastTokensEarned)}</div>
+              <div className='text-xl font-disketMono'>{NumberUtils.pad(accountData.lastClaim)}</div>
             </div>
           </div>
         </div>
@@ -72,7 +82,7 @@ export const StakingSection = ({}: Props) => {
           'flex mt-5 pl-4 items-center justify-between border-l-4 border-solid border-cyan-1 h-[74px]'
         )}>
         <div className='flex items-center'>
-          <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimableTokens)}</div>
+          <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(accountData.claimable)}</div>
           <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
         </div>
         {active && account && (
@@ -98,8 +108,8 @@ export const StakingSection = ({}: Props) => {
             label: 'UNSTAKED',
             content: (
               <div>
-                <div className='text-gray-1'>{unstakedCs.length} Unstaked CS</div>
-                {!!unstakedCs.length && <CsList items={unstakedCs} />}
+                <div className='text-gray-1'>{accountData.unstakedNft?.length} Unstaked CS</div>
+                {!!unstakedCs.length && <CsList items={accountData.unstakedNft} />}
               </div>
             ),
             value: 'unstaked',
@@ -108,8 +118,8 @@ export const StakingSection = ({}: Props) => {
             label: 'STAKE',
             content: (
               <div>
-                <div className='text-gray-1'>{stakedCs.length} Staked CS</div>
-                {!!stakedCs.length && <CsList items={stakedCs} />}
+                <div className='text-gray-1'>{accountData.stakedNft?.length} Staked CS</div>
+                {!!stakedCs.length && <CsList items={accountData.stakedNft} />}
               </div>
             ),
             value: 'stake',

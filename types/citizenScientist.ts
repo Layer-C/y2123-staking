@@ -3,4 +3,5 @@ export type CitizenScientist = {
   name: string;
   staked: boolean;
   tokensEarned?: number;
+  image: string;
 };
