@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useNotification } from 'hooks';
 import { useWeb3React } from '@web3-react/core';
 import { ClaimApis } from 'apis/claim';
+import { createContract } from 'contract';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = VisibilityControlProps & { donateAmount: string };
@@ -48,10 +49,32 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
             onClick={async () => {
               if (account != null) {
                 const res = await ClaimApis.claim(account, donateAmount);
-                console.log(res);
+                if (res != null) {
+                  const {
+                    oxgnTokenClaim,
+                    oxgnTokenDonate,
+                    clanTokenClaim,
+                    benificiaryOfTax,
+                    oxgnTokenTax,
+                    timestamp,
+                    joinSignature,
+                  } = res;
+                  const contract = createContract();
+                  const transaction = await contract.claim(
+                    oxgnTokenClaim,
+                    oxgnTokenDonate,
+                    clanTokenClaim,
+                    benificiaryOfTax,
+                    oxgnTokenTax,
+                    timestamp,
+                    joinSignature
+                  );
+                  console.log(transaction);
+                }
+
+                notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
               }
 
-              notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
               control.hide();
             }}>
             Proceed

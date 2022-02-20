@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Web3ReactProvider getLibrary={getLibrary}>
       <ContractProvider>
         <Head>
-          <title>{process.env.NFT_NAME}</title>
+          <title>{process.env.NEXT_PUBLIC_NFT_NAME}</title>
         </Head>
         <ServerSidePropsProvider>
           <Component {...pageProps} />

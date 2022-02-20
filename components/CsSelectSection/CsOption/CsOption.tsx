@@ -20,7 +20,7 @@ export const CsOption = ({ data: { id, name, staked } }: Props) => {
           <AspectRatio ratio='10-12'>
             <Image
               src='/citizen-scientist.png'
-              alt={process.env.NFT_NAME}
+              alt={process.env.NEXT_PUBLIC_NFT_NAME}
               className={classNames({ 'opacity-50': !isChecked })}
               layout='fill'
             />

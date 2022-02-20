@@ -8,6 +8,7 @@ import Link from 'next/link';
 import TimesSquare from 'public/icons/times-square.svg';
 import { UnstakeErrorModal } from 'components/UnstakeErrorModal';
 import { UnstakeSuccessModal } from 'components/UnstakeSuccessModal';
+import { createContract } from 'contract';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
@@ -28,13 +29,16 @@ const Stake = ({}: Props) => {
 
   const notification = useNotification();
 
-  const handleSubmit = (value: any) => {
-    if (Math.random() > 0.5) {
+  const handleSubmit = async (value: any) => {
+    try {
+      const contract = createContract();
+      const transaction = await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
       unstakeSuccessModalControl.show();
-      return;
+      return transaction;
+    } catch (error) {
+      notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
+      router.push('/dashboard');
     }
-    notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
-    router.push('/dashboard');
   };
 
   const unstakeSuccessModalControl = useVisibilityControl();
