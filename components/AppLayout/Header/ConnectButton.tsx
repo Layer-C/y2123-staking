@@ -20,15 +20,15 @@ export default function ConnectButton() {
         try {
           await activate(injected);
           setIsConnecting(false);
-          if (chainId && chainId.toString() !== process.env.CHAIN_ID) {
-            setErrMsg(`Change the network to ${process.env.NETWORK_NAME}.`);
+          if (chainId && chainId.toString() !== process.env.NEXT_PUBLIC_CHAIN_ID) {
+            setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
           }
         } catch (error) {
           if (error instanceof Error) setError(error);
           setIsConnecting(false);
         }
       } else {
-        setErrMsg(`Change the network to ${process.env.NETWORK_NAME}.`);
+        setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
       }
     } else {
       control.show();

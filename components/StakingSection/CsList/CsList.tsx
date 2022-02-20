@@ -17,7 +17,7 @@ export const CsList = ({ items }: Props) => {
       <div className='grid grid-cols-6 gap-x-3 gap-y-6 sm:grid-cols-3'>
         {items.slice((page - 1) * 6, page * 6).map(({ id, name, staked }) => (
           <div key={id}>
-            <Image src='/citizen-scientist.png' alt={process.env.NFT_NAME} width={100} height={120} />
+            <Image src='/citizen-scientist.png' alt={process.env.NEXT_PUBLIC_NFT_NAME} width={100} height={120} />
             <div className='text-xs'>{name}</div>
           </div>
         ))}

@@ -30,7 +30,7 @@ const Stake = ({}: Props) => {
     router.push('/dashboard');
     try {
       const contract = createContract();
-      const transaction = await contract.stake(process.env.Y2123_CONTRACT, selectedCs, clanId);
+      const transaction = await contract.stake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs, clanId);
       notification.show({
         type: 'success',
         content: 'STAKING SUCCESSFUL',

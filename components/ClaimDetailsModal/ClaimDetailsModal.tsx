@@ -49,12 +49,32 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
             onClick={async () => {
               if (account != null) {
                 const res = await ClaimApis.claim(account, donateAmount);
-                const contract = createContract();
-                const transaction = await contract.claim(res);
-                console.log(res, transaction);
+                if (res != null) {
+                  const {
+                    oxgnTokenClaim,
+                    oxgnTokenDonate,
+                    clanTokenClaim,
+                    benificiaryOfTax,
+                    oxgnTokenTax,
+                    timestamp,
+                    joinSignature,
+                  } = res;
+                  const contract = createContract();
+                  const transaction = await contract.claim(
+                    oxgnTokenClaim,
+                    oxgnTokenDonate,
+                    clanTokenClaim,
+                    benificiaryOfTax,
+                    oxgnTokenTax,
+                    timestamp,
+                    joinSignature
+                  );
+                  console.log(transaction);
+                }
+
+                notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
               }
 
-              notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
               control.hide();
             }}>
             Proceed

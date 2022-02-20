@@ -32,7 +32,7 @@ const Stake = ({}: Props) => {
   const handleSubmit = async (value: any) => {
     try {
       const contract = createContract();
-      const transaction = await contract.unstake(process.env.Y2123_CONTRACT, selectedCs);
+      const transaction = await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
       unstakeSuccessModalControl.show();
       return transaction;
     } catch (error) {
