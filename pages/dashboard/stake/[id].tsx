@@ -1,4 +1,5 @@
 import { AppLayout, Button, CsSelectSection, Form } from 'components';
+import { createContract } from 'contract';
 import { useNotification, useStake } from 'hooks';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -25,21 +26,22 @@ const Stake = ({}: Props) => {
 
   const notification = useNotification();
 
-  const handleSubmit = (value: any) => {
+  const handleSubmit = async (value: any) => {
     router.push('/dashboard');
-
-    if (Math.random() > 0.5) {
+    try {
+      const contract = createContract();
+      const transaction = await contract.stake(process.env.Y2123_CONTRACT, selectedCs, clanId);
       notification.show({
         type: 'success',
         content: 'STAKING SUCCESSFUL',
       });
-      return;
+      return transaction;
+    } catch (error) {
+      notification.show({
+        type: 'error',
+        content: 'STAKING FAILED',
+      });
     }
-
-    notification.show({
-      type: 'error',
-      content: 'STAKING FAILED',
-    });
   };
 
   return (
