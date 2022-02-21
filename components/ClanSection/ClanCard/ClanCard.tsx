@@ -27,17 +27,11 @@ export const ClanCard = ({ clan }: Props) => {
   const router = useRouter();
 
   const stakeModalControl = useVisibilityControl();
-  const unstakeErrorModalControl = useVisibilityControl();
 
   const isStaked = stake?.clan?.id === id;
 
   const handleUnstakeClick = () => {
-    if (Math.random() > 0.5) {
-      router.push(`/dashboard/unstake/${id}`);
-      return;
-    }
-
-    unstakeErrorModalControl.show();
+    router.push(`/dashboard/unstake/${id}`);
   };
 
   useEffect(() => {
@@ -48,7 +42,6 @@ export const ClanCard = ({ clan }: Props) => {
 
   return (
     <div className='border border-solid border-gray-1'>
-      <UnstakeErrorModal control={unstakeErrorModalControl} />
       <StakeConfirmModal control={stakeModalControl} clan={clan} />
       <AspectRatio ratio='1-1'>
         <div className='flex items-center justify-center w-full h-full'>
