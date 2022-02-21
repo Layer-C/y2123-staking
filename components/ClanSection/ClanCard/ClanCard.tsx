@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Wallet from 'public/icons/account_balance_wallet.svg';
 import HollowCircle from 'public/icons/hollow-circle.svg';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Clan } from 'types';
 import { StakeConfirmModal } from './StakeConfirmModal';
 
@@ -22,6 +22,7 @@ export const ClanCard = ({ clan }: Props) => {
   const { description, id, name, tokens, members, defaultAvatar } = clan;
   const { active, account } = useWeb3React();
   const { data: stake } = useStake();
+  const [clanData, setClanData] = useState(clan);
 
   const router = useRouter();
 
@@ -41,7 +42,7 @@ export const ClanCard = ({ clan }: Props) => {
 
   useEffect(() => {
     ClanApis.getById(clan.id).then(res => {
-      console.log(res);
+      setClanData({ ...clan, tokens: res.totalStaked, members: res.uniqueAccount });
     });
   }, [clan]);
 
@@ -58,11 +59,11 @@ export const ClanCard = ({ clan }: Props) => {
         <div className='text-xl font-bold uppercase font-disketMono'>{name}</div>
         <div className='flex items-center mt-5 font-bold'>
           <Wallet className='mr-2' />
-          {tokens}
+          {clanData.tokens}
         </div>
         <div className='flex items-center mt-3 font-bold'>
           <HollowCircle className='mr-2' width={24} height={24} />
-          {members}
+          {clanData.members}
         </div>
         <div className='mt-4 text-xs text-gray-1'>{description}</div>
         <div className='my-4 border-t border-solid border-gray-1'></div>

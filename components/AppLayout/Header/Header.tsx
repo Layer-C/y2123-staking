@@ -34,10 +34,6 @@ export function Header({ title, children, className }: Props) {
     }
   }, [activate, setError]);
 
-  useEffect(() => {
-    AccountApis.get(account).then(res => console.log(res));
-  }, [account, active]);
-
   return (
     <div className={classNames('sticky top-0 z-40', className)}>
       <header className='h-[80px] flex items-center py-2 font-bold font-disketMono'>
