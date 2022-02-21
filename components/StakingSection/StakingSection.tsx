@@ -20,7 +20,7 @@ export const StakingSection = ({}: Props) => {
 
   const { active, account } = useWeb3React();
 
-  const [accountData, setAccountData] = useState<any>({});
+  const [accountData, setAccountData] = useState<any>({ unstakedNftz: [], stakedNft: [] });
 
   useEffect(() => {
     AccountApis.get(account).then(res => res && setAccountData(res));
@@ -128,8 +128,10 @@ export const StakingSection = ({}: Props) => {
             label: 'ALL',
             content: (
               <div>
-                <div className='text-gray-1'>{allCs.length} CS</div>
-                {!!allCs.length && <CsList items={allCs} />}
+                <div className='text-gray-1'>{accountData.unstakedNft?.length + accountData.stakedNft?.length} CS</div>
+                {!!(accountData.unstakedNft?.length + accountData.stakedNft?.length) && (
+                  <CsList items={[...accountData.unstakedNft, ...accountData.stakedNft]} />
+                )}
               </div>
             ),
             value: 'all',
