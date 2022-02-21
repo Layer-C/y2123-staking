@@ -5,7 +5,8 @@ const CLAIM_URL = config.BASE_URL + '/claim';
 
 const claim = async (address: string, donate: string) => {
   try {
-    const res = await fetch(CLAIM_URL + `?addr=${address}&donate=${donate}`);
+    const donateAmount = Math.floor(Number(donate));
+    const res = await fetch(CLAIM_URL + `?addr=${address}&donate=${donateAmount}`);
     return resolveResponse(res);
   } catch (error: any) {
     throw new Error(error);
