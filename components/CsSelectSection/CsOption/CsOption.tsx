@@ -12,14 +12,17 @@ type Props = {
 };
 
 // eslint-disable-next-line no-empty-pattern
-export const CsOption = ({ data: { id, name, staked } }: Props) => {
+export const CsOption = ({ data: { name, staked, image = '/citizen-scientist.png', link } }: Props) => {
+  const id = name.split('#')[1];
   return (
     <div>
       <Checkbox value={id}>
         {({ isChecked }) => (
           <AspectRatio ratio='10-12'>
             <Image
-              src='/citizen-scientist.png'
+              unoptimized
+              loader={() => image}
+              src={image}
               alt={process.env.NEXT_PUBLIC_NFT_NAME}
               className={classNames({ 'opacity-50': !isChecked })}
               layout='fill'

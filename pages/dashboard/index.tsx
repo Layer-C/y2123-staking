@@ -51,7 +51,6 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
         </div>
         <StakingSection />
         <ClanSection className='mt-[57px]' />
-        <LeaderBoardSection className='mt-[57px]' />
       </AppLayout.MainContent>
     </AppLayout>
   );

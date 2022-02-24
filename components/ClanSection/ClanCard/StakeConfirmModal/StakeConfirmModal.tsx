@@ -16,8 +16,8 @@ export const StakeConfirmModal = ({ control, clan }: Props) => {
       <Modal.Content>
         <Image src={defaultAvatar} alt='' width={52} height={55} />
         <div className='mt-7'>
-          You have selected <span className='font-bold'>{name}</span> for Lorem ipsum dolor sit Please note that you
-          need at least 2 days worth of tokens in total claimable, before you can unstake.
+          You have selected to join <span className='font-bold'>{name}</span>. Team up, play together, earn together,
+          and fight climate change together!
         </div>
       </Modal.Content>
       <Modal.Actions>

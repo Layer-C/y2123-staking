@@ -1,6 +1,7 @@
 import { StakeApis } from 'apis/stake';
 import classNames from 'classnames';
 import { AppLayout, Button, ClaimDetailsModal, Input } from 'components';
+import { useAccountContext } from 'contexts/Account';
 import { useServerSideProps } from 'hooks/useServerSideProps';
 import { useVisibilityControl } from 'hooks/useVisibilityControl';
 import type { InferGetServerSidePropsType } from 'next';
@@ -24,7 +25,9 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
   const [shortcut, setShortcut] = React.useState<number>();
   const [error, setError] = React.useState(false);
 
-  const { claimableTokens } = data;
+  const {
+    accountData: { claimable },
+  } = useAccountContext();
 
   const modalControl = useVisibilityControl();
 
@@ -49,7 +52,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                 'flex mt-5 pl-4 items-center justify-between border-l-4 border-solid border-cyan-1 h-[74px]'
               )}>
               <div className='flex items-center'>
-                <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimableTokens)}</div>
+                <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimable)}</div>
                 <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
               </div>
             </div>
@@ -73,7 +76,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                     key={index}
                     className='cursor-pointer'
                     onClick={() => {
-                      setAmount((Math.floor(25 * (index + 1) * claimableTokens) / 100).toString());
+                      setAmount((Math.floor(25 * (index + 1) * Number(claimable)) / 100).toString());
                       setShortcut(index);
                     }}>
                     <div
@@ -90,14 +93,12 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                 ))}
               </div>
             )}
-            {!!error && (
-              <div className='mt-2 text-error'>Please enter amount not exceeding {claimableTokens} $OXGN</div>
-            )}
+            {!!error && <div className='mt-2 text-error'>Please enter amount not exceeding {claimable} $OXGN</div>}
           </div>
           <Button
             className='w-[182px] mt-10'
             onClick={() => {
-              if (+amount > claimableTokens) setError(true);
+              if (+amount > +claimable) setError(true);
               else {
                 modalControl.show();
               }
