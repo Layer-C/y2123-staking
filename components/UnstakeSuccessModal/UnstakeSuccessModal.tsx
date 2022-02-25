@@ -4,18 +4,15 @@ import { VisibilityControlProps } from 'types';
 import Link from 'next/link';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Props = VisibilityControlProps & {};
+type Props = VisibilityControlProps & { selectedCs: any[] };
 
 // eslint-disable-next-line no-empty-pattern
-export const UnstakeSuccessModal = ({ control }: Props) => {
+export const UnstakeSuccessModal = ({ control, selectedCs = [] }: Props) => {
   return (
     <Modal control={control}>
       <Modal.Title>UNSTAKING SUCCESSFUL</Modal.Title>
       <Modal.Content>
         <FaCheckSquare size={72} className='text-green-1' />
-        <div className='mt-7'>
-          You have managed to get back <span className='font-bold'>XX $OXGN tokens</span>, 100% of the tokens!
-        </div>
       </Modal.Content>
       <Modal.Actions>
         <Link href='/dashboard' passHref>

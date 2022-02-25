@@ -1,17 +1,14 @@
 import { AppLayout, Button, CsSelectSection, Form } from 'components';
+import { useAccountContext } from 'contexts/Account';
 import { createContract } from 'contract';
-import { useNotification, useStake } from 'hooks';
+import { useNotification } from 'hooks';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { FaChevronLeft } from 'react-icons/fa';
 import { CitizenScientist } from 'types/citizenScientist';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {};
-
-// eslint-disable-next-line no-empty-pattern
-const Stake = ({}: Props) => {
+const Stake = () => {
   const router = useRouter();
 
   const clanId = (router.query.id || '') as string;
@@ -19,29 +16,32 @@ const Stake = ({}: Props) => {
   const methods = useForm();
   const { watch, setValue } = methods;
   const selectedCs = watch('selectedCs');
-
   const {
-    data: { unstakedCs },
-  } = useStake();
+    accountData: { unstakedNft: unstakedCs },
+    getAccountData,
+  } = useAccountContext();
 
   const notification = useNotification();
 
-  const handleSubmit = async (value: any) => {
-    router.push('/dashboard');
+  const handleSubmit = async () => {
     try {
       const contract = createContract();
-      const transaction = await contract.stake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs, clanId);
+      contract.on('Stake', (from, to, amount, event) => {
+        getAccountData();
+        contract.removeAllListeners();
+      });
+      await contract.stake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs, clanId);
       notification.show({
         type: 'success',
         content: 'STAKING SUCCESSFUL',
       });
-      return transaction;
     } catch (error) {
       notification.show({
         type: 'error',
         content: 'STAKING FAILED',
       });
     }
+    router.push('/dashboard');
   };
 
   return (
@@ -71,7 +71,7 @@ const Stake = ({}: Props) => {
                 onClick={() =>
                   setValue(
                     'selectedCs',
-                    unstakedCs.map(({ id }: CitizenScientist) => id)
+                    unstakedCs.map(({ name }: CitizenScientist) => name.split('#')[1])
                   )
                 }>
                 Select All

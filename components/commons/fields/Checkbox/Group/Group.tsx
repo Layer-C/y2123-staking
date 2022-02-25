@@ -46,7 +46,7 @@ export const Group = React.forwardRef((props: Props, ref: React.ForwardedRef<HTM
       if (isChecked) {
         newValue = [...value, eventValue];
       } else {
-        newValue = value.filter((value: any) => value !== eventValue);
+        newValue = value?.filter((value: any) => value !== eventValue);
       }
 
       onChangeProp?.(newValue);

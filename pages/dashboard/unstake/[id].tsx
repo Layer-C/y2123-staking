@@ -1,51 +1,55 @@
 import { AppLayout, Button, CsSelectSection, Form } from 'components';
 import { useRouter } from 'next/router';
-import { FaCheckSquare, FaChevronLeft } from 'react-icons/fa';
+import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import { useStake, useNotification, useVisibilityControl } from 'hooks';
+import { useNotification, useVisibilityControl } from 'hooks';
 import { CitizenScientist } from 'types/citizenScientist';
 import Link from 'next/link';
-import TimesSquare from 'public/icons/times-square.svg';
-import { UnstakeErrorModal } from 'components/UnstakeErrorModal';
 import { UnstakeSuccessModal } from 'components/UnstakeSuccessModal';
 import { createContract } from 'contract';
+import { useAccountContext } from 'contexts/Account';
+import { useEffect } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {};
-
-// eslint-disable-next-line no-empty-pattern
-const Stake = ({}: Props) => {
+const Stake = () => {
   const router = useRouter();
-
-  const clanId = (router.query.id || '') as string;
 
   const methods = useForm();
   const { watch, setValue } = methods;
   const selectedCs = watch('selectedCs');
-
   const {
-    data: { stakedCs },
-  } = useStake();
+    accountData: { stakedNft: stakedCs, claimable },
+    getAccountData,
+  } = useAccountContext();
 
   const notification = useNotification();
 
-  const handleSubmit = async (value: any) => {
+  const handleSubmit = async () => {
+    if (+claimable > 0) {
+      router.push('/dashboard?show-unskate-error-model=hasClaimable');
+      return;
+    }
     try {
       const contract = createContract();
-      const transaction = await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
+      contract.on('Unstake', (from, to, amount, event) => {
+        getAccountData();
+        contract.removeAllListeners();
+      });
+      await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
       unstakeSuccessModalControl.show();
-      return transaction;
     } catch (error) {
       notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
-      router.push('/dashboard');
     }
   };
 
   const unstakeSuccessModalControl = useVisibilityControl();
 
+  useEffect(() => {
+    getAccountData();
+  }, []);
+
   return (
     <AppLayout background='/dashboard-background.png'>
-      <UnstakeSuccessModal control={unstakeSuccessModalControl} />
+      <UnstakeSuccessModal control={unstakeSuccessModalControl} selectedCs={selectedCs} />
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
@@ -71,7 +75,7 @@ const Stake = ({}: Props) => {
                 onClick={() =>
                   setValue(
                     'selectedCs',
-                    stakedCs.map(({ id }: CitizenScientist) => id)
+                    stakedCs.map(({ name }: CitizenScientist) => name.split('#')[1])
                   )
                 }>
                 Select All

@@ -1,16 +1,17 @@
 import { useWeb3React } from '@web3-react/core';
 import { ClanApis } from 'apis/clan';
-import { AspectRatio, Button, UnstakeErrorModal } from 'components';
-import { useStake } from 'hooks';
+import { AspectRatio, Button } from 'components';
+import { useAccountContext } from 'contexts/Account';
 import { useVisibilityControl } from 'hooks/useVisibilityControl';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Wallet from 'public/icons/account_balance_wallet.svg';
 import HollowCircle from 'public/icons/hollow-circle.svg';
 import { useEffect, useState } from 'react';
 import { Clan } from 'types';
 import { StakeConfirmModal } from './StakeConfirmModal';
+import PlusIcon from 'public/icons/plus.svg';
+import ReactTooltip from 'react-tooltip';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -19,16 +20,17 @@ type Props = {
 
 // eslint-disable-next-line no-empty-pattern
 export const ClanCard = ({ clan }: Props) => {
-  const { description, id, name, tokens, members, defaultAvatar } = clan;
+  const { description, id, name, defaultAvatar } = clan;
   const { active, account } = useWeb3React();
-  const { data: stake } = useStake();
   const [clanData, setClanData] = useState(clan);
-
+  const {
+    accountData: { clanId, stakedNft, unstakedNft },
+  } = useAccountContext();
   const router = useRouter();
 
   const stakeModalControl = useVisibilityControl();
 
-  const isStaked = stake?.clan?.id === id;
+  const isStaked = clanId === id && stakedNft.length > 0;
 
   const handleUnstakeClick = () => {
     router.push(`/dashboard/unstake/${id}`);
@@ -38,6 +40,7 @@ export const ClanCard = ({ clan }: Props) => {
     ClanApis.getById(clan.id).then(res => {
       setClanData({ ...clan, tokens: res.totalStaked, members: res.uniqueAccount });
     });
+    ReactTooltip.rebuild();
   }, [clan]);
 
   return (
@@ -61,18 +64,35 @@ export const ClanCard = ({ clan }: Props) => {
         <div className='mt-4 text-xs text-gray-1'>{description}</div>
         <div className='my-4 border-t border-solid border-gray-1'></div>
         {isStaked ? (
-          <Button colorScheme='default' className='w-full' disabled={!active || !account} onClick={handleUnstakeClick}>
-            Unstake
-          </Button>
+          <div className='flex gap-1'>
+            <Button
+              colorScheme='default'
+              className='w-full'
+              disabled={!active || !account}
+              onClick={handleUnstakeClick}>
+              Unstake
+            </Button>
+            {unstakedNft.length > 0 && (
+              <Button
+                className='w-14'
+                disabled={!active || !account}
+                onClick={stakeModalControl.show}
+                data-tip='STAKE MORE'
+                data-for='stake-more'>
+                <PlusIcon />
+              </Button>
+            )}
+          </div>
         ) : (
           <Button
             className='w-full'
-            disabled={!active || !account || (stake.clan && !isStaked)}
+            disabled={!active || !account || (Number(clanId) > 0 && stakedNft.length > 0)}
             onClick={stakeModalControl.show}>
-            Stake
+            JOIN & STAKE
           </Button>
         )}
       </div>
+      <ReactTooltip id='stake-more' />
     </div>
   );
 };
