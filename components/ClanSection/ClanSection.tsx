@@ -15,7 +15,7 @@ export const ClanSection = ({ className }: Props) => {
   const { viewport } = useViewport();
 
   return (
-    <AppLayout.Section label='Clans' id='clans' className={classNames('grid grid-cols-3 gap-2 sm:block', className)}>
+    <AppLayout.Section label='COLONY' id='clans' className={classNames('grid grid-cols-3 gap-2 sm:block', className)}>
       <ConditionalWrapper active={viewport === 'sm'} component={Carousel} max={3}>
         {clans.map((clan, index) => (
           <ConditionalWrapper active={viewport === 'sm'} component={Carousel.Item} key={clan.id} index={index}>

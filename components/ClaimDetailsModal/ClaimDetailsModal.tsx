@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { ClaimApis } from 'apis/claim';
 import { createContract } from 'contract';
 import { useAccountContext } from 'contexts/Account';
+import { useRouter } from 'next/router';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = VisibilityControlProps & { donateAmount: string };
@@ -14,15 +15,17 @@ type Props = VisibilityControlProps & { donateAmount: string };
 export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
   const { account } = useWeb3React();
   const notification = useNotification();
-
+  const router = useRouter();
   const {
     accountData: { claimable },
     getAccountData,
+    setShowLoading,
   } = useAccountContext();
 
   const subTotal = +claimable - +donateAmount;
-  const tax = subTotal * 0.2;
-  const finalClamable = subTotal - tax;
+  const taxRatio = 0.2;
+  const tax = subTotal * taxRatio;
+  const finalClaimable = subTotal - tax;
 
   return (
     <Modal control={control}>
@@ -49,51 +52,52 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
           <Divider />
           <div className='flex justify-between mt-2 font-bold'>
             <div>Total Claimable</div>
-            <div>{finalClamable} $OXGN</div>
+            <div>{finalClaimable} $OXGN</div>
           </div>
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Link href='/dashboard' passHref>
-          <Button
-            onClick={async () => {
-              if (account != null) {
-                const res = await ClaimApis.claim(account, donateAmount);
-                if (res != null) {
-                  const {
-                    oxgnTokenClaim,
-                    oxgnTokenDonate,
-                    clanTokenClaim,
-                    benificiaryOfTax,
-                    oxgnTokenTax,
-                    timestamp,
-                    joinSignature,
-                  } = res;
-                  const contract = createContract();
-                  contract.on('Claim', (from, to, amount, event) => {
-                    getAccountData();
-                    contract.removeAllListeners();
-                  });
-                  const transaction = await contract.claim(
-                    oxgnTokenClaim,
-                    oxgnTokenDonate,
-                    clanTokenClaim,
-                    benificiaryOfTax,
-                    oxgnTokenTax,
-                    timestamp,
-                    joinSignature
-                  );
-                  console.log(transaction);
-                }
-
-                notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
+        <Button
+          onClick={async () => {
+            if (account != null) {
+              const res = await ClaimApis.claim(account, donateAmount);
+              if (res != null) {
+                const {
+                  oxgnTokenClaim,
+                  oxgnTokenDonate,
+                  clanTokenClaim,
+                  benificiaryOfTax,
+                  oxgnTokenTax,
+                  timestamp,
+                  joinSignature,
+                } = res;
+                const contract = createContract();
+                contract.on('Claim', async (from, to, amount, event) => {
+                  getAccountData();
+                  setShowLoading(false);
+                  contract.removeAllListeners();
+                });
+                const transaction = await contract.claim(
+                  oxgnTokenClaim,
+                  oxgnTokenDonate,
+                  clanTokenClaim,
+                  benificiaryOfTax,
+                  oxgnTokenTax,
+                  timestamp,
+                  joinSignature
+                );
+                console.log(transaction);
+                setShowLoading(true);
+                router.push('/dashboard');
               }
 
-              control.hide();
-            }}>
-            Proceed
-          </Button>
-        </Link>
+              notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
+            }
+
+            control.hide();
+          }}>
+          Proceed
+        </Button>
         <Button variant='outline' colorScheme='default' onClick={control.hide}>
           Cancel
         </Button>

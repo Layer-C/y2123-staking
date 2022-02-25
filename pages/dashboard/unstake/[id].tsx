@@ -19,6 +19,7 @@ const Stake = () => {
   const {
     accountData: { stakedNft: stakedCs, claimable },
     getAccountData,
+    setShowLoading,
   } = useAccountContext();
 
   const notification = useNotification();
@@ -36,6 +37,7 @@ const Stake = () => {
       });
       await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
       unstakeSuccessModalControl.show();
+      setShowLoading(true);
     } catch (error) {
       notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
     }

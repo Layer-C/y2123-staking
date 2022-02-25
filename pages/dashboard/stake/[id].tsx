@@ -19,6 +19,7 @@ const Stake = () => {
   const {
     accountData: { unstakedNft: unstakedCs },
     getAccountData,
+    setShowLoading,
   } = useAccountContext();
 
   const notification = useNotification();
@@ -35,6 +36,7 @@ const Stake = () => {
         type: 'success',
         content: 'STAKING SUCCESSFUL',
       });
+      setShowLoading(true);
     } catch (error) {
       notification.show({
         type: 'error',
@@ -78,11 +80,11 @@ const Stake = () => {
               </Button>
             </div>
           </div>
-          <CsSelectSection label='PLEASE SELECT Citizen scientist to stake' cs={unstakedCs} />
+          <CsSelectSection label='SELECT NFTs TO STAKE' cs={unstakedCs} />
           <div className='fixed bottom-0 left-0 w-full h-20 bg-blue-1'>
             <div className='max-w-[740px] h-full mx-auto flex items-center justify-between px-6'>
               <div className='text-base font-bold text-white font-disketMono'>
-                {selectedCs?.length || 0} scientists selected
+                {selectedCs?.length || 0} NFTs SELECTED
               </div>
               <Button variant='outline' colorScheme='default' disabled={!selectedCs?.length} type='submit'>
                 Stake Now
