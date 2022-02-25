@@ -34,13 +34,14 @@ export function AccountProvider({ children }: Props): ReactElement {
   const [accountData, setAccountData] = useState(initialAccountData);
 
   const getAccountData = useCallback(() => {
-    return AccountApis.get(account).then((res: AccountData) => {
-      if (res) {
-        setAccountData({ ...res, allCs: [...res.unstakedNft, ...res.stakedNft] });
-        setShowLoading(false);
-      }
-      return res;
-    });
+    return AccountApis.get(account)
+      .then((res: AccountData) => {
+        if (res) {
+          setAccountData({ ...res, allCs: [...res.unstakedNft, ...res.stakedNft] });
+        }
+        return res;
+      })
+      .finally(() => setShowLoading(false));
   }, [account, setAccountData]);
 
   useEffect(() => {

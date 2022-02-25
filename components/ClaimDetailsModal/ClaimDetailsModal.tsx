@@ -72,12 +72,11 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
                   joinSignature,
                 } = res;
                 const contract = createContract();
-                contract.on('Claim', async (from, to, amount, event) => {
+                contract.on('Claim', (from, to, amount, event) => {
                   getAccountData();
-                  setShowLoading(false);
                   contract.removeAllListeners();
                 });
-                const transaction = await contract.claim(
+                await contract.claim(
                   oxgnTokenClaim,
                   oxgnTokenDonate,
                   clanTokenClaim,
@@ -86,7 +85,6 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
                   timestamp,
                   joinSignature
                 );
-                console.log(transaction);
                 setShowLoading(true);
                 router.push('/dashboard');
               }
