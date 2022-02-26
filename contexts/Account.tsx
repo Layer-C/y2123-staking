@@ -48,6 +48,8 @@ export function AccountProvider({ children }: Props): ReactElement {
     if (account && active) {
       setShowLoading(true);
       getAccountData();
+    } else {
+      setAccountData(initialAccountData);
     }
     return () => {
       setShowLoading(false);

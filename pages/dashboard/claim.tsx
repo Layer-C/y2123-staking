@@ -111,7 +111,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                   className='text-blue-1 underline font-bold gap-1 flex items-center cursor-pointer'
                   onClick={() => setWillDonate(true)}>
                   donate part of my tokens
-                  <div onMouseEnter={() => donateInfoModalControl.show()}>
+                  <div onMouseEnter={() => donateInfoModalControl.show()} onClick={() => donateInfoModalControl.show()}>
                     <InfoIcon />
                   </div>
                 </span>
