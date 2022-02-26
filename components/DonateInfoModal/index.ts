@@ -1,0 +1,1 @@
+export { DonateInfoModal } from './DonateInfoModal';

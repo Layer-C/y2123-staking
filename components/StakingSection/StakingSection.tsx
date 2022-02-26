@@ -5,7 +5,7 @@ import { NumberUtils } from 'utils/number';
 import { CsList } from './CsList';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useClans } from 'hooks/useClans';
 import { useAccountContext } from 'contexts/Account';
 import { useRouter } from 'next/router';
@@ -28,6 +28,7 @@ export const StakingSection = () => {
       router.replace('/dashboard');
     }
   }, []);
+
   return (
     <AppLayout.Section label='staking'>
       <UnstakeErrorModal control={unstakeErrorModalControl} />
@@ -52,12 +53,14 @@ export const StakingSection = () => {
           )}
         </div>
         <div>
-          <div className='text-gray-1'>Total Citizen Scientist Owned</div>
+          <div className='text-gray-1'>Total NFT(s) Owned</div>
           <div className='grid items-center w-full grid-cols-2 gap-10 sm:gap-3'>
             <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(totalCS)}</div>
             {active && (
               <div>
-                <Button>Buy More</Button>
+                <a href={process.env.NEXT_PUBLIC_OPENSEA_URL} target='_blank' rel='noreferrer'>
+                  <Button>Buy More</Button>
+                </a>
               </div>
             )}
           </div>
@@ -67,8 +70,8 @@ export const StakingSection = () => {
               <div className='text-xl font-disketMono'>{NumberUtils.pad(totalClaim)}</div>
             </div>
             <div>
-              <div className='text-gray-1'>$OXGN Earned Since Last Claim</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(lastClaim)}</div>
+              {/* <div className='text-gray-1'>$OXGN Earned Since Last Claim</div>
+              <div className='text-xl font-disketMono'>{NumberUtils.pad(lastClaim)}</div> */}
             </div>
           </div>
         </div>
@@ -83,8 +86,8 @@ export const StakingSection = () => {
           'flex mt-5 pl-4 items-center justify-between border-l-4 border-solid border-cyan-1 h-[74px]'
         )}>
         <div className='flex items-center'>
-          <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimable)}</div>
-          <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
+          <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimable, 2, 2)}</div>
+          <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'/100\n$OXGN Claimable'}</div>
         </div>
         {active && account && (
           <div className='sm:hidden'>
@@ -98,33 +101,18 @@ export const StakingSection = () => {
         className='mt-10'
         tabs={[
           {
-            label: 'UNSTAKED',
-            content: (
-              <div>
-                <div className='text-gray-1'>{unstakedNft?.length} Unstaked CS</div>
-                {!!unstakedNft.length && <CsList items={unstakedNft} />}
-              </div>
-            ),
+            label: `UNSTAKED (${unstakedNft?.length})`,
+            content: <div>{!!unstakedNft.length && <CsList items={unstakedNft} />}</div>,
             value: 'unstaked',
           },
           {
-            label: 'STAKED',
-            content: (
-              <div>
-                <div className='text-gray-1'>{stakedNft?.length} Staked CS</div>
-                {!!stakedNft.length && <CsList items={stakedNft} isStaked />}
-              </div>
-            ),
+            label: `STAKED (${stakedNft?.length})`,
+            content: <div>{!!stakedNft.length && <CsList items={stakedNft} isStaked />}</div>,
             value: 'stake',
           },
           {
-            label: 'ALL',
-            content: (
-              <div>
-                <div className='text-gray-1'>{allCs?.length} CS</div>
-                {!!allCs.length && <CsList items={allCs} />}
-              </div>
-            ),
+            label: `ALL (${allCs?.length})`,
+            content: <div>{!!allCs.length && <CsList items={allCs} />}</div>,
             value: 'all',
           },
         ]}
@@ -133,8 +121,10 @@ export const StakingSection = () => {
 
       {!allCs.length && (
         <div className='flex flex-col items-center mt-5'>
-          <div className='text-center'>No Citizen Scientist Owned. Purchase now to start the game.</div>
-          <Button className='mt-4 uppercase'>BUY NOW</Button>
+          <div className='text-center'>No NFTs Owned. Purchase now to start the game.</div>
+          <a href={process.env.NEXT_PUBLIC_OPENSEA_URL} target='_blank' rel='noreferrer'>
+            <Button className='mt-4 uppercase'>BUY NOW</Button>
+          </a>
         </div>
       )}
     </AppLayout.Section>

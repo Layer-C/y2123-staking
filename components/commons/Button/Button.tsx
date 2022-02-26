@@ -62,7 +62,7 @@ const defaultTextColor: { [key in Variant]: string } = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = Children &
   ClassName &
-  Pick<HTMLButtonProps, 'disabled' | 'type' | 'onClick'> & {
+  Pick<HTMLButtonProps, 'id' | 'disabled' | 'type' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'> & {
     variant?: Variant;
     size?: 'xs' | 'sm' | 'md' | 'lg';
     colorScheme?: 'primary' | 'secondary' | 'default';
