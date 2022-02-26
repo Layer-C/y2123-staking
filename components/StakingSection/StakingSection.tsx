@@ -87,7 +87,7 @@ export const StakingSection = () => {
         )}>
         <div className='flex items-center'>
           <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimable, 2, 2)}</div>
-          <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'/100\n$OXGN Claimable'}</div>
+          <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
         </div>
         {active && account && (
           <div className='sm:hidden'>

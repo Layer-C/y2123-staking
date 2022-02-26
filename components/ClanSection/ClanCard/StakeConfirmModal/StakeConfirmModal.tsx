@@ -16,8 +16,8 @@ export const StakeConfirmModal = ({ control, clan }: Props) => {
       <Modal.Content>
         <Image src={defaultAvatar} alt='' width={52} height={55} />
         <div className='mt-7'>
-          You have selected to join <span className='font-bold'>{name}</span>. Team up, play together, earn together,
-          and fight climate change together!
+          You have selected to join <span className='font-bold'>{name}</span>.<br /> Team up, play together, earn
+          together, and fight climate change together!
         </div>
       </Modal.Content>
       <Modal.Actions>
