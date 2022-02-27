@@ -39,6 +39,7 @@ const Stake = () => {
       unstakeSuccessModalControl.show();
       setShowLoading(true);
     } catch (error) {
+      console.log(error);
       notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
     }
   };
