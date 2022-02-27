@@ -13,7 +13,7 @@ export const CsSelectSection = ({ label, cs }: Props) => {
       <Form.CheckboxGroup name='selectedCs' value={cs}>
         <div className='grid grid-cols-6 gap-3 sm:grid-cols-3'>
           {cs.slice((page - 1) * 18, page * 18).map((cs: CitizenScientist) => (
-            <CsOption data={cs} key={cs.id} />
+            <CsOption data={cs} key={cs.name} />
           ))}
         </div>
       </Form.CheckboxGroup>

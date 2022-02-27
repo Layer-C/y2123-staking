@@ -3,39 +3,19 @@ import Image from 'next/image';
 import { Clan, VisibilityControl, VisibilityControlProps } from 'types';
 import ArrowIcon from 'public/icons/arrow.svg';
 import { useAccountContext } from 'contexts/Account';
-import { useNotification } from 'hooks';
-import { createContract } from 'contract';
+import { useRouter } from 'next/router';
 
 type Props = VisibilityControlProps & { clan: Clan; selectedClan?: Clan; switchErrorModalControl: VisibilityControl };
 
 export const SwitchConfirmModal = ({ control, clan, selectedClan, switchErrorModalControl }: Props) => {
-  const notification = useNotification();
+  const router = useRouter();
   const { name, defaultAvatar, id } = clan;
   const {
     accountData: { claimable },
-    getAccountData,
-    setShowLoading,
   } = useAccountContext();
 
   const switchClan = async () => {
-    try {
-      const contract = createContract();
-      contract.on('SwitchColony', (from, to, amount, event) => {
-        getAccountData();
-        contract.removeAllListeners();
-      });
-      await contract.switchColony(selectedClan?.id, id);
-      notification.show({
-        type: 'success',
-        content: 'WELCOME TO YOUR NEW COLONY',
-      });
-      setShowLoading(true);
-    } catch (error) {
-      notification.show({
-        type: 'error',
-        content: 'SWITCHING COLONY FAILED',
-      });
-    }
+    router.push(`/dashboard/stake/${id}`);
     control.hide();
   };
   return (
