@@ -39,7 +39,7 @@ export const ClanCard = ({ clan }: Props) => {
   const switchErrorModalControl = useVisibilityControl();
   const isStaked = clanId === id && stakedNft.length > 0;
   const isStakingOnOtherClan = !isStaked && Number(clanId) > 0 && stakedNft.length > 0;
-  const canSwitchClan = isStakingOnOtherClan && unstakedNft.length > 0;
+  const hasNft = unstakedNft.length > 0;
 
   const selectedClan = clans.find(clan => clan.id === clanId);
 
@@ -89,7 +89,7 @@ export const ClanCard = ({ clan }: Props) => {
               onClick={handleUnstakeClick}>
               Unstake
             </Button>
-            {unstakedNft.length > 0 && (
+            {hasNft && (
               <Button
                 className='w-14 relative group'
                 disabled={!active || !account}
@@ -110,8 +110,8 @@ export const ClanCard = ({ clan }: Props) => {
         ) : (
           <Button
             className='w-full'
-            disabled={!active || !account || (isStakingOnOtherClan && !canSwitchClan)}
-            onClick={isStakingOnOtherClan && canSwitchClan ? switchingModalControl.show : stakeModalControl.show}>
+            disabled={!active || !account || !hasNft}
+            onClick={isStakingOnOtherClan && hasNft ? switchingModalControl.show : stakeModalControl.show}>
             {isStakingOnOtherClan ? 'JOIN' : 'JOIN & STAKE'}
           </Button>
         )}
