@@ -1,9 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
-import { AccountApis } from 'apis/account';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import Blockies from 'react-blockies';
-import { FaDiscord, FaShip, FaTwitter } from 'react-icons/fa';
+import { FaDiscord, FaTwitter } from 'react-icons/fa';
+import { BsMedium } from 'react-icons/bs';
 import { Children, ClassName } from 'types';
 import { injected } from 'utils/wallet/connectors';
 import ConnectButton from './ConnectButton';
@@ -75,7 +75,7 @@ export function Header({ title, children, className }: Props) {
                   rel='noopener noreferrer'
                   target='_blank'
                   className='p-2 bg-gray-700 rounded-full hover:bg-gray-600'>
-                  <FaShip />
+                  <BsMedium />
                 </a>
 
                 {active && account ? (
