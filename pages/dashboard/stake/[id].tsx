@@ -38,6 +38,7 @@ const Stake = () => {
       });
       setShowLoading(true);
     } catch (error) {
+      console.log(error);
       notification.show({
         type: 'error',
         content: 'STAKING FAILED',

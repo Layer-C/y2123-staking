@@ -16,7 +16,7 @@ export const StakingSection = () => {
   const { active, account } = useWeb3React();
   const { data: clans } = useClans();
   const {
-    accountData: { allCs, unstakedNft, stakedNft, claimable, totalClaim, lastClaim, totalCS, clanId },
+    accountData: { allCs, unstakedNft, stakedNft, claimable, totalClaim, totalCS, clanId },
   } = useAccountContext();
   const unstakeErrorModalControl = useVisibilityControl();
 
@@ -34,7 +34,7 @@ export const StakingSection = () => {
       <UnstakeErrorModal control={unstakeErrorModalControl} />
       <div className='flex flex-row-reverse justify-between gap-5 sm:flex-col'>
         <div className='w-[120px] h-[120px] flex flex-col items-center justify-center border border-solid border-gray-1 sm:mx-auto'>
-          {clanId && selectedClan ? (
+          {clanId && selectedClan && stakedNft.length > 0 ? (
             <Link href='#clans' passHref>
               <div className='flex items-center justify-center w-full h-full cursor-pointer'>
                 <Image src={selectedClan.defaultAvatar} alt='' width={52} height={55} />
