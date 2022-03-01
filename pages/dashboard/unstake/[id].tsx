@@ -1,5 +1,4 @@
 import { AppLayout, Button, CsSelectSection, Form } from 'components';
-import { useRouter } from 'next/router';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { useNotification, useVisibilityControl } from 'hooks';
@@ -11,13 +10,11 @@ import { useAccountContext } from 'contexts/Account';
 import { useEffect } from 'react';
 
 const Stake = () => {
-  const router = useRouter();
-
   const methods = useForm();
-  const { watch, setValue } = methods;
+  const { watch, setValue, reset } = methods;
   const selectedCs = watch('selectedCs');
   const {
-    accountData: { stakedNft: stakedCs, claimable },
+    accountData: { stakedNft: stakedCs },
     getAccountData,
     setShowLoading,
   } = useAccountContext();
@@ -25,10 +22,6 @@ const Stake = () => {
   const notification = useNotification();
 
   const handleSubmit = async () => {
-    if (+claimable > 0) {
-      router.push('/dashboard?show-unskate-error-model=hasClaimable');
-      return;
-    }
     try {
       const contract = createContract();
       contract.on('Unstake', (from, to, amount, event) => {
@@ -64,11 +57,7 @@ const Stake = () => {
               </Button>
             </Link>
             <div>
-              <Button
-                colorScheme='default'
-                variant='link'
-                className='underline'
-                onClick={() => setValue('selectedCs', [])}>
+              <Button colorScheme='default' variant='link' className='underline' onClick={() => reset()}>
                 Reset
               </Button>
               <Button

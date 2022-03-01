@@ -35,16 +35,11 @@ export const Checkbox = React.forwardRef(
   ) => {
     const groupProviderValue = React.useContext<GroupProvider>(GroupContext);
 
-    const [_isChecked, setIsChecked] = React.useState(
-      groupProviderValue ? groupProviderValue.value.includes(valueProp) : checked
-    );
-    const isChecked =
-      (groupProviderValue ? groupProviderValue.value.includes(valueProp) : checked) || _isChecked || false;
+    const isChecked = (groupProviderValue ? groupProviderValue.value.includes(valueProp) : checked) || false;
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
       onChangeProp?.(e);
 
-      setIsChecked(e.target.checked);
       groupProviderValue?.handleChange(e);
     };
 

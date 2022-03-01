@@ -1,37 +1,25 @@
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames';
-import { AppLayout, Button, Tabs, UnstakeErrorModal } from 'components';
+import { AppLayout, Button, Tabs } from 'components';
 import { NumberUtils } from 'utils/number';
 import { CsList } from './CsList';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useClans } from 'hooks/useClans';
 import { useAccountContext } from 'contexts/Account';
-import { useRouter } from 'next/router';
-import { useVisibilityControl } from 'hooks/useVisibilityControl';
 
 export const StakingSection = () => {
-  const router = useRouter();
   const { active, account } = useWeb3React();
   const { data: clans } = useClans();
   const {
     accountData: { allCs, unstakedNft, stakedNft, claimable, totalClaim, totalCS, clanId },
   } = useAccountContext();
-  const unstakeErrorModalControl = useVisibilityControl();
 
   const selectedClan = useMemo(() => clans.find(clan => clan.id === clanId), [clanId, clans]);
 
-  useEffect(() => {
-    if (router.query['show-unskate-error-model'] === 'hasClaimable' && !unstakeErrorModalControl.visible) {
-      unstakeErrorModalControl.show();
-      router.replace('/dashboard');
-    }
-  }, []);
-
   return (
     <AppLayout.Section label='staking'>
-      <UnstakeErrorModal control={unstakeErrorModalControl} />
       <div className='flex flex-row-reverse justify-between gap-5 sm:flex-col'>
         <div className='w-[120px] h-[120px] flex flex-col items-center justify-center border border-solid border-gray-1 sm:mx-auto'>
           {clanId && selectedClan && stakedNft.length > 0 ? (
