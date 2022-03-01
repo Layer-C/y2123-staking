@@ -14,7 +14,7 @@ const Stake = () => {
   const clanId = (router.query.id || '') as string;
 
   const methods = useForm();
-  const { watch, setValue } = methods;
+  const { watch, setValue, reset } = methods;
   const selectedCs = watch('selectedCs');
   const {
     accountData: { unstakedNft: unstakedCs },
@@ -60,11 +60,7 @@ const Stake = () => {
               </Button>
             </Link>
             <div>
-              <Button
-                colorScheme='default'
-                variant='link'
-                className='underline'
-                onClick={() => setValue('selectedCs', [])}>
+              <Button colorScheme='default' variant='link' className='underline' onClick={() => reset()}>
                 Reset
               </Button>
               <Button

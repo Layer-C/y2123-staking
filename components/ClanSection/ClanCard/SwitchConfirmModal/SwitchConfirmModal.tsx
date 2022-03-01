@@ -1,18 +1,14 @@
 import { Button, Modal } from 'components';
 import Image from 'next/image';
-import { Clan, VisibilityControl, VisibilityControlProps } from 'types';
+import { Clan, VisibilityControlProps } from 'types';
 import ArrowIcon from 'public/icons/arrow.svg';
-import { useAccountContext } from 'contexts/Account';
 import { useRouter } from 'next/router';
 
-type Props = VisibilityControlProps & { clan: Clan; selectedClan?: Clan; switchErrorModalControl: VisibilityControl };
+type Props = VisibilityControlProps & { clan: Clan; selectedClan?: Clan };
 
-export const SwitchConfirmModal = ({ control, clan, selectedClan, switchErrorModalControl }: Props) => {
+export const SwitchConfirmModal = ({ control, clan, selectedClan }: Props) => {
   const router = useRouter();
   const { name, defaultAvatar, id } = clan;
-  const {
-    accountData: { claimable },
-  } = useAccountContext();
 
   const switchClan = async () => {
     router.push(`/dashboard/stake/${id}`);
@@ -35,17 +31,7 @@ export const SwitchConfirmModal = ({ control, clan, selectedClan, switchErrorMod
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button
-          onClick={() => {
-            if (+claimable > 0) {
-              control.hide();
-              switchErrorModalControl.show();
-              return;
-            }
-            switchClan();
-          }}>
-          Confirm
-        </Button>
+        <Button onClick={switchClan}>Confirm</Button>
         <Button colorScheme='default' variant='outline' onClick={control.hide}>
           Cancel
         </Button>

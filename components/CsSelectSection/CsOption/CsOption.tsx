@@ -3,7 +3,6 @@ import { CitizenScientist } from 'types/citizenScientist';
 import CheckboxIcon from 'public/icons/checkbox.svg';
 import classNames from 'classnames';
 import { AspectRatio, Checkbox } from 'components';
-import { cs } from 'date-fns/locale';
 import HollowCircle from 'public/icons/hollow-circle.svg';
 
 // eslint-disable-next-line @typescript-eslint/ban-types

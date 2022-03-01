@@ -1,10 +1,9 @@
 import { useWeb3React } from '@web3-react/core';
 import { ClanApis } from 'apis/clan';
-import { AspectRatio, Button } from 'components';
+import { AspectRatio, Button, UnstakeAlertModal } from 'components';
 import { useAccountContext } from 'contexts/Account';
 import { useVisibilityControl } from 'hooks/useVisibilityControl';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import Wallet from 'public/icons/account_balance_wallet.svg';
 import HollowCircle from 'public/icons/hollow-circle.svg';
 import { useEffect, useState } from 'react';
@@ -15,7 +14,6 @@ import StakeMoreTooltip from 'public/icons/stake-more-tooltip.svg';
 import classNames from 'classnames';
 import { SwitchConfirmModal } from './SwitchConfirmModal';
 import { useClans } from 'hooks/useClans';
-import { SwitchErrorModal } from './SwitchErrorModal';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -31,20 +29,22 @@ export const ClanCard = ({ clan }: Props) => {
   const {
     accountData: { clanId, stakedNft, unstakedNft },
   } = useAccountContext();
-  const router = useRouter();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showWalletTooltip, setShowWalletTooltip] = useState(false);
+  const [showStakedNftsTooltip, setShowStakedNftsTooltip] = useState(false);
 
   const stakeModalControl = useVisibilityControl();
   const switchingModalControl = useVisibilityControl();
-  const switchErrorModalControl = useVisibilityControl();
   const isStaked = clanId === id && stakedNft.length > 0;
   const isStakingOnOtherClan = !isStaked && Number(clanId) > 0 && stakedNft.length > 0;
   const hasNft = unstakedNft.length > 0;
 
+  const unstakeAlertModalControl = useVisibilityControl();
+
   const selectedClan = clans.find(clan => clan.id === clanId);
 
   const handleUnstakeClick = () => {
-    router.push(`/dashboard/unstake/${id}`);
+    unstakeAlertModalControl.show();
   };
 
   useEffect(() => {
@@ -56,13 +56,8 @@ export const ClanCard = ({ clan }: Props) => {
   return (
     <div className='border border-solid border-gray-1'>
       <StakeConfirmModal control={stakeModalControl} clan={clan} />
-      <SwitchConfirmModal
-        control={switchingModalControl}
-        selectedClan={selectedClan}
-        clan={clan}
-        switchErrorModalControl={switchErrorModalControl}
-      />
-      <SwitchErrorModal control={switchErrorModalControl} />
+      <UnstakeAlertModal control={unstakeAlertModalControl} clanId={clan.id} />
+      <SwitchConfirmModal control={switchingModalControl} selectedClan={selectedClan} clan={clan} />
       <AspectRatio ratio='1-1'>
         <div className='flex items-center justify-center w-full h-full'>
           <Image src={defaultAvatar} alt='' width='100%' height='100%' />
@@ -71,12 +66,40 @@ export const ClanCard = ({ clan }: Props) => {
       <div className='p-4'>
         <div className='text-xl font-bold uppercase font-disketMono'>{name}</div>
         <div className='flex items-center mt-5 font-bold'>
-          <Wallet className='mr-2' />
-          {clanData.tokens}
+          <div className='relative'>
+            <Wallet
+              className='mr-2'
+              onMouseEnter={() => setShowWalletTooltip(true)}
+              onMouseLeave={() => setShowWalletTooltip(false)}
+            />
+            <div
+              className={classNames('absolute left-full transform -translate-x-1/2', {
+                ' hidden': !showWalletTooltip,
+              })}
+              style={{ top: -32 }}>
+              <div className='relative bg-gray-900 font-disketMono w-max p-1'>Unique wallets</div>
+            </div>
+          </div>
+          {clanData.members}
         </div>
         <div className='flex items-center mt-3 font-bold'>
-          <HollowCircle className='mr-2' width={24} height={24} />
-          {clanData.members}
+          <div className='relative'>
+            <HollowCircle
+              className='mr-2'
+              width={24}
+              height={24}
+              onMouseEnter={() => setShowStakedNftsTooltip(true)}
+              onMouseLeave={() => setShowStakedNftsTooltip(false)}
+            />
+            <div
+              className={classNames('absolute left-full transform -translate-x-1/2', {
+                ' hidden': !showStakedNftsTooltip,
+              })}
+              style={{ top: -32 }}>
+              <div className='relative bg-gray-900 font-disketMono w-max p-1'>No. of NFTs staked</div>
+            </div>
+          </div>
+          {clanData.tokens}
         </div>
         <div className='mt-4 text-xs text-gray-1 h-14'>{description}</div>
         <div className='my-4 border-t border-solid border-gray-1'></div>
