@@ -14,6 +14,7 @@ import StakeMoreTooltip from 'public/icons/stake-more-tooltip.svg';
 import classNames from 'classnames';
 import { SwitchConfirmModal } from './SwitchConfirmModal';
 import { useClans } from 'hooks/useClans';
+import Link from 'next/link';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -113,21 +114,22 @@ export const ClanCard = ({ clan }: Props) => {
               Unstake
             </Button>
             {hasNft && (
-              <Button
-                className='w-14 relative group'
-                disabled={!active || !account}
-                onClick={stakeModalControl.show}
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}>
-                <PlusIcon />
-                <div
-                  className={classNames('absolute left-1/2 transform -translate-x-1/2', {
-                    ' hidden': !showTooltip,
-                  })}
-                  style={{ top: -32 }}>
-                  <StakeMoreTooltip />
-                </div>
-              </Button>
+              <Link href={`/dashboard/stake/${id}`} passHref>
+                <Button
+                  className='w-14 relative group'
+                  disabled={!active || !account}
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}>
+                  <PlusIcon />
+                  <div
+                    className={classNames('absolute left-1/2 transform -translate-x-1/2', {
+                      ' hidden': !showTooltip,
+                    })}
+                    style={{ top: -32 }}>
+                    <StakeMoreTooltip />
+                  </div>
+                </Button>
+              </Link>
             )}
           </div>
         ) : (
