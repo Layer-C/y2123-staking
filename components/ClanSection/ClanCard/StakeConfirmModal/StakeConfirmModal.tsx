@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { Clan, VisibilityControlProps } from 'types';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Props = VisibilityControlProps & { clan: Clan };
+type Props = VisibilityControlProps & { clan: Clan; isStakeMore: boolean };
 
 // eslint-disable-next-line no-empty-pattern
-export const StakeConfirmModal = ({ control, clan }: Props) => {
+export const StakeConfirmModal = ({ control, clan, isStakeMore }: Props) => {
   const { name, defaultAvatar, id } = clan;
 
   return (
@@ -16,8 +16,8 @@ export const StakeConfirmModal = ({ control, clan }: Props) => {
       <Modal.Content>
         <Image src={defaultAvatar} alt='' width={52} height={55} />
         <div className='mt-7'>
-          You have selected to join <span className='font-bold'>{name}</span>.<br /> Team up, play together, earn
-          together, and fight climate change together!
+          {isStakeMore ? 'Stake your NFTs and' : 'You have selected to'} join <span className='font-bold'>{name}</span>.
+          <br /> Team up, play together, earn together, and fight climate change together!
         </div>
       </Modal.Content>
       <Modal.Actions>

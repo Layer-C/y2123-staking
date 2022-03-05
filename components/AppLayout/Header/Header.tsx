@@ -9,6 +9,7 @@ import { injected } from 'utils/wallet/connectors';
 import ConnectButton from './ConnectButton';
 import Container from './Container';
 import NextLink from './NextLink';
+import { useRouter } from 'next/router';
 
 type Props = Children &
   ClassName & {
@@ -16,8 +17,8 @@ type Props = Children &
   };
 
 export function Header({ title, children, className }: Props) {
-  const { activate, setError, account, active } = useWeb3React();
-
+  const { activate, setError, account, active, deactivate, connector } = useWeb3React();
+  const router = useRouter();
   useEffect(() => {
     async function loadInjectedWallet() {
       const isAuthorized = await injected.isAuthorized();
@@ -79,7 +80,13 @@ export function Header({ title, children, className }: Props) {
                 </a>
 
                 {active && account ? (
-                  <span className='flex items-center h-[34px] px-5 py-1 space-x-2 rounded bg-purplish-black-1'>
+                  <span
+                    className='flex items-center h-[34px] px-5 py-1 space-x-2 rounded bg-purplish-black-1 cursor-pointer'
+                    onClick={() => {
+                      deactivate();
+                      connector?.deactivate();
+                      router.replace('/dashboard');
+                    }}>
                     <span>
                       <Blockies size={5} seed={account.toLowerCase()} className='rounded-full' />
                     </span>

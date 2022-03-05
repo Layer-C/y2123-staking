@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { FaChevronLeft } from 'react-icons/fa';
 import { CitizenScientist } from 'types/citizenScientist';
 
+let timeoutId: NodeJS.Timeout;
+
 const Stake = () => {
   const router = useRouter();
 
@@ -27,15 +29,20 @@ const Stake = () => {
   const handleSubmit = async () => {
     try {
       const contract = createContract();
-      contract.on('Stake', (from, to, amount, event) => {
-        getAccountData();
+      contract.on('Stake', async (from, to, amount, event) => {
         contract.removeAllListeners();
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(async () => {
+          await getAccountData();
+          notification.show({
+            type: 'success',
+            content: 'STAKING SUCCESSFUL',
+          });
+        }, 1000);
       });
       await contract.stake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs, clanId);
-      notification.show({
-        type: 'success',
-        content: 'STAKING SUCCESSFUL',
-      });
       setShowLoading(true);
     } catch (error) {
       console.log(error);

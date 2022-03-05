@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { useClans } from 'hooks/useClans';
 import { useAccountContext } from 'contexts/Account';
+import InfoIcon from 'public/icons/info.svg';
 
 export const StakingSection = () => {
   const { active, account } = useWeb3React();
@@ -58,8 +59,8 @@ export const StakingSection = () => {
               <div className='text-xl font-disketMono'>{NumberUtils.pad(totalClaim)}</div>
             </div>
             <div>
-              {/* <div className='text-gray-1'>$OXGN Earned Since Last Claim</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(lastClaim)}</div> */}
+              <div className='text-gray-1'>$OXGN rewards/day/NFT</div>
+              <div className='text-xl font-disketMono'>{24}</div>
             </div>
           </div>
         </div>
@@ -75,7 +76,19 @@ export const StakingSection = () => {
         )}>
         <div className='flex items-center'>
           <div className='font-disketMono text-[44px] font-bold'>{NumberUtils.pad(claimable, 2, 2)}</div>
-          <div className='ml-2 text-sm uppercase break-words whitespace-pre'>{'OXGN\nClaimable'}</div>
+          <div className='ml-2 text-sm uppercase break-words whitespace-pre'>
+            <span>
+              /1200{' '}
+              <div
+                className='inline-block'
+                data-html={true}
+                data-tip={`Claim your tokens before it hits the maximum OXGN tank capacity of 1200.<br/>You will stop earning OXGN tokens if your OXGN tank is maxed out.`}>
+                <InfoIcon />
+              </div>
+            </span>
+            <br />
+            $OXGN Claimable
+          </div>
         </div>
         {active && account && (
           <div className='sm:hidden'>
