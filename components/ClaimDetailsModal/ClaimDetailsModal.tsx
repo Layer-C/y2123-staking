@@ -1,16 +1,18 @@
 import { Button, Divider, Modal } from 'components';
 import { VisibilityControlProps } from 'types';
-import Link from 'next/link';
 import { useNotification } from 'hooks';
 import { useWeb3React } from '@web3-react/core';
 import { ClaimApis } from 'apis/claim';
 import { createContract } from 'contract';
 import { useAccountContext } from 'contexts/Account';
 import { useRouter } from 'next/router';
+import InfoIcon from 'public/icons/info.svg';
+import NoSSR from 'components/NoSSR';
+import ReactTooltip from 'react-tooltip';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = VisibilityControlProps & { donateAmount: string };
-
+let timeoutId: NodeJS.Timeout;
 // eslint-disable-next-line no-empty-pattern
 export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
   const { account } = useWeb3React();
@@ -23,7 +25,7 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
   } = useAccountContext();
 
   const subTotal = +claimable - +donateAmount;
-  const taxRatio = 0.2;
+  const taxRatio = 0;
   const tax = subTotal * taxRatio;
   const finalClaimable = subTotal - tax;
 
@@ -46,8 +48,19 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
           </div>
           <Divider />
           <div className='flex justify-between mt-2'>
-            <div>Tax (20%)</div>
-            <div className='font-bold'>{tax} $OXGN</div>
+            <div>Tax ({taxRatio * 100}%)</div>
+            <div className='font-bold'>
+              {taxRatio > 0 ? (
+                `${tax} $OXGN`
+              ) : (
+                <div className='inline-block' data-tip={`Tax will be applied in future.`}>
+                  <InfoIcon />
+                  <NoSSR>
+                    <ReactTooltip place='top' effect='solid' />
+                  </NoSSR>
+                </div>
+              )}{' '}
+            </div>
           </div>
           <Divider />
           <div className='flex justify-between mt-2 font-bold'>
@@ -72,9 +85,15 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
                   joinSignature,
                 } = res;
                 const contract = createContract();
-                contract.on('Claim', (from, to, amount, event) => {
-                  getAccountData();
+                contract.on('Claim', async (from, to, amount, event) => {
                   contract.removeAllListeners();
+                  if (timeoutId) {
+                    clearTimeout(timeoutId);
+                  }
+                  timeoutId = setTimeout(async () => {
+                    await getAccountData();
+                    notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
+                  }, 1000);
                 });
                 await contract.claim(
                   oxgnTokenClaim,
@@ -88,8 +107,6 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
                 setShowLoading(true);
                 router.push('/dashboard');
               }
-
-              notification.show({ content: 'CLAiming SUCCESSFUL', type: 'success' });
             }
 
             control.hide();

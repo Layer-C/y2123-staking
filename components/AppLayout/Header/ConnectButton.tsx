@@ -7,28 +7,24 @@ import { MetaMaskConnectModal } from './MetaMaskConnectModal';
 import { useVisibilityControl } from 'hooks';
 
 export default function ConnectButton() {
-  const { activate, setError, chainId, error } = useWeb3React();
+  const { activate, setError, chainId } = useWeb3React();
 
   const { isConnecting, setErrMsg, setIsConnecting } = useContractContext();
 
   const control = useVisibilityControl();
 
   async function connectMetaMask() {
-    if (typeof window.ethereum !== 'undefined') {
-      if (!error) {
+    if (window.ethereum != null) {
+      try {
         setIsConnecting(true);
-        try {
-          await activate(injected);
-          setIsConnecting(false);
-          if (chainId && chainId.toString() !== process.env.NEXT_PUBLIC_CHAIN_ID) {
-            setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
-          }
-        } catch (error) {
-          if (error instanceof Error) setError(error);
-          setIsConnecting(false);
+        await activate(injected);
+        if (chainId && chainId.toString() !== process.env.NEXT_PUBLIC_CHAIN_ID) {
+          setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
         }
-      } else {
-        setErrMsg(`Change the network to ${process.env.NEXT_PUBLIC_NETWORK_NAME}.`);
+      } catch (error) {
+        if (error instanceof Error) setError(error);
+      } finally {
+        setIsConnecting(false);
       }
     } else {
       control.show();

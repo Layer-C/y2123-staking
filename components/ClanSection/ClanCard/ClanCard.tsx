@@ -14,7 +14,7 @@ import StakeMoreTooltip from 'public/icons/stake-more-tooltip.svg';
 import classNames from 'classnames';
 import { SwitchConfirmModal } from './SwitchConfirmModal';
 import { useClans } from 'hooks/useClans';
-import Link from 'next/link';
+import { useUpdateEffect } from 'react-use';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -29,6 +29,7 @@ export const ClanCard = ({ clan }: Props) => {
   const [clanData, setClanData] = useState(clan);
   const {
     accountData: { clanId, stakedNft, unstakedNft },
+    showLoading,
   } = useAccountContext();
   const [showTooltip, setShowTooltip] = useState(false);
   const [showWalletTooltip, setShowWalletTooltip] = useState(false);
@@ -54,9 +55,17 @@ export const ClanCard = ({ clan }: Props) => {
     });
   }, [clan]);
 
+  useUpdateEffect(() => {
+    if (!showLoading) {
+      ClanApis.getById(clan.id).then(res => {
+        setClanData({ ...clan, tokens: res.totalStaked, members: res.uniqueAccount });
+      });
+    }
+  }, [showLoading]);
+
   return (
     <div className='border border-solid border-gray-1'>
-      <StakeConfirmModal control={stakeModalControl} clan={clan} />
+      <StakeConfirmModal control={stakeModalControl} clan={clan} isStakeMore={isStaked && hasNft} />
       <UnstakeAlertModal control={unstakeAlertModalControl} clanId={clan.id} />
       <SwitchConfirmModal control={switchingModalControl} selectedClan={selectedClan} clan={clan} />
       <AspectRatio ratio='1-1'>
@@ -114,22 +123,21 @@ export const ClanCard = ({ clan }: Props) => {
               Unstake
             </Button>
             {hasNft && (
-              <Link href={`/dashboard/stake/${id}`} passHref>
-                <Button
-                  className='w-14 relative group'
-                  disabled={!active || !account}
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}>
-                  <PlusIcon />
-                  <div
-                    className={classNames('absolute left-1/2 transform -translate-x-1/2', {
-                      ' hidden': !showTooltip,
-                    })}
-                    style={{ top: -32 }}>
-                    <StakeMoreTooltip />
-                  </div>
-                </Button>
-              </Link>
+              <Button
+                className='w-14 relative group'
+                disabled={!active || !account}
+                onClick={stakeModalControl.show}
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}>
+                <PlusIcon />
+                <div
+                  className={classNames('absolute left-1/2 transform -translate-x-1/2', {
+                    ' hidden': !showTooltip,
+                  })}
+                  style={{ top: -32 }}>
+                  <StakeMoreTooltip />
+                </div>
+              </Button>
             )}
           </div>
         ) : (

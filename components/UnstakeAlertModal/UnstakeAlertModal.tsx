@@ -12,7 +12,11 @@ export const UnstakeAlertModal = ({ control, clanId }: Props) => {
     <Modal control={control}>
       <Modal.Title>WARNING</Modal.Title>
       <Modal.Content>
-        <div className=''>If you unstake, any unclaimed tokens will be lost. Do you wish to proceed? </div>
+        <div className='leading-8'>
+          Claim your $OXGN tokens before unstaking.
+          <br /> If you unstake, any unclaimed tokens will be lost.
+          <br /> Do you wish to proceed?
+        </div>
       </Modal.Content>
       <Modal.Actions>
         <Button

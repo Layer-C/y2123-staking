@@ -26,9 +26,11 @@ export const SwitchConfirmModal = ({ control, clan, selectedClan }: Props) => {
           <Image src={defaultAvatar} alt='' width={52} height={55} />
         </div>
         <div className='mt-7'>
-          You have selected to switch to <span className='font-bold'>{name}</span>. The grass may not always be greener
-          on the other side. Are you sure you want to proceed? Note: To join a new colony, you need to stake at least 1
-          additional NFT.
+          You have selected to switch to <span className='font-bold'>{name}</span>.
+          <br /> The grass may not always be greener on the other side.
+          <br />
+          Are you sure you want to proceed?
+          <br /> Note: To join a new colony, you need to stake at least 1 additional NFT.
         </div>
       </Modal.Content>
       <Modal.Actions>
