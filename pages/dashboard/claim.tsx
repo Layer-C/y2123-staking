@@ -85,7 +85,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                         key={index}
                         className='cursor-pointer'
                         onClick={() => {
-                          setAmount((Math.floor(25 * (index + 1) * Number(claimable)) / 100).toString());
+                          setAmount(Math.floor((25 * (index + 1) * Number(claimable)) / 100).toString());
                           setShortcut(index);
                         }}>
                         <div

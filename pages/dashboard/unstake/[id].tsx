@@ -1,15 +1,18 @@
 import { AppLayout, Button, CsSelectSection, Form } from 'components';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import { useNotification, useVisibilityControl } from 'hooks';
+import { useNotification } from 'hooks';
 import { CitizenScientist } from 'types/citizenScientist';
 import Link from 'next/link';
-import { UnstakeSuccessModal } from 'components/UnstakeSuccessModal';
 import { createContract } from 'contract';
 import { useAccountContext } from 'contexts/Account';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+
+let timeoutId: NodeJS.Timeout;
 
 const Stake = () => {
+  const router = useRouter();
   const methods = useForm();
   const { watch, setValue, reset } = methods;
   const selectedCs = watch('selectedCs');
@@ -25,19 +28,23 @@ const Stake = () => {
     try {
       const contract = createContract();
       contract.on('Unstake', (from, to, amount, event) => {
-        getAccountData();
         contract.removeAllListeners();
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(async () => {
+          await getAccountData();
+          router.replace('/dashboard?unstake-successful=true');
+        }, 1000);
       });
       await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
-      unstakeSuccessModalControl.show();
       setShowLoading(true);
     } catch (error) {
       console.log(error);
       notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
     }
+    router.push('/dashboard');
   };
-
-  const unstakeSuccessModalControl = useVisibilityControl();
 
   useEffect(() => {
     getAccountData();
@@ -45,7 +52,6 @@ const Stake = () => {
 
   return (
     <AppLayout background='/dashboard-background.png'>
-      <UnstakeSuccessModal control={unstakeSuccessModalControl} selectedCs={selectedCs} />
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
@@ -74,7 +80,7 @@ const Stake = () => {
               </Button>
             </div>
           </div>
-          <CsSelectSection label='PLEASE SELECT Citizen scientist to UNSTAKE' cs={stakedCs} />
+          <CsSelectSection label='PLEASE SELECT NFTS TO UNSTAKE' cs={stakedCs} />
           <div className='fixed bottom-0 left-0 w-full h-20 bg-blue-1'>
             <div className='w-[740px] h-full mx-auto flex items-center justify-between'>
               <div className='text-base font-bold text-white font-disketMono'>
