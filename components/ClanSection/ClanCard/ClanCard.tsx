@@ -111,10 +111,10 @@ export const ClanCard = ({ clan }: Props) => {
           </div>
           {clanData.tokens}
         </div>
-        <div className='mt-4 text-xs text-gray-1 h-14'>{description}</div>
+        <div className='mt-4 text-xs text-gray-1 h-0 overflow-hidden'>{description}</div>
         <div className='my-4 border-t border-solid border-gray-1'></div>
         {isStaked ? (
-          <div className='flex gap-1'>
+          <div className='flex gap-1 sm:w-44'>
             <Button
               colorScheme='default'
               className='w-full'
@@ -141,12 +141,14 @@ export const ClanCard = ({ clan }: Props) => {
             )}
           </div>
         ) : (
-          <Button
-            className='w-full'
-            disabled={!active || !account || !hasNft}
-            onClick={isStakingOnOtherClan && hasNft ? switchingModalControl.show : stakeModalControl.show}>
-            {isStakingOnOtherClan ? 'JOIN' : 'JOIN & STAKE'}
-          </Button>
+          <div className='sm:w-44'>
+            <Button
+              className='w-full'
+              disabled={!active || !account || !hasNft}
+              onClick={isStakingOnOtherClan && hasNft ? switchingModalControl.show : stakeModalControl.show}>
+              {isStakingOnOtherClan ? 'JOIN' : 'JOIN & STAKE'}
+            </Button>
+          </div>
         )}
       </div>
     </div>

@@ -40,17 +40,11 @@ export function Header({ title, children, className }: Props) {
       <header className='h-[80px] flex items-center py-2 font-bold font-disketMono'>
         <Container>
           <div className='flex items-center justify-between'>
-            <div className='w-0'>
-              <NextLink
-                href={process.env.NEXT_PUBLIC_SITE_URL || 'https://www.y2123.com/'}
-                className='font-bold text-white text-md'>
-                <span className='flex items-center'>
-                  <span className='ml-2'>{process.env.NEXT_PUBLIC_NFT_NAME}</span>
-                </span>
-              </NextLink>
-            </div>
+            <div className='w-0'></div>
 
-            <div className='font-bold text-white uppercase text-md sm:hidden'>{title}</div>
+            <div className='font-bold text-white uppercase text-md sm:hidden'>
+              <NextLink href={process.env.NEXT_PUBLIC_SITE_URL || 'https://www.y2123.com/'}>{title}</NextLink>
+            </div>
 
             <div className='flex justify-end w-0'>
               <div className='flex items-center ml-2 space-x-2 sm:ml-0'>

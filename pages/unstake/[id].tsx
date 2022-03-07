@@ -52,7 +52,7 @@ const Stake = () => {
 
   return (
     <AppLayout background='/dashboard-background.png'>
-      <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
+      <AppLayout.Header title='Y2123' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
           <div className='flex items-center justify-between'>
@@ -80,11 +80,11 @@ const Stake = () => {
               </Button>
             </div>
           </div>
-          <CsSelectSection label='PLEASE SELECT NFTS TO UNSTAKE' cs={stakedCs} />
+          <CsSelectSection label='SELECT NFTS TO UNSTAKE' cs={stakedCs} />
           <div className='fixed bottom-0 left-0 w-full h-20 bg-blue-1'>
             <div className='w-[740px] h-full mx-auto flex items-center justify-between'>
               <div className='text-base font-bold text-white font-disketMono'>
-                {selectedCs?.length || 0} scientists selected
+                {selectedCs?.length || 0} NFTs SELECTED
               </div>
               <Button variant='outline' colorScheme='default' disabled={!selectedCs?.length} type='submit'>
                 Unstake Now

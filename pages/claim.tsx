@@ -39,7 +39,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
     <AppLayout background='/dashboard-background.png'>
       <ClaimDetailsModal control={modalControl} donateAmount={amount} />
       <DonateInfoModal control={donateInfoModalControl} />
-      <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
+      <AppLayout.Header title='Y2123' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent>
         <Link href='/' passHref>
           <Button colorScheme='secondary' className='!font-normal mb-[37px]'>

@@ -56,7 +56,7 @@ const Stake = () => {
 
   return (
     <AppLayout background='/dashboard-background.png'>
-      <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
+      <AppLayout.Header title='Y2123' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
           <div className='flex items-center justify-between'>

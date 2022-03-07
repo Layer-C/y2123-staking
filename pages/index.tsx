@@ -57,7 +57,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
     <>
       <AppLayout background='/dashboard-background.png'>
         <UnstakeSuccessModal control={unstakeSuccessModalControl} />
-        <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
+        <AppLayout.Header title='Y2123' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
         <AppLayout.MainContent>
           {showLoading && <LoadingOverlay />}
           <div className='grid grid-cols-2 gap-3 mb-[57px] sm:grid-cols-1'>
@@ -80,7 +80,6 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                 <AppLayout.Section className='p-5 font-disketMono'>
                   <div className='flex items-center justify-between'>
                     <div className='font-bold text-md'>1 $OXGN = 1 $OXGN</div>
-                    <FaCog size={20} />
                   </div>
                   <div className='mt-5 text-xs'>
                     $OXGN is an ERC-20 token that has no monetary value. Rebuilding Earth is a dangerous endeavour. Play
