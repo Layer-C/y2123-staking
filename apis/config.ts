@@ -1,5 +1,5 @@
 const config = {
-  BASE_URL: 'https://api-dev.y2123.io',
+  BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
 };
 
 export default config;
