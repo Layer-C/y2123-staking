@@ -4,10 +4,10 @@ import { VisibilityControlProps } from 'types';
 import Link from 'next/link';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Props = VisibilityControlProps & { selectedCs: any[] };
+type Props = VisibilityControlProps & {};
 
 // eslint-disable-next-line no-empty-pattern
-export const UnstakeSuccessModal = ({ control, selectedCs = [] }: Props) => {
+export const UnstakeSuccessModal = ({ control }: Props) => {
   return (
     <Modal control={control}>
       <Modal.Title>UNSTAKING SUCCESSFUL</Modal.Title>

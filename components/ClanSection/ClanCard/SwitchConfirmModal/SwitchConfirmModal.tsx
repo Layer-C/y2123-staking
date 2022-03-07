@@ -30,7 +30,8 @@ export const SwitchConfirmModal = ({ control, clan, selectedClan }: Props) => {
           <br /> The grass may not always be greener on the other side.
           <br />
           Are you sure you want to proceed?
-          <br /> Note: To join a new colony, you need to stake at least 1 additional NFT.
+          <br />
+          <br /> Note: To switch to a new colony, you need to stake at least 1 additional NFT.
         </div>
       </Modal.Content>
       <Modal.Actions>
