@@ -22,7 +22,7 @@ export const UnstakeAlertModal = ({ control, clanId }: Props) => {
         <Button
           onClick={() => {
             control.hide();
-            router.push(`/dashboard/unstake/${clanId}`);
+            router.push(`/unstake/${clanId}`);
           }}>
           Yes
         </Button>

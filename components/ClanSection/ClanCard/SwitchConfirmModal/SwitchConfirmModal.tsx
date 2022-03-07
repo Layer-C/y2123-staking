@@ -11,7 +11,7 @@ export const SwitchConfirmModal = ({ control, clan, selectedClan }: Props) => {
   const { name, defaultAvatar, id } = clan;
 
   const switchClan = async () => {
-    router.push(`/dashboard/stake/${id}`);
+    router.push(`/stake/${id}`);
     control.hide();
   };
   return (

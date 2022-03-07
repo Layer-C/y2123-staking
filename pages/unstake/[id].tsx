@@ -34,7 +34,7 @@ const Stake = () => {
         }
         timeoutId = setTimeout(async () => {
           await getAccountData();
-          router.replace('/dashboard?unstake-successful=true');
+          router.replace('/?unstake-successful=true');
         }, 1000);
       });
       await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
@@ -43,7 +43,7 @@ const Stake = () => {
       console.log(error);
       notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
     }
-    router.push('/dashboard');
+    router.push('/');
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const Stake = () => {
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
           <div className='flex items-center justify-between'>
-            <Link href='/dashboard' passHref>
+            <Link href='/' passHref>
               <Button colorScheme='secondary'>
                 <FaChevronLeft size={10} className='mr-2' />
                 Back

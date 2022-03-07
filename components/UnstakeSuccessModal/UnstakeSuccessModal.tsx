@@ -15,7 +15,7 @@ export const UnstakeSuccessModal = ({ control }: Props) => {
         <FaCheckSquare size={72} className='text-green-1' />
       </Modal.Content>
       <Modal.Actions>
-        <Link href='/dashboard' passHref>
+        <Link href='/' passHref>
           <Button onClick={control.hide}>OK</Button>
         </Link>
       </Modal.Actions>

@@ -85,7 +85,7 @@ export function Header({ title, children, className }: Props) {
                     onClick={() => {
                       deactivate();
                       connector?.deactivate();
-                      router.replace('/dashboard');
+                      router.replace('/');
                     }}>
                     <span>
                       <Blockies size={5} seed={account.toLowerCase()} className='rounded-full' />

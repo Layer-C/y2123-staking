@@ -51,7 +51,7 @@ const Stake = () => {
         content: 'STAKING FAILED',
       });
     }
-    router.push('/dashboard');
+    router.push('/');
   };
 
   return (
@@ -60,7 +60,7 @@ const Stake = () => {
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
           <div className='flex items-center justify-between'>
-            <Link href='/dashboard' passHref>
+            <Link href='/' passHref>
               <Button colorScheme='secondary'>
                 <FaChevronLeft size={10} className='mr-2' />
                 Back

@@ -41,7 +41,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
       <DonateInfoModal control={donateInfoModalControl} />
       <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent>
-        <Link href='/dashboard' passHref>
+        <Link href='/' passHref>
           <Button colorScheme='secondary' className='!font-normal mb-[37px]'>
             <FaLessThan className='mr-2 !font-normal' /> Back
           </Button>

@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import InfoIcon from 'public/icons/info.svg';
 import NoSSR from 'components/NoSSR';
 import ReactTooltip from 'react-tooltip';
-import { LoadingOverlay } from 'pages/dashboard';
+import { LoadingOverlay } from 'pages/';
 import { useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -108,7 +108,7 @@ export const ClaimDetailsModal = ({ control, donateAmount }: Props) => {
                       joinSignature
                     );
                     setShowLoading(true);
-                    router.push('/dashboard');
+                    router.push('/');
                   }
                 } catch (error) {
                   notification.show({ content: 'CLAIMING FAILED', type: 'error' });

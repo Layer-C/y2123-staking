@@ -21,7 +21,7 @@ export const UnstakeConfirmModal = ({ control, clan }: Props) => {
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Link href={`/dashboard/stake/${id}`} passHref>
+        <Link href={`/stake/${id}`} passHref>
           <Button onClick={control.hide}>Confirm</Button>
         </Link>
         <Button colorScheme='default' variant='outline' onClick={control.hide}>

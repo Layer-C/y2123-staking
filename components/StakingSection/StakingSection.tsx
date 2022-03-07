@@ -92,7 +92,7 @@ export const StakingSection = () => {
         </div>
         {active && account && (
           <div className='sm:hidden'>
-            <Link href='/dashboard/claim' passHref>
+            <Link href='/claim' passHref>
               <Button disabled={Number(claimable) === 0}>CLAIM TOKEN</Button>
             </Link>
           </div>
@@ -100,7 +100,7 @@ export const StakingSection = () => {
       </div>
       {active && account && (
         <div className='justify-center hidden mt-5 sm:flex'>
-          <Link href='/dashboard/claim' passHref>
+          <Link href='/claim' passHref>
             <Button disabled={Number(claimable) === 0}>CLAIM TOKEN</Button>
           </Link>
         </div>
