@@ -19,7 +19,7 @@ export const SwitchErrorModal = ({ control }: Props) => {
       <Modal.Actions>
         <Button
           onClick={() => {
-            router.push('/dashboard/claim');
+            router.push('/claim');
           }}>
           CLAIM NOW
         </Button>

@@ -11,12 +11,12 @@ export const SwitchConfirmModal = ({ control, clan, selectedClan }: Props) => {
   const { name, defaultAvatar, id } = clan;
 
   const switchClan = async () => {
-    router.push(`/dashboard/stake/${id}`);
+    router.push(`/stake/${id}`);
     control.hide();
   };
   return (
     <Modal control={control}>
-      <Modal.Title>SWITCHING OF COLONY</Modal.Title>
+      <Modal.Title>SWITCHING COLONY</Modal.Title>
       <Modal.Content>
         <div className='flex justify-between items-center gap-10'>
           <Image src={selectedClan?.defaultAvatar || ''} alt='' width={52} height={55} />
@@ -26,16 +26,14 @@ export const SwitchConfirmModal = ({ control, clan, selectedClan }: Props) => {
           <Image src={defaultAvatar} alt='' width={52} height={55} />
         </div>
         <div className='mt-7'>
-          You have selected to switch to <span className='font-bold'>{name}</span>.
-          <br /> The grass may not always be greener on the other side.
+          To switch to <span className='font-bold'>{name}</span>, you need to stake at least 1 additional NFT.
           <br />
-          Are you sure you want to proceed?
-          <br />
-          <br /> Note: To switch to a new colony, you need to stake at least 1 additional NFT.
+          <br /> When you switch colony, all your currently staked NFTs will be transferred to the new colony with no
+          additional gas fees.
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={switchClan}>Confirm</Button>
+        <Button onClick={switchClan}>SELECT NFTS</Button>
         <Button colorScheme='default' variant='outline' onClick={control.hide}>
           Cancel
         </Button>

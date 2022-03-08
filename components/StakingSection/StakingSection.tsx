@@ -55,7 +55,7 @@ export const StakingSection = () => {
           </div>
           <div className='grid items-center grid-cols-2 gap-10 sm:grid-cols-1 sm:items-start sm:gap-3'>
             <div>
-              <div className='text-gray-1'>Total $OXGN Earned Ever</div>
+              <div className='text-gray-1'>Total $OXGN Claimed Ever</div>
               <div className='text-xl font-disketMono'>{NumberUtils.pad(totalClaim)}</div>
             </div>
             <div>
@@ -92,7 +92,7 @@ export const StakingSection = () => {
         </div>
         {active && account && (
           <div className='sm:hidden'>
-            <Link href='/dashboard/claim' passHref>
+            <Link href='/claim' passHref>
               <Button disabled={Number(claimable) === 0}>CLAIM TOKEN</Button>
             </Link>
           </div>
@@ -100,7 +100,7 @@ export const StakingSection = () => {
       </div>
       {active && account && (
         <div className='justify-center hidden mt-5 sm:flex'>
-          <Link href='/dashboard/claim' passHref>
+          <Link href='/claim' passHref>
             <Button disabled={Number(claimable) === 0}>CLAIM TOKEN</Button>
           </Link>
         </div>

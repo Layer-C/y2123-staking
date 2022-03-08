@@ -34,7 +34,7 @@ const Stake = () => {
         }
         timeoutId = setTimeout(async () => {
           await getAccountData();
-          router.replace('/dashboard?unstake-successful=true');
+          router.replace('/?unstake-successful=true');
         }, 1000);
       });
       await contract.unstake(process.env.NEXT_PUBLIC_Y2123_CONTRACT, selectedCs);
@@ -43,7 +43,7 @@ const Stake = () => {
       console.log(error);
       notification.show({ type: 'error', content: 'UNSTAKING FAILED' });
     }
-    router.push('/dashboard');
+    router.push('/');
   };
 
   useEffect(() => {
@@ -52,11 +52,11 @@ const Stake = () => {
 
   return (
     <AppLayout background='/dashboard-background.png'>
-      <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
+      <AppLayout.Header title='Y2123' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
           <div className='flex items-center justify-between'>
-            <Link href='/dashboard' passHref>
+            <Link href='/' passHref>
               <Button colorScheme='secondary'>
                 <FaChevronLeft size={10} className='mr-2' />
                 Back
@@ -80,11 +80,11 @@ const Stake = () => {
               </Button>
             </div>
           </div>
-          <CsSelectSection label='PLEASE SELECT NFTS TO UNSTAKE' cs={stakedCs} />
+          <CsSelectSection label='SELECT NFTS TO UNSTAKE' cs={stakedCs} />
           <div className='fixed bottom-0 left-0 w-full h-20 bg-blue-1'>
             <div className='w-[740px] h-full mx-auto flex items-center justify-between'>
               <div className='text-base font-bold text-white font-disketMono'>
-                {selectedCs?.length || 0} scientists selected
+                {selectedCs?.length || 0} NFTs SELECTED
               </div>
               <Button variant='outline' colorScheme='default' disabled={!selectedCs?.length} type='submit'>
                 Unstake Now

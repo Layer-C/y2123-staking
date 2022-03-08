@@ -51,16 +51,16 @@ const Stake = () => {
         content: 'STAKING FAILED',
       });
     }
-    router.push('/dashboard');
+    router.push('/');
   };
 
   return (
     <AppLayout background='/dashboard-background.png'>
-      <AppLayout.Header title='Dashboard' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
+      <AppLayout.Header title='Y2123' className='bg-purplish-gray-2 backdrop-blur-[50px]'></AppLayout.Header>
       <AppLayout.MainContent className='pb-20'>
         <Form methods={methods} onSubmit={handleSubmit}>
           <div className='flex items-center justify-between'>
-            <Link href='/dashboard' passHref>
+            <Link href='/' passHref>
               <Button colorScheme='secondary'>
                 <FaChevronLeft size={10} className='mr-2' />
                 Back

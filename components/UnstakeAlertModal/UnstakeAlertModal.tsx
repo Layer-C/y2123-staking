@@ -12,22 +12,24 @@ export const UnstakeAlertModal = ({ control, clanId }: Props) => {
     <Modal control={control}>
       <Modal.Title>WARNING</Modal.Title>
       <Modal.Content>
-        <div className='leading-8'>
+        <div className='leading-5'>
           Claim your $OXGN tokens before unstaking.
-          <br /> If you unstake, any unclaimed tokens will be lost.
-          <br /> Do you wish to proceed?
+          <br />
+          Any unclaimed $OXGN tokens will be lost.
+          <br />
+          <br /> You can select which NFTs to unstake.
         </div>
       </Modal.Content>
       <Modal.Actions>
         <Button
           onClick={() => {
             control.hide();
-            router.push(`/dashboard/unstake/${clanId}`);
+            router.push(`/unstake/${clanId}`);
           }}>
-          Yes
+          SELECT NFTS
         </Button>
         <Button colorScheme='default' onClick={control.hide}>
-          No
+          CANCEL
         </Button>
       </Modal.Actions>
     </Modal>
