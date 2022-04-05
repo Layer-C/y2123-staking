@@ -31,6 +31,7 @@ export type TabData = {
   label: React.ReactNode;
   value: string;
   content: React.ReactNode;
+  className?: string;
 };
 
 type Props = BaseProps &
@@ -43,7 +44,7 @@ type Props = BaseProps &
 export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible }: Props) => {
   const [value, setValue] = useControllable({ value: valueProp, onChange, defaultValue: tabs[0]?.value });
   const control = useVisibilityControl({ defaultVisible: true });
-
+  const foundTab = tabs.find(tab => tab.value === value);
   return (
     <BaseTabs
       value={value}
@@ -52,7 +53,7 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
         control.show();
       }}>
       <div className={classNames('border-b border-solid flex justify-between items-center border-gray-1', className)}>
-        <div className={ClassNameUtils.withTwReplaceable('px-')('flex items-center flex-shrink-0 sm:hidden')}>
+        <div className={ClassNameUtils.withTwReplaceable('px-')('flex items-center flex-shrink-0 sm:hidden relative')}>
           {tabs.map(({ label, value }) => (
             <Item key={value} value={value}>
               {label}
@@ -73,9 +74,11 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
         )}
       </div>
       <div
-        className={classNames('h-full py-5 overflow-hidden', { 'h-0 py-0': collapsible && !control.visible })}
+        className={classNames('relative', foundTab?.className || 'h-full py-5 overflow-hidden', {
+          'h-0 py-0': collapsible && !control.visible,
+        })}
         key={value}>
-        {tabs.find(tab => tab.value === value)?.content}
+        {foundTab?.content}
       </div>
     </BaseTabs>
   );
