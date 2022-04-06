@@ -212,6 +212,7 @@ export const StakingSection = () => {
           },
         ]}
         collapsible
+        showHeaderAsDropdownOnMobile={false}
       />
     </>
   );
@@ -219,6 +220,7 @@ export const StakingSection = () => {
   const marketPlace = (
     <Tabs
       className=' '
+      showHeaderAsDropdownOnMobile={false}
       tabs={[
         {
           label: (
@@ -229,12 +231,12 @@ export const StakingSection = () => {
           ),
           className: 'h-full pt-5 overflow-hidden',
           content: (
-            <div className='flex gap-10'>
-              <div className='relative min-w-75 w-75 max-w-75 h-75'>
+            <div className='flex gap-10 sm:flex-col sm:gap-5'>
+              <div className='relative min-w-75 w-75 max-w-75 h-75 sm:self-center'>
                 <Image className='' src='/assets/land.jpeg' width={300} height={300} alt='land-nft' />
                 <ExpandIcon className='absolute bottom-2 right-2 cursor-pointer' />
               </div>
-              <div>
+              <div className='sm:pl-1'>
                 <div className='text-sm text-gray-1 mb-2'>Land NFT</div>
                 <div className='font-disketMono text-xl leading-5 font-bold mb-2'>SAVANNAH</div>
                 <div className='text-xs font-avenirNext mb-5'>
