@@ -79,7 +79,7 @@ export const StakingSection = () => {
               <div className='text-xl font-disketMono'>{NumberUtils.pad(totalClaim)}</div>
             </div>
             <div>
-              <div className='text-gray-1'>$OXGN rewards/day/NFT</div>
+              <div className='text-gray-1'>$OXGN Rewards/ DAY / CS</div>
               <div className='text-xl font-disketMono'>{24}</div>
             </div>
           </div>
@@ -131,13 +131,17 @@ export const StakingSection = () => {
         onChange={newValue => setSelectedTab(newValue)}
         tabs={[
           {
-            label: <span className='font-bold font-disketMono text-xs leading-3.5'>CITIZEN</span>,
+            label: (
+              <span className='font-bold font-disketMono text-xs leading-3.5'>
+                CITIZEN ({NumberUtils.pad(allCs.length)})
+              </span>
+            ),
             content: (
               <div>
                 <div className='flex justify-between'>
                   <div className=' text-xs text-gray-1'>
-                    {isFilterUnstaked ? unstakedNft.length : stakedNft.length}{' '}
-                    {isFilterUnstaked ? 'Unstaked' : 'Staked'} CS
+                    {unstakedNft.length} Unstaked Citizen <br /> {stakedNft.length} Staked Citizen <br />{' '}
+                    {unstakedNft.length + stakedNft.length} Total Citizen <br />
                   </div>
                   <div className='flex items-center gap-1 uppercase font-disketMono text-[10px] font-bold'>
                     <FilterIcon />
@@ -194,9 +198,9 @@ export const StakingSection = () => {
           {
             label: (
               <div className='relative'>
-                <span className='font-bold font-disketMono text-xs leading-3.5'>LAND</span>{' '}
+                <span className='font-bold font-disketMono text-xs leading-3.5'>LAND ({NumberUtils.pad(0)})</span>{' '}
                 {selectedTab !== 'land' ? (
-                  <NewLabelIcon className='absolute bottom-full left-full transform translate-x-1/2' />
+                  <NewLabelIcon className='absolute bottom-full left-full transform translate-x-0 ' />
                 ) : null}
               </div>
             ),
@@ -238,10 +242,13 @@ export const StakingSection = () => {
               </div>
               <div className='sm:pl-1'>
                 <div className='text-sm text-gray-1 mb-2'>Land NFT</div>
-                <div className='font-disketMono text-xl leading-5 font-bold mb-2'>SAVANNAH</div>
+                <div className='font-disketMono text-xl leading-5 font-bold mb-2'>SAVANNAH HABITAT</div>
                 <div className='text-xs font-avenirNext mb-5'>
-                  Enterprising and curious, pioneers follow closely behind, driven by promises, faith and hope. They are
-                  experts in their field and carry specialised equipment and gear.
+                  The savannah ecosystem is a tropical grassland with warm temperatures year-round, with its highest
+                  seasonal rainfall in the summer. The savannah is characterized by grasses and small or dispersed trees
+                  that do not form a closed canopy, allowing sunlight to reach the ground.
+                  <br />
+                  Credit: National Geographic
                 </div>
                 <div className='text-gray-1 mb-1'>Sales progress</div>
                 <div className='flex items-center justify-start w-full gap-2 mb-3'>
@@ -250,7 +257,7 @@ export const StakingSection = () => {
                   </div>
                   <div className='text-sm leading-4.5'>
                     <div>/500</div>
-                    <div>Land</div>
+                    <div>Land Minted</div>
                   </div>
                 </div>
                 <div className='text-gray-1 mb-2.5'>Quantity</div>
@@ -293,7 +300,7 @@ export const StakingSection = () => {
                     </Link>
                   </div>
                 </div>
-                <div className='text-gray-1 text-xs'>Design is varied, user will get at random</div>
+                <div className='text-gray-1 text-xs'>Designs are randomised.</div>
               </div>
             </div>
           ),
