@@ -140,8 +140,8 @@ export const StakingSection = () => {
               <div>
                 <div className='flex justify-between'>
                   <div className=' text-xs text-gray-1'>
-                    {unstakedNft.length} Unstaked Citizen <br /> {stakedNft.length} Staked Citizen <br />{' '}
-                    {unstakedNft.length + stakedNft.length} Total Citizen <br />
+                    {isFilterUnstaked ? unstakedNft.length : stakedNft.length}{' '}
+                    {isFilterUnstaked ? 'Unstaked' : 'Staked'} Citizen
                   </div>
                   <div className='flex items-center gap-1 uppercase font-disketMono text-[10px] font-bold'>
                     <FilterIcon />
