@@ -71,17 +71,19 @@ export const Tabs = ({
             </Item>
           ))}
         </div>
-        <select
-          className={classNames('hidden h-full px-5 py-2 text-white bg-purplish-gray-1', {
-            'sm:block': showHeaderAsDropdownOnMobile,
-          })}
-          onChange={setValue}>
-          {tabs.map(({ label, value }) => (
-            <option value={value} key={value}>
-              {label}
-            </option>
-          ))}
-        </select>
+        {showHeaderAsDropdownOnMobile ? (
+          <select
+            className={classNames('h-full px-5 py-2 text-white bg-purplish-gray-1', {
+              'sm:block': showHeaderAsDropdownOnMobile,
+            })}
+            onChange={setValue}>
+            {tabs.map(({ label, value }) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        ) : null}
         {!!collapsible && (
           <div className='p-2 cursor-pointer select-none'>
             {control.visible ? <FaChevronUp onClick={control.hide} /> : <FaChevronDown onClick={control.show} />}
