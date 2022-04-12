@@ -14,7 +14,31 @@ import MarketIcon from 'public/icons/market.svg';
 import NewLabelIcon from 'public/icons/newLabel.svg';
 import ExpandIcon from 'public/icons/expand.svg';
 import FilterIcon from 'public/icons/filter.svg';
-import HollowCircle from 'public/icons/hollow-circle.svg';
+import TokenIcon from 'public/icons/token.svg';
+import Wallet from 'public/icons/account_balance_wallet.svg';
+import InsufficientOxygenTokenTooltip from 'public/icons/insufficientOxygenTokenTooltip.svg';
+import { createContractByABI } from 'contract';
+import OxygenContract from 'contract/Oxygen.json';
+import LandContract from 'contract/Land.json';
+import { BigNumber } from 'ethers';
+import { useVisibilityControl } from 'hooks/useVisibilityControl';
+import { InsufficientFundsModal } from './InsufficientFundsModal';
+import { useNotification } from 'hooks/useNotification';
+import ReactTooltip from 'react-tooltip';
+
+const OXGN_REWARDS_PER_DAY = 24;
+const OXGN_PER_LAND = 500;
+
+enum FilterType {
+  UNSTAKED = 'Unstaked',
+  STAKED = 'Staked',
+  ALL = 'All',
+}
+
+enum TabType {
+  CITIZEN = 'citizen',
+  LAND = 'land',
+}
 
 const unselectedLabelBackgroundStyle = {
   background: 'linear-gradient(98.86deg, rgba(27, 29, 44, 0.5) 55.16%, rgba(27, 29, 44, 0.5) 99.64%)',
@@ -22,22 +46,66 @@ const unselectedLabelBackgroundStyle = {
   border: '1px solid #8F97B4',
 };
 
+const getOxygenTokenBalance = async (accountAddress: string, callback?: (balance: number) => void): Promise<number> => {
+  const oxgnContract = createContractByABI(OxygenContract.abi);
+  const bigNumberBalance: BigNumber = await oxgnContract.balanceOf(accountAddress);
+  const balance = bigNumberBalance.toNumber();
+  callback && callback(balance);
+  return balance;
+};
+
 export const StakingSection = () => {
   const [isShowStaking, setIsShowStaking] = useState(true);
-  const [selectedTab, setSelectedTab] = useState('citizen');
-  const [isFilterUnstaked, setIsFilterUnstaked] = useState(true);
-  const [landQuantity, setLandQuantity] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(TabType.CITIZEN);
+  const [filterType, setFilterType] = useState(FilterType.UNSTAKED);
+  const [landQuantity, setLandQuantity] = useState(0);
   const { active, account } = useWeb3React();
   const { data: clans } = useClans();
   const {
     accountData: { allCs, unstakedNft, stakedNft, claimable, totalClaim, totalCS, clanId },
   } = useAccountContext();
 
+  const selectedNFTs =
+    filterType === FilterType.UNSTAKED ? unstakedNft : filterType === FilterType.STAKED ? stakedNft : allCs;
+
+  const [balanceOfOxygenToken, setBalanceOfOxygenToken] = useState(0);
+  const insufficientFundsModalControl = useVisibilityControl();
+  const notification = useNotification();
+  const neededBalance = landQuantity * OXGN_PER_LAND;
+
   const selectedClan = useMemo(() => clans.find(clan => clan.id === clanId), [clanId, clans]);
 
   useEffect(() => {
-    setLandQuantity(1);
-  }, [isShowStaking]);
+    if (account) {
+      getOxygenTokenBalance(account, balance => {
+        setBalanceOfOxygenToken(balance);
+        setLandQuantity(Math.floor(balance / OXGN_PER_LAND) ? 1 : 0);
+      });
+    }
+    ReactTooltip.rebuild();
+  }, [account, isShowStaking]);
+
+  const buyLand = async () => {
+    try {
+      if (account == null) {
+        return;
+      }
+      const balance = await getOxygenTokenBalance(account);
+      setBalanceOfOxygenToken(balance);
+      if (balance < neededBalance) {
+        insufficientFundsModalControl.show();
+        return;
+      }
+      const landContract = createContractByABI(LandContract.abi);
+      await landContract.paidMint(landQuantity);
+      setIsShowStaking(true);
+      setSelectedTab(TabType.LAND);
+      notification.show({ content: 'PURCHASE SUCCESSFUL', type: 'success' });
+    } catch (error) {
+      console.log(error);
+      notification.show({ content: 'PURCHASE FAILED', type: 'error' });
+    }
+  };
 
   const staking = (
     <>
@@ -80,7 +148,7 @@ export const StakingSection = () => {
             </div>
             <div>
               <div className='text-gray-1'>$OXGN Rewards/ DAY / CS</div>
-              <div className='text-xl font-disketMono'>{24}</div>
+              <div className='text-xl font-disketMono'>{OXGN_REWARDS_PER_DAY}</div>
             </div>
           </div>
         </div>
@@ -140,46 +208,24 @@ export const StakingSection = () => {
               <div>
                 <div className='flex justify-between'>
                   <div className=' text-xs text-gray-1'>
-                    {isFilterUnstaked ? unstakedNft.length : stakedNft.length}{' '}
-                    {isFilterUnstaked ? 'Unstaked' : 'Staked'} Citizen
+                    {selectedNFTs.length} {filterType} Citizen
                   </div>
                   <div className='flex items-center gap-1 uppercase font-disketMono text-[10px] font-bold'>
                     <FilterIcon />
-                    <div
-                      className={classNames(
-                        'px-2 py-1 cursor-pointer',
-                        isFilterUnstaked ? 'text-white ' : 'text-gray-1 border border-gray-1'
-                      )}
-                      style={
-                        isFilterUnstaked
-                          ? {
-                              background: 'rgba(58, 129, 255, 0.2)',
-                            }
-                          : {}
-                      }
-                      onClick={() => setIsFilterUnstaked(true)}>
-                      UNSTAKED
-                    </div>
-                    <div
-                      className={classNames(
-                        'px-2 py-1 cursor-pointer',
-                        !isFilterUnstaked ? 'text-white ' : 'text-gray-1 border border-gray-1'
-                      )}
-                      style={
-                        !isFilterUnstaked
-                          ? {
-                              background: 'rgba(58, 129, 255, 0.2)',
-                            }
-                          : {}
-                      }
-                      onClick={() => setIsFilterUnstaked(false)}>
-                      STAKED
-                    </div>
+                    {Object.values(FilterType).map(value => (
+                      <div
+                        key={value}
+                        className={classNames(
+                          'px-2 py-1 cursor-pointer uppercase',
+                          filterType === value ? 'text-whit bg-purplish-gray-1' : 'text-gray-1 border border-gray-1'
+                        )}
+                        onClick={() => setFilterType(value)}>
+                        {value}
+                      </div>
+                    ))}
                   </div>
                 </div>
-                {isFilterUnstaked
-                  ? !!unstakedNft.length && <CsList items={unstakedNft} />
-                  : !!stakedNft.length && <CsList items={stakedNft} />}
+                {!!selectedNFTs.length && <CsList items={selectedNFTs} />}
 
                 {!allCs.length && (
                   <div className='flex flex-col items-center mt-5'>
@@ -193,13 +239,13 @@ export const StakingSection = () => {
                 )}
               </div>
             ),
-            value: 'citizen',
+            value: TabType.CITIZEN,
           },
           {
             label: (
               <div className='relative'>
                 <span className='font-bold font-disketMono text-xs leading-3.5'>LAND ({NumberUtils.pad(0)})</span>{' '}
-                {selectedTab !== 'land' ? (
+                {selectedTab !== TabType.LAND ? (
                   <NewLabelIcon className='absolute bottom-full left-full transform translate-x-0 ' />
                 ) : null}
               </div>
@@ -212,7 +258,7 @@ export const StakingSection = () => {
                 </a>
               </div>
             ),
-            value: 'land',
+            value: TabType.LAND,
           },
         ]}
         collapsible
@@ -238,6 +284,8 @@ export const StakingSection = () => {
             <div className='flex gap-10 sm:flex-col sm:gap-5'>
               <div className='relative min-w-75 w-75 max-w-75 h-75 sm:self-center'>
                 <Image className='' src='/assets/land.jpeg' width={300} height={300} alt='land-nft' />
+                <div className='text-gray-1 text-xs'>Designs are randomised.</div>
+
                 <ExpandIcon className='absolute bottom-2 right-2 cursor-pointer' />
               </div>
               <div className='sm:pl-1'>
@@ -256,7 +304,7 @@ export const StakingSection = () => {
                     {NumberUtils.pad(1)}
                   </div>
                   <div className='text-sm leading-4.5'>
-                    <div>/500</div>
+                    <div>/{OXGN_PER_LAND}</div>
                     <div>Land Minted</div>
                   </div>
                 </div>
@@ -264,17 +312,23 @@ export const StakingSection = () => {
                 <div className='flex font-disketMono mb-5'>
                   <div
                     className='select-none w-6 h-6 flex justify-center items-center cursor-pointer ring-1 ring-[#8F97B4]'
-                    onClick={() => setLandQuantity(q => Math.max(q - 1, 1))}>
+                    onClick={() => setLandQuantity(q => Math.max(q - 1, 0))}>
                     -
                   </div>
                   <div
-                    className='h-6 w-18 flex items-center justify-center '
-                    style={{ background: 'rgba(58, 129, 255, 0.2)' }}>
+                    className={`relative h-6 w-18 flex items-center justify-center bg-purplish-gray-1 ${
+                      balanceOfOxygenToken < neededBalance ? ' text-red-1' : ''
+                    }`}>
                     {landQuantity}
+                    {balanceOfOxygenToken < neededBalance ? (
+                      <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-1'>
+                        <InsufficientOxygenTokenTooltip />
+                      </div>
+                    ) : null}
                   </div>
                   <div
                     className='select-none w-6 h-6 flex justify-center items-center cursor-pointer ring-1 ring-[#8F97B4]'
-                    onClick={() => setLandQuantity(q => Math.min(q + 1, 500))}>
+                    onClick={() => setLandQuantity(q => q + 1)}>
                     +
                   </div>
                 </div>
@@ -289,18 +343,19 @@ export const StakingSection = () => {
                   )}>
                   <div>
                     <div className='flex items-center text-xl font-disketMono font-bold'>
-                      <HollowCircle className='mr-2' width={24} height={24} />
-                      10 $OXGN
+                      <TokenIcon className='mr-2' width={24} height={24} />
+                      {OXGN_PER_LAND * landQuantity} $OXGN
                     </div>
                     <div className='text-gray-1 text-xs'>Gas fees excluded</div>
                   </div>
                   <div>
-                    <Link href='/claim' passHref>
-                      <Button>BUY</Button>
-                    </Link>
+                    <Button onClick={buyLand}>BUY</Button>
                   </div>
                 </div>
-                <div className='text-gray-1 text-xs'>Designs are randomised.</div>
+                <div className='text-gray-1 text-xs flex items-center gap-1'>
+                  <Wallet />
+                  {balanceOfOxygenToken} $OXGN in Wallet
+                </div>
               </div>
             </div>
           ),
@@ -337,6 +392,11 @@ export const StakingSection = () => {
           </div>
         </div>
       }>
+      <InsufficientFundsModal
+        control={insufficientFundsModalControl}
+        neededBalance={neededBalance}
+        onOkay={() => setIsShowStaking(true)}
+      />
       {isShowStaking ? staking : marketPlace}
     </AppLayout.Section>
   );
