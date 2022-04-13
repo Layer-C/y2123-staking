@@ -5,14 +5,13 @@ import { NumberUtils } from 'utils/number';
 import { CsList } from './CsList';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useClans } from 'hooks/useClans';
 import { useAccountContext } from 'contexts/Account';
 import InfoIcon from 'public/icons/info.svg';
 import StakingIcon from 'public/icons/staking.svg';
 import MarketIcon from 'public/icons/market.svg';
 import NewLabelIcon from 'public/icons/newLabel.svg';
-import ExpandIcon from 'public/icons/expand.svg';
 import FilterIcon from 'public/icons/filter.svg';
 import TokenIcon from 'public/icons/token.svg';
 import Wallet from 'public/icons/account_balance_wallet.svg';
@@ -21,19 +20,24 @@ import { createContractByABI } from 'contract';
 import OxygenContract from 'contract/Oxygen.json';
 import LandContract from 'contract/Land.json';
 import { BigNumber } from 'ethers';
-import { useVisibilityControl } from 'hooks/useVisibilityControl';
-import { InsufficientFundsModal } from './InsufficientFundsModal';
 import { useNotification } from 'hooks/useNotification';
 import ReactTooltip from 'react-tooltip';
+import { useClickAway } from 'react-use';
 
 const OXGN_REWARDS_PER_DAY = 24;
-const OXGN_PER_LAND = 500;
+const DEFAULT_OXGN_PER_LAND = 500;
 
 enum FilterType {
   UNSTAKED = 'Unstaked',
   STAKED = 'Staked',
   ALL = 'All',
 }
+
+const FilterTypeMap: Record<FilterType, string> = {
+  [FilterType.UNSTAKED]: 'Unstaked',
+  [FilterType.STAKED]: 'Staked',
+  [FilterType.ALL]: 'Total',
+};
 
 enum TabType {
   CITIZEN = 'citizen',
@@ -54,6 +58,18 @@ const getOxygenTokenBalance = async (accountAddress: string, callback?: (balance
   return balance;
 };
 
+const getLandPrice = async (callback?: (price: number) => void) => {
+  try {
+    const landContract = createContractByABI(LandContract.abi);
+    const landPrice = await landContract.mintPrice();
+    console.log('getLandPrice:', landPrice);
+    callback && callback(landPrice);
+    return landPrice;
+  } catch (error) {
+    console.log('error - getLandPrice:', error);
+  }
+};
+
 export const StakingSection = () => {
   const [isShowStaking, setIsShowStaking] = useState(true);
   const [selectedTab, setSelectedTab] = useState(TabType.CITIZEN);
@@ -69,9 +85,14 @@ export const StakingSection = () => {
     filterType === FilterType.UNSTAKED ? unstakedNft : filterType === FilterType.STAKED ? stakedNft : allCs;
 
   const [balanceOfOxygenToken, setBalanceOfOxygenToken] = useState(0);
-  const insufficientFundsModalControl = useVisibilityControl();
+  const [showInsufficientFundsTooltip, setShowInsufficientFundsTooltip] = useState(false);
+  const plusButtonRef = useRef(null);
+  useClickAway(plusButtonRef, () => {
+    setShowInsufficientFundsTooltip(false);
+  });
   const notification = useNotification();
-  const neededBalance = landQuantity * OXGN_PER_LAND;
+  const [landPrice, setLandPrice] = useState(DEFAULT_OXGN_PER_LAND);
+  const neededBalance = landQuantity * landPrice;
 
   const selectedClan = useMemo(() => clans.find(clan => clan.id === clanId), [clanId, clans]);
 
@@ -79,23 +100,23 @@ export const StakingSection = () => {
     if (account) {
       getOxygenTokenBalance(account, balance => {
         setBalanceOfOxygenToken(balance);
-        setLandQuantity(Math.floor(balance / OXGN_PER_LAND) ? 1 : 0);
+        setLandQuantity(Math.floor(balance / landPrice) ? 1 : 0);
       });
     }
     ReactTooltip.rebuild();
-  }, [account, isShowStaking]);
+  }, [account, isShowStaking, landPrice]);
+
+  useEffect(() => {
+    getLandPrice(price => setLandPrice(price));
+  }, [isShowStaking]);
 
   const buyLand = async () => {
     try {
-      if (account == null) {
+      if (account == null || neededBalance <= 0) {
         return;
       }
       const balance = await getOxygenTokenBalance(account);
       setBalanceOfOxygenToken(balance);
-      if (balance < neededBalance) {
-        insufficientFundsModalControl.show();
-        return;
-      }
       const landContract = createContractByABI(LandContract.abi);
       await landContract.paidMint(landQuantity);
       setIsShowStaking(true);
@@ -130,9 +151,15 @@ export const StakingSection = () => {
           )}
         </div>
         <div>
-          <div className='text-gray-1'>Total NFT(s) Owned</div>
+          <div className='text-gray-1'>Total $OXGN Claimed Ever</div>
           <div className='grid items-center w-full grid-cols-2 gap-10 sm:gap-3'>
             <div className='text-blue-1 text-[44px] font-disketMono font-bold'>{NumberUtils.pad(totalCS)}</div>
+          </div>
+          <div className='grid items-center grid-cols-2 gap-10 sm:grid-cols-1 sm:items-start sm:gap-3'>
+            <div>
+              <div className='text-gray-1'>$OXGN Rewards/ DAY/ CS</div>
+              <div className='text-xl font-disketMono'>{23}</div>
+            </div>
             {active && (
               <div>
                 <a href={process.env.NEXT_PUBLIC_OPENSEA_URL} target='_blank' rel='noreferrer'>
@@ -140,16 +167,6 @@ export const StakingSection = () => {
                 </a>
               </div>
             )}
-          </div>
-          <div className='grid items-center grid-cols-2 gap-10 sm:grid-cols-1 sm:items-start sm:gap-3'>
-            <div>
-              <div className='text-gray-1'>Total $OXGN Claimed Ever</div>
-              <div className='text-xl font-disketMono'>{NumberUtils.pad(totalClaim)}</div>
-            </div>
-            <div>
-              <div className='text-gray-1'>$OXGN Rewards/ DAY / CS</div>
-              <div className='text-xl font-disketMono'>{OXGN_REWARDS_PER_DAY}</div>
-            </div>
           </div>
         </div>
       </div>
@@ -208,7 +225,7 @@ export const StakingSection = () => {
               <div>
                 <div className='flex justify-between'>
                   <div className=' text-xs text-gray-1'>
-                    {selectedNFTs.length} {filterType} Citizen
+                    {selectedNFTs.length} {FilterTypeMap[filterType]} Citizen
                   </div>
                   <div className='flex items-center gap-1 uppercase font-disketMono text-[10px] font-bold'>
                     <FilterIcon />
@@ -253,9 +270,9 @@ export const StakingSection = () => {
             content: (
               <div className='flex flex-col items-center mt-5'>
                 <div className='text-center'>You do not hold any Land. Purchase now.</div>
-                <a href={process.env.NEXT_PUBLIC_OPENSEA_URL} target='_blank' rel='noreferrer'>
-                  <Button className='mt-4 uppercase'>BUY NOW</Button>
-                </a>
+                <Button className='mt-4 uppercase' onClick={() => setIsShowStaking(false)}>
+                  BUY NOW
+                </Button>
               </div>
             ),
             value: TabType.LAND,
@@ -283,10 +300,8 @@ export const StakingSection = () => {
           content: (
             <div className='flex gap-10 sm:flex-col sm:gap-5'>
               <div className='relative min-w-75 w-75 max-w-75 h-75 sm:self-center'>
-                <Image className='' src='/assets/land.jpeg' width={300} height={300} alt='land-nft' />
+                <iframe src='https://babylon1.s3.amazonaws.com/index.html' height={300} title='land-nft' />
                 <div className='text-gray-1 text-xs'>Designs are randomised.</div>
-
-                <ExpandIcon className='absolute bottom-2 right-2 cursor-pointer' />
               </div>
               <div className='sm:pl-1'>
                 <div className='text-sm text-gray-1 mb-2'>Land NFT</div>
@@ -296,6 +311,7 @@ export const StakingSection = () => {
                   seasonal rainfall in the summer. The savannah is characterized by grasses and small or dispersed trees
                   that do not form a closed canopy, allowing sunlight to reach the ground.
                   <br />
+                  <br />
                   Credit: National Geographic
                 </div>
                 <div className='text-gray-1 mb-1'>Sales progress</div>
@@ -304,7 +320,7 @@ export const StakingSection = () => {
                     {NumberUtils.pad(1)}
                   </div>
                   <div className='text-sm leading-4.5'>
-                    <div>/{OXGN_PER_LAND}</div>
+                    <div>/500</div>
                     <div>Land Minted</div>
                   </div>
                 </div>
@@ -317,18 +333,25 @@ export const StakingSection = () => {
                   </div>
                   <div
                     className={`relative h-6 w-18 flex items-center justify-center bg-purplish-gray-1 ${
-                      balanceOfOxygenToken < neededBalance ? ' text-red-1' : ''
+                      showInsufficientFundsTooltip ? ' text-red-1' : ''
                     }`}>
                     {landQuantity}
-                    {balanceOfOxygenToken < neededBalance ? (
+                    {showInsufficientFundsTooltip ? (
                       <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-1'>
                         <InsufficientOxygenTokenTooltip />
                       </div>
                     ) : null}
                   </div>
                   <div
+                    ref={plusButtonRef}
                     className='select-none w-6 h-6 flex justify-center items-center cursor-pointer ring-1 ring-[#8F97B4]'
-                    onClick={() => setLandQuantity(q => q + 1)}>
+                    onClick={() => {
+                      if ((landQuantity + 1) * landPrice <= balanceOfOxygenToken) {
+                        setLandQuantity(landQuantity + 1);
+                        return;
+                      }
+                      setShowInsufficientFundsTooltip(true);
+                    }}>
                     +
                   </div>
                 </div>
@@ -344,12 +367,14 @@ export const StakingSection = () => {
                   <div>
                     <div className='flex items-center text-xl font-disketMono font-bold'>
                       <TokenIcon className='mr-2' width={24} height={24} />
-                      {OXGN_PER_LAND * landQuantity} $OXGN
+                      {landPrice * landQuantity} $OXGN
                     </div>
                     <div className='text-gray-1 text-xs'>Gas fees excluded</div>
                   </div>
                   <div>
-                    <Button onClick={buyLand}>BUY</Button>
+                    <Button onClick={buyLand} disabled={landQuantity < 1}>
+                      BUY
+                    </Button>
                   </div>
                 </div>
                 <div className='text-gray-1 text-xs flex items-center gap-1'>
@@ -392,11 +417,6 @@ export const StakingSection = () => {
           </div>
         </div>
       }>
-      <InsufficientFundsModal
-        control={insufficientFundsModalControl}
-        neededBalance={neededBalance}
-        onOkay={() => setIsShowStaking(true)}
-      />
       {isShowStaking ? staking : marketPlace}
     </AppLayout.Section>
   );
