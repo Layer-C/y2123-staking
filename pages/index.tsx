@@ -73,7 +73,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
                         WHITELISTED. MINT PRICE 0.0XX ETH.`}
                       </div>
                     </div>
-                    <Image src='/Y2123-Land.gif' alt='' width='150px' height='150px' />
+                    {/* <Image src='/Y2123-Land.gif' alt='' width='150px' height='150px' /> */}
                   </div>
                 </AppLayout.Section>
               </ConditionalWrapper>

@@ -16,9 +16,7 @@ import FilterIcon from 'public/icons/filter.svg';
 import TokenIcon from 'public/icons/token.svg';
 import Wallet from 'public/icons/account_balance_wallet.svg';
 import InsufficientOxygenTokenTooltip from 'public/icons/insufficientOxygenTokenTooltip.svg';
-import { createContractByABI } from 'contract';
-import OxygenContract from 'contract/Oxygen.json';
-import LandContract from 'contract/Land.json';
+import { ContractType, createContract } from 'contract';
 import { BigNumber } from 'ethers';
 import { useNotification } from 'hooks/useNotification';
 import ReactTooltip from 'react-tooltip';
@@ -51,23 +49,19 @@ const unselectedLabelBackgroundStyle = {
 };
 
 const getOxygenTokenBalance = async (accountAddress: string, callback?: (balance: number) => void): Promise<number> => {
-  const oxgnContract = createContractByABI(OxygenContract.abi);
-  const bigNumberBalance: BigNumber = await oxgnContract.balanceOf(accountAddress);
-  const balance = bigNumberBalance.toNumber();
-  callback && callback(balance);
-  return balance;
+  const oxgnContract = createContract(ContractType.OXYGEN);
+  const balance: BigNumber = await oxgnContract.balanceOf(accountAddress);
+  const resolvedBalance = Number(balance.toString().replace(/.{18}$/, ''));
+  callback && callback(resolvedBalance);
+  return resolvedBalance;
 };
 
 const getLandPrice = async (callback?: (price: number) => void) => {
-  try {
-    const landContract = createContractByABI(LandContract.abi);
-    const landPrice = await landContract.mintPrice();
-    console.log('getLandPrice:', landPrice);
-    callback && callback(landPrice);
-    return landPrice;
-  } catch (error) {
-    console.log('error - getLandPrice:', error);
-  }
+  const landContract = createContract(ContractType.LAND);
+  const landPrice = await landContract.mintPrice();
+  const resolvedLandPrice = Number(landPrice.toString().replace(/.{18}$/, ''));
+  callback && callback(resolvedLandPrice);
+  return resolvedLandPrice;
 };
 
 export const StakingSection = () => {
@@ -117,7 +111,7 @@ export const StakingSection = () => {
       }
       const balance = await getOxygenTokenBalance(account);
       setBalanceOfOxygenToken(balance);
-      const landContract = createContractByABI(LandContract.abi);
+      const landContract = createContract(ContractType.LAND);
       await landContract.paidMint(landQuantity);
       setIsShowStaking(true);
       setSelectedTab(TabType.LAND);
@@ -307,9 +301,8 @@ export const StakingSection = () => {
                 <div className='text-sm text-gray-1 mb-2'>Land NFT</div>
                 <div className='font-disketMono text-xl leading-5 font-bold mb-2'>SAVANNAH HABITAT</div>
                 <div className='text-xs font-avenirNext mb-5'>
-                  The savannah ecosystem is a tropical grassland with warm temperatures year-round, with its highest
-                  seasonal rainfall in the summer. The savannah is characterized by grasses and small or dispersed trees
-                  that do not form a closed canopy, allowing sunlight to reach the ground.
+                  The savannah is characterized by grasses and small or dispersed trees that do not form a closed
+                  canopy, allowing sunlight to reach the ground.
                   <br />
                   <br />
                   Credit: National Geographic
