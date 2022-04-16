@@ -63,6 +63,7 @@ const getLandPrice = async (callback?: (price: number) => void) => {
   callback && callback(resolvedLandPrice);
   return resolvedLandPrice;
 };
+let timeoutId: NodeJS.Timeout;
 
 export const StakingSection = () => {
   const [isShowStaking, setIsShowStaking] = useState(true);
@@ -73,6 +74,8 @@ export const StakingSection = () => {
   const { data: clans } = useClans();
   const {
     accountData: { allCs, unstakedNft, stakedNft, claimable, totalClaim, totalCS, clanId },
+    getAccountData,
+    setShowLoading,
   } = useAccountContext();
 
   const selectedNFTs =
@@ -112,10 +115,20 @@ export const StakingSection = () => {
       const balance = await getOxygenTokenBalance(account);
       setBalanceOfOxygenToken(balance);
       const landContract = createContract(ContractType.LAND);
+      landContract.on('Transfer', async () => {
+        landContract.removeAllListeners();
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(async () => {
+          await getAccountData();
+          setIsShowStaking(true);
+          setSelectedTab(TabType.LAND);
+          notification.show({ content: 'PURCHASE SUCCESSFUL', type: 'success' });
+        }, 1000);
+      });
       await landContract.paidMint(landQuantity);
-      setIsShowStaking(true);
-      setSelectedTab(TabType.LAND);
-      notification.show({ content: 'PURCHASE SUCCESSFUL', type: 'success' });
+      setShowLoading(true);
     } catch (error) {
       console.log(error);
       notification.show({ content: 'PURCHASE FAILED', type: 'error' });
