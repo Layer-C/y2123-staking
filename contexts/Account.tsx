@@ -10,6 +10,7 @@ const initialAccountData = {
   allCs: [],
   unstakedNft: [],
   stakedNft: [],
+  landNft: [],
   claimable: '0',
   totalClaim: '0',
   lastClaim: '0',

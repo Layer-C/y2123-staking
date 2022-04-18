@@ -21,8 +21,10 @@ import { BigNumber } from 'ethers';
 import { useNotification } from 'hooks/useNotification';
 import ReactTooltip from 'react-tooltip';
 import { useClickAway } from 'react-use';
+import { LandList } from './LandList';
+import { AboutLandNFTModal } from './AboutLandNFTModal';
+import { useVisibilityControl } from 'hooks/useVisibilityControl';
 
-const OXGN_REWARDS_PER_DAY = 24;
 const DEFAULT_OXGN_PER_LAND = 500;
 
 enum FilterType {
@@ -73,7 +75,7 @@ export const StakingSection = () => {
   const { active, account } = useWeb3React();
   const { data: clans } = useClans();
   const {
-    accountData: { allCs, unstakedNft, stakedNft, claimable, totalClaim, totalCS, clanId },
+    accountData: { allCs, unstakedNft, stakedNft, claimable, landNft, totalCS, clanId },
     getAccountData,
     setShowLoading,
   } = useAccountContext();
@@ -134,6 +136,8 @@ export const StakingSection = () => {
       notification.show({ content: 'PURCHASE FAILED', type: 'error' });
     }
   };
+
+  const aboutLandModalControl = useVisibilityControl();
 
   const staking = (
     <>
@@ -231,7 +235,7 @@ export const StakingSection = () => {
             content: (
               <div>
                 <div className='flex justify-between'>
-                  <div className=' text-xs text-gray-1'>
+                  <div className='text-xs text-gray-1'>
                     {selectedNFTs.length} {FilterTypeMap[filterType]} Citizen
                   </div>
                   <div className='flex items-center gap-1 uppercase font-disketMono text-[10px] font-bold'>
@@ -268,18 +272,33 @@ export const StakingSection = () => {
           {
             label: (
               <div className='relative'>
-                <span className='font-bold font-disketMono text-xs leading-3.5'>LAND ({NumberUtils.pad(0)})</span>{' '}
+                <span className='font-bold font-disketMono text-xs leading-3.5'>
+                  LAND ({NumberUtils.pad(landNft.length)})
+                </span>{' '}
                 {selectedTab !== TabType.LAND ? (
                   <NewLabelIcon className='absolute bottom-full left-full transform translate-x-0 ' />
                 ) : null}
               </div>
             ),
             content: (
-              <div className='flex flex-col items-center mt-5'>
-                <div className='text-center'>You do not hold any Land. Purchase now.</div>
-                <Button className='mt-4 uppercase' onClick={() => setIsShowStaking(false)}>
-                  BUY NOW
-                </Button>
+              <div>
+                {!!landNft.length && (
+                  <div>
+                    <div className='text-xs text-gray-1 flex'>
+                      {landNft.length} Land NFT{' '}
+                      <InfoIcon className='ml-2.5' onMouseEnter={() => aboutLandModalControl.show()} />
+                    </div>
+                    <LandList items={landNft} />
+                  </div>
+                )}
+                {!landNft.length && (
+                  <div className='flex flex-col items-center mt-5'>
+                    <div className='text-center'>You do not hold any Land. Purchase now.</div>
+                    <Button className='mt-4 uppercase' onClick={() => setIsShowStaking(false)}>
+                      BUY NOW
+                    </Button>
+                  </div>
+                )}
               </div>
             ),
             value: TabType.LAND,
@@ -424,6 +443,7 @@ export const StakingSection = () => {
         </div>
       }>
       {isShowStaking ? staking : marketPlace}
+      <AboutLandNFTModal control={aboutLandModalControl} />
     </AppLayout.Section>
   );
 };

@@ -5,4 +5,5 @@ export type CitizenScientist = {
   tokensEarned?: number;
   image: string;
   link: string;
+  dailyReward: string;
 };
