@@ -65,12 +65,25 @@ const getLandPrice = async (callback?: (price: number) => void) => {
   callback && callback(resolvedLandPrice);
   return resolvedLandPrice;
 };
+
+const getLandMintedInfo = async (callback?: (maxSupply: number, landMintedAmount: number) => void) => {
+  const landContract = createContract(ContractType.LAND);
+  const [rawMaxSupply, rawLandMintedAmount] = await Promise.all([
+    landContract.MAX_SUPPLY(),
+    landContract.totalSupply(),
+  ]);
+  const maxSupply = (rawMaxSupply as BigNumber).toNumber();
+  const landMintedAmount = (rawLandMintedAmount as BigNumber).toNumber();
+  callback && callback(maxSupply, landMintedAmount);
+  return { maxSupply, landMintedAmount };
+};
+
 let timeoutId: NodeJS.Timeout;
 
 export const StakingSection = () => {
   const [isShowStaking, setIsShowStaking] = useState(true);
   const [selectedTab, setSelectedTab] = useState(TabType.CITIZEN);
-  const [filterType, setFilterType] = useState(FilterType.UNSTAKED);
+  const [filterType, setFilterType] = useState(FilterType.ALL);
   const [landQuantity, setLandQuantity] = useState(0);
   const { active, account } = useWeb3React();
   const { data: clans } = useClans();
@@ -91,6 +104,10 @@ export const StakingSection = () => {
   });
   const notification = useNotification();
   const [landPrice, setLandPrice] = useState(DEFAULT_OXGN_PER_LAND);
+  const [landMintedInfo, setLandMintedInfo] = useState({
+    maxSupply: 500,
+    landMintedAmount: 1,
+  });
   const neededBalance = landQuantity * landPrice;
 
   const selectedClan = useMemo(() => clans.find(clan => clan.id === clanId), [clanId, clans]);
@@ -107,6 +124,7 @@ export const StakingSection = () => {
 
   useEffect(() => {
     getLandPrice(price => setLandPrice(price));
+    getLandMintedInfo((maxSupply, landMintedAmount) => setLandMintedInfo({ maxSupply, landMintedAmount }));
   }, [isShowStaking]);
 
   const buyLand = async () => {
@@ -253,7 +271,7 @@ export const StakingSection = () => {
                     ))}
                   </div>
                 </div>
-                {!!selectedNFTs.length && <CsList items={selectedNFTs} />}
+                {!!selectedNFTs.length && <CsList items={selectedNFTs} isStaked={filterType === FilterType.STAKED} />}
 
                 {!allCs.length && (
                   <div className='flex flex-col items-center mt-5'>
@@ -342,10 +360,10 @@ export const StakingSection = () => {
                 <div className='text-gray-1 mb-1'>Sales progress</div>
                 <div className='flex items-center justify-start w-full gap-2 mb-3'>
                   <div className='text-blue-1 text-[44px] leading-10 font-disketMono font-bold'>
-                    {NumberUtils.pad(1)}
+                    {NumberUtils.pad(landMintedInfo.landMintedAmount)}
                   </div>
                   <div className='text-sm leading-4.5'>
-                    <div>/500</div>
+                    <div>/{landMintedInfo.maxSupply}</div>
                     <div>Land Minted</div>
                   </div>
                 </div>
@@ -371,7 +389,10 @@ export const StakingSection = () => {
                     ref={plusButtonRef}
                     className='select-none w-6 h-6 flex justify-center items-center cursor-pointer ring-1 ring-[#8F97B4]'
                     onClick={() => {
-                      if ((landQuantity + 1) * landPrice <= balanceOfOxygenToken) {
+                      if (
+                        (landQuantity + 1) * landPrice <= balanceOfOxygenToken &&
+                        landQuantity + 1 <= landMintedInfo.maxSupply - landMintedInfo.landMintedAmount
+                      ) {
                         setLandQuantity(landQuantity + 1);
                         return;
                       }

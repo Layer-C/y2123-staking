@@ -7,7 +7,7 @@ type Props = {
 };
 
 const initialAccountData = {
-  allCs: [],
+  allCs: [] as any[],
   unstakedNft: [],
   stakedNft: [],
   landNft: [],
@@ -38,7 +38,10 @@ export function AccountProvider({ children }: Props): ReactElement {
     return AccountApis.get(account)
       .then((res: AccountData) => {
         if (res) {
-          setAccountData({ ...res, allCs: [...res.unstakedNft, ...res.stakedNft] });
+          setAccountData({
+            ...res,
+            allCs: [...res.unstakedNft, ...res.stakedNft.map(item => ({ ...(item as any), staked: true }))],
+          });
         }
         return res;
       })

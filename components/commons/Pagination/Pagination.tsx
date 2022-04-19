@@ -12,7 +12,7 @@ export const Pagination = ({ className, pageEndpointRange = 4, pageRange = 3, pe
     if (type === 'previous')
       return (
         <FaArrowLeft
-          className={classNames('mr-5 text-blue-1 cursor-pointer', { disabled: disabled })}
+          className={classNames('mr-5 text-blue-1 cursor-pointer sm:mr-2 absolute left-0', { disabled: disabled })}
           onClick={onClick}
           key={index}
           size={16}
@@ -20,7 +20,7 @@ export const Pagination = ({ className, pageEndpointRange = 4, pageRange = 3, pe
       );
     if (type === 'ellipsis')
       return (
-        <div key={index} onClick={onClick}>
+        <div key={index} onClick={onClick} className='sm:w-6 sm:h-6'>
           ...
         </div>
       );
@@ -29,7 +29,7 @@ export const Pagination = ({ className, pageEndpointRange = 4, pageRange = 3, pe
         <div
           key={index}
           onClick={onClick}
-          className={classNames('flex items-center justify-center w-8 h-8 cursor-pointer', {
+          className={classNames('flex items-center justify-center w-8 h-8 cursor-pointer sm:w-6 sm:h-6', {
             'bg-purplish-gray-1 text-white': selected,
           })}>
           {page}
@@ -38,7 +38,7 @@ export const Pagination = ({ className, pageEndpointRange = 4, pageRange = 3, pe
     if (type === 'next')
       return (
         <FaArrowRight
-          className={classNames('ml-5 text-blue-1 cursor-pointer', { disabled: disabled })}
+          className={classNames('ml-5 text-blue-1 cursor-pointer sm:ml-2 absolute right-0', { disabled: disabled })}
           key={index}
           onClick={onClick}
           size={16}
@@ -49,7 +49,7 @@ export const Pagination = ({ className, pageEndpointRange = 4, pageRange = 3, pe
   return (
     <div
       className={classNames(
-        'flex items-center h-[33px] gap-1 mx-auto w-fit text-gray-1 font-disketMono font-bold text-md select-none',
+        'relative flex items-center justify-center h-[33px] gap-1 sm:gap-0.5 mx-auto w-fit text-gray-1 font-disketMono font-bold text-md select-none min-w-[350px] sm:min-w-[240px]',
         className
       )}>
       {items.map(renderPaginationItem)}
