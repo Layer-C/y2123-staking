@@ -187,7 +187,7 @@ export const StakingSection = () => {
           <div className='grid items-center grid-cols-2 gap-10 sm:grid-cols-1 sm:items-start sm:gap-3'>
             <div>
               <div className='text-gray-1'>$OXGN Rewards/ DAY/ CS</div>
-              <div className='text-xl font-disketMono'>{23}</div>
+              <div className='text-xl font-disketMono'>{24}</div>
             </div>
             {active && (
               <div>
