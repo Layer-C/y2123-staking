@@ -64,15 +64,16 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
             <ConditionalWrapper active={viewport === 'sm'} component={Carousel} max={2} dots arrows={false}>
               <ConditionalWrapper active={viewport === 'sm'} component={Carousel.Item} index={0}>
                 <AppLayout.Section className='p-5 font-disketMono'>
-                  <div className='font-bold text-md'>EARN $OXGN, BUY LAND</div>
+                  <div className='font-bold text-md'>PIONEERS & SETTLERS DROPPING </div>
                   <div className='flex items-center justify-between mt-7 gap-1'>
                     <div>
                       <div className='text-xl font-bold'></div>
                       <div className='text-xs'>
-                        Land Sales coming soon in April 2022.Only available for purchase with $OXGN.
+                        {`DON'T MISS OUR ANIMATED GEN2 COLLECTION DROPPING LATE APRIL. EXPLORER HOLDERS ARE AUTO
+                        WHITELISTED. MINT PRICE 0.0XX ETH.`}
                       </div>
                     </div>
-                    <Image src='/Y2123-Land.gif' alt='' width='150px' height='150px' />
+                    {/* <Image src='/Y2123-Land.gif' alt='' width='150px' height='150px' /> */}
                   </div>
                 </AppLayout.Section>
               </ConditionalWrapper>

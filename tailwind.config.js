@@ -39,6 +39,18 @@ module.exports = {
       paddingBottom: extendedSize,
       paddingLeft: extendedSize,
       paddingRight: extendedSize,
+      lineHeight: {
+        3.5: '0.875rem',
+        4.5: '1.125rem',
+        5.5: '1.375rem',
+      },
+      spacing: {
+        18: '4.5rem',
+        75: '18.75rem',
+      },
+      minWidth: {
+        75: '18.75rem',
+      },
     },
     fontFamily,
     backgroundImage: {

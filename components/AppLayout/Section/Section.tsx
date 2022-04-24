@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Children, ClassName } from 'types/common';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Props = ClassName & Children & { label?: string; id?: string };
+type Props = ClassName & Children & { label?: string | JSX.Element; id?: string };
 
 export const Section = ({ className, children, label, id }: Props) => {
   return (
@@ -14,11 +14,14 @@ export const Section = ({ className, children, label, id }: Props) => {
         borderImageSource: 'linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.7) 100%)',
       }}
       className={classNames('relative backdrop-blur-[50px] text-white w-full p-10 sm:px-5', className)}>
-      {!!label && (
-        <div className='absolute max-w-[80%] top-0 left-0 px-5 py-2 text-black uppercase transform -translate-y-1/2 bg-white font-disketMono'>
-          {label}
-        </div>
-      )}
+      {!!label &&
+        (typeof label === 'string' ? (
+          <div className='absolute max-w-[80%] top-0 left-0 px-5 py-2 text-black uppercase transform -translate-y-1/2 bg-white font-disketMono'>
+            {label}
+          </div>
+        ) : (
+          label
+        ))}
       {children}
     </div>
   );

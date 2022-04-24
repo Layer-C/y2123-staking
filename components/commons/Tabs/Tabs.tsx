@@ -31,6 +31,7 @@ export type TabData = {
   label: React.ReactNode;
   value: string;
   content: React.ReactNode;
+  className?: string;
 };
 
 type Props = BaseProps &
@@ -38,12 +39,20 @@ type Props = BaseProps &
   Children & {
     tabs: TabData[];
     collapsible?: boolean;
+    showHeaderAsDropdownOnMobile?: boolean;
   };
 
-export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible }: Props) => {
+export const Tabs = ({
+  value: valueProp,
+  onChange,
+  className,
+  tabs,
+  collapsible,
+  showHeaderAsDropdownOnMobile = true,
+}: Props) => {
   const [value, setValue] = useControllable({ value: valueProp, onChange, defaultValue: tabs[0]?.value });
   const control = useVisibilityControl({ defaultVisible: true });
-
+  const foundTab = tabs.find(tab => tab.value === value);
   return (
     <BaseTabs
       value={value}
@@ -52,20 +61,29 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
         control.show();
       }}>
       <div className={classNames('border-b border-solid flex justify-between items-center border-gray-1', className)}>
-        <div className={ClassNameUtils.withTwReplaceable('px-')('flex items-center flex-shrink-0 sm:hidden')}>
+        <div
+          className={classNames(ClassNameUtils.withTwReplaceable('px-')('flex items-center flex-shrink-0 relative'), {
+            'sm:hidden': showHeaderAsDropdownOnMobile,
+          })}>
           {tabs.map(({ label, value }) => (
             <Item key={value} value={value}>
               {label}
             </Item>
           ))}
         </div>
-        <select className='hidden h-full px-5 py-2 text-white sm:block bg-purplish-gray-1' onChange={setValue}>
-          {tabs.map(({ label, value }) => (
-            <option value={value} key={value}>
-              {label}
-            </option>
-          ))}
-        </select>
+        {showHeaderAsDropdownOnMobile ? (
+          <select
+            className={classNames('h-full px-5 py-2 text-white bg-purplish-gray-1', {
+              'sm:block': showHeaderAsDropdownOnMobile,
+            })}
+            onChange={setValue}>
+            {tabs.map(({ label, value }) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        ) : null}
         {!!collapsible && (
           <div className='p-2 cursor-pointer select-none'>
             {control.visible ? <FaChevronUp onClick={control.hide} /> : <FaChevronDown onClick={control.show} />}
@@ -73,9 +91,11 @@ export const Tabs = ({ value: valueProp, onChange, className, tabs, collapsible 
         )}
       </div>
       <div
-        className={classNames('h-full py-5 overflow-hidden', { 'h-0 py-0': collapsible && !control.visible })}
+        className={classNames('relative', foundTab?.className || 'h-full py-5 overflow-hidden', {
+          'h-0 py-0': collapsible && !control.visible,
+        })}
         key={value}>
-        {tabs.find(tab => tab.value === value)?.content}
+        {foundTab?.content}
       </div>
     </BaseTabs>
   );

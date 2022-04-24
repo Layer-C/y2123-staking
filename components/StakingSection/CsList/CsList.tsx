@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Pagination } from 'components';
 import React from 'react';
 import LockIcon from 'public/icons/lock.svg';
+import TokenIcon from 'public/icons/token.svg';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -19,7 +20,7 @@ export const CsList = ({ items = [], isStaked = false }: Props) => {
       <div className='grid grid-cols-6 gap-x-3 gap-y-6 sm:grid-cols-3'>
         {items
           .slice((page - 1) * 6, page * 6)
-          .map(({ id, name, staked, image = '/citizen-scientist.png', link }, i) => (
+          .map(({ staked = false, name, dailyReward, image = '/citizen-scientist.png', link }, i) => (
             <a key={i} href={link} target='_blank' rel='noreferrer'>
               <div className='relative'>
                 <Image
@@ -30,13 +31,17 @@ export const CsList = ({ items = [], isStaked = false }: Props) => {
                   width={100}
                   height={120}
                 />
-                {isStaked && (
+                {(isStaked || staked) && (
                   <div className='absolute bottom-0 right-0 mb-2'>
                     <LockIcon />
                   </div>
                 )}
               </div>
               <div className='text-xs'>{name}</div>
+              <div className='text-xs text-gray-1 mt-2 mb-1'>Daily Rewards</div>
+              <div className='flex gap-1 items-center'>
+                <TokenIcon /> <div className='font-bold text-xs text-white font-avenirNext'>{dailyReward}</div>
+              </div>
             </a>
           ))}
       </div>
