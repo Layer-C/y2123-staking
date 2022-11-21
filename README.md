@@ -1,3 +1,5 @@
-Y2123 FE 1
+Layer C (layerc.io)
 
-npm run dev
+Y2123.com active staking DAPP
+
+Created by shanq.eth
